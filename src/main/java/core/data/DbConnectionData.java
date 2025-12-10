@@ -1,0 +1,34 @@
+package core.data;
+
+public class DbConnectionData {
+
+    private final String url;
+    private final String user;
+    private final String password;
+
+    public DbConnectionData(String url, String user, String password) {
+        this.url = url;
+        this.user = user;
+        this.password = password;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String toString() {
+        return "DbConnectionData{url='" + url + "', user='" + user + "'}";
+    }
+}
+
+
+

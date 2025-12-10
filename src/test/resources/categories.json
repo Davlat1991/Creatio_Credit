@@ -1,0 +1,21 @@
+[
+  {
+    "name": "UI Failure",
+    "matchedStatuses": ["failed"],
+    "messageRegex": "Element not found.*"
+  },
+  {
+    "name": "Assertion Error",
+    "matchedStatuses": ["failed"],
+    "traceRegex": "AssertionError"
+  },
+  {
+    "name": "Browser Timeout",
+    "matchedStatuses": ["broken"],
+    "messageRegex": "Timed out.*"
+  },
+  {
+    "name": "Other Errors",
+    "matchedStatuses": ["failed", "broken"]
+  }
+]

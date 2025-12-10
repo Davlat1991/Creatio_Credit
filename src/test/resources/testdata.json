@@ -1,0 +1,37 @@
+{
+  "users": {
+    "davlat": {
+      "login": "S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796!@#aaa"
+    },
+    "manuchehr": {
+      "login": "A.Khamidov",
+      "password": "A.Khamidov"
+    }
+  },
+
+  "contacts": [
+    {
+      "firstname": "Сафарали",
+      "lastname": "Садуллоев",
+      "middlename": "Нусратович",
+      "birthday": "1987-09-12",
+      "documentType": "Паспорт",
+      "documentNumber": "12345678"
+    }
+  ],
+
+  "loan": {
+    "defaultAmount": "30000",
+    "defaultTerm": "24",
+    "currency": "Сомони Чумхурии Точикистон"
+  },
+
+  "scenarios": {
+    "creditFlowBasic": {
+      "amount": "20000",
+      "term": "12",
+      "product": "Потребительский кредит"
+    }
+  }
+}

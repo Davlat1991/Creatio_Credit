@@ -25,3 +25,11 @@ replay_pid*
 
 #IDEA files
 .idea/
+
+### Maven ###
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### Allure ###
+allure-results/
+allure-report/
