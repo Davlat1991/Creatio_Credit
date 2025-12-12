@@ -78,7 +78,6 @@ public class LoginSteps {
         }
         return this;
     }
-
     @Step("Проверить ошибку логина: '{expectedMessage}'")
     public LoginSteps verifyLoginError(String expectedMessage) {
         page.getLoginError().shouldHave(Condition.text(expectedMessage));

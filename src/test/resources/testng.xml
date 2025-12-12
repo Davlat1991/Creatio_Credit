@@ -1,34 +1,31 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Creatio_Credit Suite"
        verbose="1"
-       parallel="false">
-
-    <!-- SMOKE TESTS — обычно запускаются последовательно -->
-    <test name="Smoke Tests" parallel="false">
-        <packages>
-            <package name="testProject.tests.smoke"/>
-        </packages>
-    </test>
-
-
-    <!-- REGRESSION TESTS — параллельно по классам -->
-    <test name="Regression Tests" parallel="classes" thread-count="4">
-        <packages>
-            <package name="testProject.tests.regression"/>
-        </packages>
-    </test>
-
-    <!-- NEGATIVE TESTS — тоже параллельно -->
-    <test name="Negative Tests" parallel="classes" thread-count="4">
-        <packages>
-            <package name="testProject.tests.negative"/>
-        </packages>
-    </test>
-
-
+       configfailurepolicy="continue">
 
     <listeners>
         <listener class-name="core.base.TestListener"/>
     </listeners>
+
+    <!-- Запуск ONLY SMOKE -->
+    <test name="Smoke Tests">
+        <packages>
+            <package name="tests.smoke"/>
+        </packages>
+    </test>
+
+    <!-- Запуск ONLY REGRESSION -->
+    <test name="Regression Tests" parallel="classes" thread-count="4">
+        <packages>
+            <package name="tests.regression"/>
+        </packages>
+    </test>
+
+    <!-- Запуск ONLY NEGATIVE -->
+    <test name="Negative Tests" parallel="classes" thread-count="4">
+        <packages>
+            <package name="tests.negative"/>
+        </packages>
+    </test>
 
 </suite>

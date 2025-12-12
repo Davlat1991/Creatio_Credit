@@ -98,7 +98,7 @@
     <!--- MAVEN PROFILES - -->
     <profiles>
 
-        <!-- Single Test Run Profile -->
+        <!-- Profile for running a single test class -->
         <profile>
             <id>single</id>
             <activation>
@@ -106,6 +106,8 @@
             </activation>
 
             <properties>
+                <!-- Default value so IntelliJ doesn't highlight ${testClass} as error -->
+                <testClass>tests.smoke.LoginTest</testClass>
                 <suiteFile>src/test/resources/testng-single.xml</suiteFile>
             </properties>
 
@@ -121,10 +123,12 @@
                                 <suiteXmlFile>${suiteFile}</suiteXmlFile>
                             </suiteXmlFiles>
 
+                            <!-- Pass the test class to TestNG -->
                             <systemPropertyVariables>
                                 <testClass>${testClass}</testClass>
                             </systemPropertyVariables>
 
+                            <!-- Required for Allure -->
                             <argLine>
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                             </argLine>

@@ -5,8 +5,7 @@ import core.base.BasePage;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 
 /**
  * Универсальный компонент для всех UI-элементов Creatio.
@@ -38,17 +37,21 @@ public class Components extends BasePage {
 
         for (int i = 1; i <= attempts; i++) {
             try {
-                element.scrollIntoView(true);
-                element.shouldBe(visible, enabled);
-                element.click();
+                element.shouldBe(Condition.visible, Condition.enabled)
+                        .scrollIntoView(true)
+                        .click();
                 return;
             } catch (Throwable e) {
                 last = e;
-                sleep(400);
+
+                // ждём, пока DOM стабилизируется
+                $$(".ts-loader, .ui-loader, .process-indicator")
+                        .shouldHave(CollectionCondition.size(0));
             }
         }
         throw new RuntimeException("Не удалось кликнуть по элементу: " + description, last);
     }
+
 
     protected void jsClick(SelenideElement element) {
         Selenide.executeJavaScript("arguments[0].click();", element);

@@ -13,9 +13,9 @@ public class LoginTest {
         @Test(description = "Smoke: успешный логин пользователя")
         public void userCanLogin() {
 
-            login.openLoginPage("http://10.10.202.254")
+            login.openLoginPage("http://10.10.202.254/")
                     .enterUsername("S_RUSTAMOVA_796")
-                    .enterPassword("S_RUSTAMOVA_796!@#aaa")
+                    .enterPassword("S_RUSTMOVA_796!@#aaa")
                     .clickLogin()
                     .verifyLogin();
         }

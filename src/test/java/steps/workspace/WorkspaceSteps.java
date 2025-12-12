@@ -1,10 +1,13 @@
 package steps.workspace;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import core.pages.ui.MainMenuAndWorkSpacePage;
 import core.base.common.components.ButtonsComponent;
 import core.base.common.components.GridComponent;
 
+import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.sleep;
 
 public class WorkspaceSteps {
@@ -49,14 +52,17 @@ public class WorkspaceSteps {
         // 1) Клик по кнопке "Создать"
         buttons.clickByName("Создать");
 
-        // 2) Ждём появление списка типов
-        sleep(300);
+        // 2) Ждём появления списка и нужного типа
+        SelenideElement typeOption = $x("//span[normalize-space()='" + recordType + "']")
+                .shouldBe(Condition.visible)
+                .shouldBe(Condition.enabled);
 
-        // 3) Кликаем по типу записи
-        buttons.clickByName(recordType);
+        // 3) Клик по типу записи (с retry)
+        typeOption.scrollIntoView(true).click();
 
         return this;
     }
+
 
     // ---------------------------------------------------------
     // 5. Поиск по тексту (универсальный)

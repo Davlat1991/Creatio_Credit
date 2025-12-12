@@ -1,5 +1,7 @@
 package core.base;
 
+import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -50,31 +52,21 @@ public class BasePage {
     }
 
     protected void waitForPageLoad() {
-        for (int i = 0; i < 40; i++) {
-            Object ready = executeJavaScript("return document.readyState");
-            boolean busy = $$(" .ts-loader, .ui-loader, .process-indicator, .loading-indicator, .mask")
-                    .filter(visible).size() > 0;
-            if ("complete".equals(ready) && !busy) {
-                Selenide.sleep(200);
-                return;
-            }
-            Selenide.sleep(250);
-        }
-        throw new RuntimeException("Страница не загрузилась вовремя (waitForPageLoad)");
+        // ждем, пока document.readyState станет complete
+        Wait().until(webDriver ->
+                executeJavaScript("return document.readyState").equals("complete")
+        );
+
+        // ждем исчезновение всех индикаторов загрузки Creatio
+        $$(".ts-loader, .ui-loader, .process-indicator, .loading-indicator, .mask")
+                .filter(Condition.visible)
+                .shouldHave(CollectionCondition.size(0));
     }
 
+
     protected void waitUntilNotBusy() {
-        // ждем исчезновения известных индикаторов загрузки
-        for (int i = 0; i < 40; i++) {
-            int visibleLoaders = $$(" .ts-loader, .ui-loader, .process-indicator, .loading-indicator, .mask")
-                    .filter(visible).size();
-            if (visibleLoaders == 0) {
-                Selenide.sleep(100);
-                return;
-            }
-            Selenide.sleep(250);
-        }
-        throw new RuntimeException("Loading indicators didn't disappear in time");
+        $$(".ts-loader, .ui-loader, .process-indicator, .loading-indicator, .mask")
+                .shouldHave(CollectionCondition.size(0));
     }
 
     /**

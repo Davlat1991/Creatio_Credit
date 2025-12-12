@@ -1,96 +1,54 @@
 package core.pages.login;
 
-
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import core.data.users.Credentials;
-import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Condition.*;
 
 public class LoginPage {
 
-    // Локаторы — адаптированы под Creatio
-    private final SelenideElement usernameField = $("[name='Username']");
-    private final SelenideElement passwordField = $("[name='Password']");
-    private final SelenideElement loginButton =
-            $x("//button[contains(@class,'login-button') or contains(text(),'Войти')]");
+    // Поле логина
+    private final SelenideElement usernameInput = $("#loginEdit-el");
 
-    // -----------------------------
-    // Открыть страницу логина
-    // -----------------------------
-    @Step("Открыть страницу логина: {url}")
-    public LoginPage openLoginPage(String url) {
+    // Поле пароля
+    private final SelenideElement passwordInput = $("#passwordEdit-el");
+
+    // Кнопка Войти
+    private final SelenideElement loginButton = $("[data-item-marker='btnLogin']");
+
+    // Признак успешного входа — верхнее меню
+    private final SelenideElement headerContainer = $("#left-header-container");
+
+    // Ошибка логина
+    private final SelenideElement loginError = $(".base-edit-validation");
+
+    public void openLoginPage(String url) {
         open(url);
-        return this;
     }
 
-    // -----------------------------
-    // Ввести логин
-    // -----------------------------
-    @Step("Ввести логин: {username}")
-    public LoginPage enterUsername(String username) {
-        usernameField.shouldBe(visible).clear();
-        usernameField.setValue(username);
-        return this;
+    public void enterUsername(String username) {
+        usernameInput.shouldBe(visible).setValue(username);
     }
 
-    // -----------------------------
-    // Ввести пароль
-    // -----------------------------
-    @Step("Ввести пароль")
-    public LoginPage enterPassword(String password) {
-        passwordField.shouldBe(visible).clear();
-        passwordField.setValue(password);
-        return this;
+    public void enterPassword(String password) {
+        passwordInput.shouldBe(visible).setValue(password);
     }
 
-    // -----------------------------
-    // Нажать кнопку Войти
-    // -----------------------------
-    @Step("Нажать кнопку 'Войти'")
-    public LoginPage clickLoginButton() {
-        loginButton.shouldBe(visible, enabled).click();
-        return this;
+    public void clickLoginButton() {
+        loginButton.shouldBe(visible).click();
     }
 
-    // -------------------------------------------------------
-    // 🔥 Новый метод: авторизация пользователя через Credentials
-    // -------------------------------------------------------
-    @Step("Авторизация пользователя: {credentials.username}")
-    public LoginPage login(Credentials credentials) {
-        enterUsername(credentials.getUsername());
-        enterPassword(credentials.getPassword());
-        clickLoginButton();
-        return this;
-    }
-
-    // -------------------------------------------------------
-    // 🔥 Универсальный login через username + password
-    // -------------------------------------------------------
-    @Step("Авторизация пользователя (строки): {username}")
-    public LoginPage login(String username, String password) {
-        enterUsername(username);
-        enterPassword(password);
-        clickLoginButton();
-        return this;
-    }
-
-    // -------------------------------------------------------
-    // Проверка, что пользователь успешно вошёл
-    // -------------------------------------------------------
-    @Step("Проверка авторизации пользователя")
+    // Успешный вход — появилось меню
     public boolean isUserLoggedIn() {
-        return $x("//span[contains(@class,'user-name') or contains(@class,'profile-indicator')]")
-                .shouldBe(visible)
+        return $("#left-header-container")
+                .shouldBe(visible, Duration.ofSeconds(15))
                 .exists();
     }
 
+
     public SelenideElement getLoginError() {
-        return $x("//*[contains(@class,'login-error-message') or contains(@class,'login-page-error') or contains(text(),'Неверный')]")
-                .shouldBe(Condition.visible);
+        return loginError;
     }
 }
-
