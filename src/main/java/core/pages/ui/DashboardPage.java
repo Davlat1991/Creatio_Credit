@@ -9,7 +9,7 @@ import java.time.Duration;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$x;
 
-public class MainMenuAndWorkSpacePage {
+public class DashboardPage {
 
     private final SelenideElement workPlaceButton =
             $x("//span[@id='menu-workplace-button-menuWrapEl']");
@@ -18,7 +18,7 @@ public class MainMenuAndWorkSpacePage {
     // 🔵 Универсальный выбор рабочего места
     // ================================
     @Step("Выбрать рабочее место '{workPlace}' и раздел '{section}'")
-    public MainMenuAndWorkSpacePage selectWorkPlace(String workPlace, String section) {
+    public DashboardPage selectWorkPlace(String workPlace, String section) {
 
         openWorkPlaceMenu();
 
@@ -40,7 +40,7 @@ public class MainMenuAndWorkSpacePage {
     // 🔵 Открыть список рабочих мест
     // ================================
     @Step("Открыть меню рабочих мест")
-    public MainMenuAndWorkSpacePage openWorkPlaceMenu() {
+    public DashboardPage openWorkPlaceMenu() {
         workPlaceButton.shouldBe(enabled, visible).click();
         return this;
     }
@@ -50,7 +50,7 @@ public class MainMenuAndWorkSpacePage {
     // 🔵 Выбор только рабочего места
     // ================================
     @Step("Переключиться на рабочее место '{workPlace}'")
-    public MainMenuAndWorkSpacePage selectWorkAccess(String workPlace) {
+    public DashboardPage selectWorkAccess(String workPlace) {
 
         openWorkPlaceMenu();
 
@@ -65,7 +65,7 @@ public class MainMenuAndWorkSpacePage {
     // 🔵 Универсальный выбор раздела в левом меню
     // ================================
     @Step("Выбрать раздел '{sectionName}' в левом меню")
-    public MainMenuAndWorkSpacePage leftSidebarSelectSection(String sectionName) {
+    public DashboardPage leftSidebarSelectSection(String sectionName) {
 
         String locator =
                 "//div[@id='sectionMenuModule']//div[contains(@class,'ts-sidebar')]//div[contains(normalize-space(.),'" +
@@ -99,7 +99,7 @@ public class MainMenuAndWorkSpacePage {
 // 🔵 Открыть меню создания записи
 // ================================
     @Step("Открыть меню создания записи")
-    public MainMenuAndWorkSpacePage openCreateMenu() {
+    public DashboardPage openCreateMenu() {
 
         SelenideElement createButton =
                 $x("//span[normalize-space(text())='Создать' or @data-item-marker='CreateButton']")
@@ -120,7 +120,7 @@ public class MainMenuAndWorkSpacePage {
 // 🔵 Поиск через глобальное поле Creatio
 // ================================
     @Step("Выполнить поиск по тексту '{query}'")
-    public MainMenuAndWorkSpacePage search(String query) {
+    public DashboardPage search(String query) {
 
         SelenideElement searchField =
                 $x("//input[contains(@class,'search-input') or @placeholder='Поиск']")
@@ -137,7 +137,7 @@ public class MainMenuAndWorkSpacePage {
 // 🔵 Открыть запись из грида по тексту
 // ================================
     @Step("Открыть запись по тексту '{text}'")
-    public MainMenuAndWorkSpacePage openRecord(String text) {
+    public DashboardPage openRecord(String text) {
 
         SelenideElement row =
                 $x("//div[contains(@class,'grid-row')]//*[contains(text(),'" + text + "')]")
@@ -157,7 +157,7 @@ public class MainMenuAndWorkSpacePage {
 // 🔥 Новый улучшенный стабильный поиск
 // =======================================
     @Step("Поиск '{query}' (улучшенный)")
-    public MainMenuAndWorkSpacePage searchImproved(String query) {
+    public DashboardPage searchImproved(String query) {
 
         String[] locators = {
                 "//input[contains(@class,'search-input')]",
@@ -191,7 +191,7 @@ public class MainMenuAndWorkSpacePage {
     // =======================================
 // 🔥 Ожидание загрузки левого меню
 // =======================================
-    public MainMenuAndWorkSpacePage waitLeftMenuLoaded() {
+    public DashboardPage waitLeftMenuLoaded() {
         $x("//div[@id='sectionMenuModule']//div[contains(@class,'ts-sidebar')]")
                 .shouldBe(visible, Duration.ofSeconds(5));
         return this;
@@ -201,7 +201,7 @@ public class MainMenuAndWorkSpacePage {
 // 🔥 Улучшенное открытие записи
 // =======================================
     @Step("Открыть запись по тексту (улучшено): {text}")
-    public MainMenuAndWorkSpacePage openRecordImproved(String text) {
+    public DashboardPage openRecordImproved(String text) {
 
         String xpath = "//div[contains(@class,'grid-row')]//*[contains(text(),'" + text + "')]";
 
@@ -226,7 +226,7 @@ public class MainMenuAndWorkSpacePage {
 // 🔥 Улучшенный метод 'Создать'
 // =======================================
     @Step("Открыть меню создания записи (улучшено)")
-    public MainMenuAndWorkSpacePage openCreateMenuImproved() {
+    public DashboardPage openCreateMenuImproved() {
 
         String[] locators = {
                 "//span[normalize-space()='Создать']",

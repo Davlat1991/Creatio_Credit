@@ -9,29 +9,29 @@
     <artifactId>Creatio_Credit</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!-- Java, Versions -->
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <selenide.version>7.2.1</selenide.version>
         <testng.version>7.11.0</testng.version>
         <allure.version>2.27.0</allure.version>
         <aspectj.version>1.9.21</aspectj.version>
+
+        <!-- По умолчанию запускаем testng.xml -->
+        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
     </properties>
 
-    <!--- DEPENDENCIES - -->
     <dependencies>
 
-        <!-- Selenide -->
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
             <version>${selenide.version}</version>
         </dependency>
 
-        <!-- TestNG -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -39,21 +39,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Allure TestNG -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
             <version>${allure.version}</version>
         </dependency>
 
-        <!-- Allure Selenide -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-selenide</artifactId>
             <version>${allure.version}</version>
         </dependency>
 
-        <!-- AspectJ Weaver (required for Allure TestNG hooks) -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -62,80 +59,56 @@
 
     </dependencies>
 
-
-    <!--- BUILD / PLUGINS - -->
     <build>
         <plugins>
 
-            <!-- Maven Surefire (TestNG runner) -->
+            <!-- Основной плагин тестирования -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
 
                 <configuration>
+
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
                     </suiteXmlFiles>
+
+                    <!-- ВАЖНО: Allure выводит результаты в target/allure-results -->
+                    <systemPropertyVariables>
+                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
 
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
+
                 </configuration>
             </plugin>
 
-            <!-- Allure Maven Plugin -->
+            <!-- Плагин генерации отчёта -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>2.11.2</version>
+
+                <configuration>
+                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                    <reportDirectory>${project.build.directory}/site/allure-maven-plugin</reportDirectory>
+                </configuration>
+
             </plugin>
 
         </plugins>
     </build>
 
-
-    <!--- MAVEN PROFILES - -->
     <profiles>
 
-        <!-- Profile for running a single test class -->
         <profile>
             <id>single</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-
             <properties>
-                <!-- Default value so IntelliJ doesn't highlight ${testClass} as error -->
-                <testClass>tests.smoke.LoginTest</testClass>
-                <suiteFile>src/test/resources/testng-single.xml</suiteFile>
+                <suiteXmlFile>src/test/resources/testng-single.xml</suiteXmlFile>
             </properties>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.1.2</version>
-
-                        <configuration>
-                            <suiteXmlFiles>
-                                <suiteXmlFile>${suiteFile}</suiteXmlFile>
-                            </suiteXmlFiles>
-
-                            <!-- Pass the test class to TestNG -->
-                            <systemPropertyVariables>
-                                <testClass>${testClass}</testClass>
-                            </systemPropertyVariables>
-
-                            <!-- Required for Allure -->
-                            <argLine>
-                                -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                            </argLine>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
 
     </profiles>

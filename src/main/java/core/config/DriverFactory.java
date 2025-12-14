@@ -1,32 +1,76 @@
 package core.config;
 
 import com.codeborne.selenide.Configuration;
-import core.config.ConfigProperties;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class DriverFactory {
 
     public static void configure() {
 
-        // --- Браузер ---
+        System.out.println("⚙ Initializing Selenide configuration (DriverFactory)");
+
+        // ================================
+        // 📌 Базовая конфигурация браузера
+        // ================================
         Configuration.browser = ConfigProperties.get("browser", "chrome");
         Configuration.browserSize = ConfigProperties.get("browser.size", "1530x970");
+        Configuration.headless = ConfigProperties.getBoolean("headless.enabled", false);
 
-        // --- Таймауты ---
+        // ================================
+        // 📌 Таймауты (адаптированы под Creatio)
+        // ================================
         Configuration.timeout = ConfigProperties.getInt("selenide.timeout", 30000);
         Configuration.pageLoadTimeout = ConfigProperties.getInt("selenide.pageLoadTimeout", 60000);
+        Configuration.pollingInterval = 200;       // Creatio требует повышенного polling
+        Configuration.pageLoadStrategy = "normal"; // Creatio работает нестабильно на other strategies
 
-        // --- Скриншоты, логи ---
-        Configuration.screenshots = ConfigProperties.getBoolean("screenshots.enabled");
-        Configuration.savePageSource = ConfigProperties.getBoolean("save.page.source");
+        // ================================
+        // 📌 Аллюр + артефакты
+        // ================================
+        Configuration.screenshots = ConfigProperties.getBoolean("screenshots.enabled", true);
+        Configuration.savePageSource = ConfigProperties.getBoolean("save.page.source", false);
         Configuration.reportsFolder = ConfigProperties.get("screen.result.directory", "target/allure-results");
 
-        // --- Сетевые задержки Creatio ---
-        Configuration.pollingInterval = 200;       // дефолт Selenide = 100ms → слишком быстро для Creatio
-        Configuration.pageLoadStrategy = "normal"; // Creatio иначе ведёт себя нестабильно
+        // ================================
+        // 📌 Chrome Options
+        // ================================
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--disable-gpu");
+        chromeOptions.addArguments("--disable-extensions");
+        chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--disable-infobars");
+        chromeOptions.addArguments("--disable-dev-shm-usage");
 
-        // --- Отключение GPU и логов в Chrome (оптимизация) ---
-        System.setProperty("chromeoptions.args", "--disable-gpu --disable-extensions");
+        if (Configuration.headless) {
+            chromeOptions.addArguments("--headless=new");
+        }
 
-        System.out.println("⚙ Selenide configuration initialized by DriverFactory");
+        // ================================
+        // 📌 Локальный режим
+        // ================================
+        if (!ConfigProperties.getBoolean("remote.enabled", false)) {
+            DesiredCapabilities localCaps = new DesiredCapabilities();
+            localCaps.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+
+            Configuration.browserCapabilities = localCaps;
+
+            System.out.println("🌐 Driver Mode: LOCAL");
+            return;
+        }
+
+        // ================================
+        // 📌 Remote WebDriver (Selenoid / Jenkins / Grid)
+        // ================================
+        Configuration.remote = ConfigProperties.get("remote.url");
+        DesiredCapabilities remoteCaps = new DesiredCapabilities();
+
+        remoteCaps.setCapability("enableVNC", true);
+        remoteCaps.setCapability("enableVideo", ConfigProperties.getBoolean("remote.video.enabled", false));
+        remoteCaps.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+
+        Configuration.browserCapabilities = remoteCaps;
+
+        System.out.println("🌐 Driver Mode: REMOTE → " + Configuration.remote);
     }
 }

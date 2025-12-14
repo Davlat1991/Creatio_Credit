@@ -3,18 +3,18 @@ package steps.workspace;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import core.pages.ui.MainMenuAndWorkSpacePage;
+import core.pages.ui.DashboardPage;
 import core.base.common.components.ButtonsComponent;
 import core.base.common.components.GridComponent;
 
 import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.sleep;
 
 public class WorkspaceSteps {
 
-    private final MainMenuAndWorkSpacePage page = new MainMenuAndWorkSpacePage();
+    private final DashboardPage page = new DashboardPage();
     private final ButtonsComponent buttons = new ButtonsComponent();
     private final GridComponent grid = new GridComponent();
+
 
     // ---------------------------------------------------------
     // 1. Открыть рабочее место

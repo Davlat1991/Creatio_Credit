@@ -6,8 +6,9 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 /**
@@ -140,6 +141,12 @@ public class BasePage {
 
         return this;
     }
+
+    protected void waitForLoader() {
+        $x("//div[contains(@class,'ts-loader-mask')]")
+                .should(disappear, Duration.ofSeconds(15));
+    }
+
 
 
 }

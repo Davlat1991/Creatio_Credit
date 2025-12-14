@@ -1,12 +1,13 @@
-package tests.regression;
+package tests.credit.regression;
 
 import core.base.BaseTest;
 import core.base.common.components.*;
-import core.data.contacts.ContactData;
-import core.data.users.Users;
 import core.pages.credit.ConsultationPanelPage;
 import core.pages.credit.ContractCreditApplicationPage;
 import core.pages.ui.DetailPage;
+import core.data.contacts.ContactData;
+import core.data.users.Users;
+import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import steps.credit.BorrowerSteps;
 import steps.credit.CreditApplicationSteps;
@@ -15,7 +16,12 @@ import steps.workspace.WorkspaceSteps;
 
 import java.time.LocalDate;
 
-public class SimplifiedRouteCreditTest extends BaseTest {
+@Epic("Кредитование")
+@Feature("Упрощённый маршрут оформления кредита")
+@Story("Полный E2E процесс от консультации до выдачи")
+@Owner("davlat")
+@Severity(SeverityLevel.CRITICAL)
+public class UprashenniyMarshrutCreditTest extends BaseTest {
 
     @Test(description = "Упрощённый маршрут оформления потребительского кредита")
     public void testSimplifiedCreditFlow() {
@@ -125,4 +131,3 @@ public class SimplifiedRouteCreditTest extends BaseTest {
         credit.issueCredit("Наличными");
     }
 }
-

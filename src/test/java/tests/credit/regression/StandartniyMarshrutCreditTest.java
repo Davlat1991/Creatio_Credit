@@ -1,4 +1,4 @@
-package tests.regression;
+package tests.credit.regression;
 
 public class StandartniyMarshrutCreditTest {
 }

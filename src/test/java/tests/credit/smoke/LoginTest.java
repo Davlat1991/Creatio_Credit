@@ -1,4 +1,4 @@
-package tests.smoke;
+package tests.credit.smoke;
 
 import org.testng.annotations.Test;
 import steps.login.LoginSteps;
@@ -14,8 +14,8 @@ public class LoginTest {
         public void userCanLogin() {
 
             login.openLoginPage("http://10.10.202.254/")
-                    .enterUsername("S_RUSTAMOVA_796")
-                    .enterPassword("S_RUSTMOVA_796!@#aaa")
+                    .enterUsername("S_RUSTMOVA_796")
+                    .enterPassword("S_RUSTMOVA_796S_RUSTMOVA_796")
                     .clickLogin()
                     .verifyLogin();
         }

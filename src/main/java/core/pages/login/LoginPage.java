@@ -1,6 +1,8 @@
 package core.pages.login;
 
 import com.codeborne.selenide.SelenideElement;
+import core.data.users.LoginData;
+import io.qameta.allure.Step;
 
 import java.time.Duration;
 
@@ -24,31 +26,58 @@ public class LoginPage {
     // Ошибка логина
     private final SelenideElement loginError = $(".base-edit-validation");
 
-    public void openLoginPage(String url) {
-        open(url);
+
+    @Step("Открыть страницу логина")
+    public LoginPage openLoginPage() {
+        open("/");
+        usernameInput.shouldBe(visible);
+        return this;
     }
 
-    public void enterUsername(String username) {
+    public LoginPage enterUsername(String username) {
         usernameInput.shouldBe(visible).setValue(username);
+        return this;
     }
 
-    public void enterPassword(String password) {
+
+
+    public LoginPage enterPassword(String password) {
         passwordInput.shouldBe(visible).setValue(password);
+        return this;
     }
 
     public void clickLoginButton() {
         loginButton.shouldBe(visible).click();
     }
 
-    // Успешный вход — появилось меню
     public boolean isUserLoggedIn() {
-        return $("#left-header-container")
-                .shouldBe(visible, Duration.ofSeconds(15))
-                .exists();
+        return headerContainer.shouldBe(visible, Duration.ofSeconds(15)).exists();
     }
-
 
     public SelenideElement getLoginError() {
         return loginError;
     }
+
+
+    // ================================
+    // 🔥 Новые методы (вставь эти 3!)
+    // ================================
+
+    @Step("Авторизация: логин = {login}")
+    public LoginPage login(String login, String password) {
+        enterUsername(login);
+        enterPassword(password);
+        clickLoginButton();
+
+        headerContainer.shouldBe(visible, Duration.ofSeconds(15));
+        return this;
+    }
+
+    @Step("Авторизация под пользователем: {user.login}")
+    public LoginPage loginAs(LoginData user) {
+        return login(user.getLogin(), user.getPassword());
+    }
+
+
+
 }

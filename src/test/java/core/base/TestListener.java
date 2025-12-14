@@ -1,11 +1,13 @@
 package core.base;
 
+import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Attachment;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
@@ -35,13 +37,31 @@ public class TestListener implements ITestListener {
 
     @Attachment(value = "Error message", type = "text/plain")
     private String attachException(Throwable throwable) {
-        if (throwable == null) return "No message";
-        return throwable.toString();
+        return throwable == null ? "No message" : throwable.toString();
     }
 
     // -----------------------------
-    // 🔥 TestNG Listener methods
+    // 🔥 TestNG Listener
     // -----------------------------
+
+    @Override
+    public void onStart(ITestContext context) {
+        System.out.println("📘 START TEST RUN: " + context.getName());
+
+        // Включаем шаги Selenide в Allure
+        SelenideLogger.addListener("AllureSelenide",
+                new AllureSelenide()
+                        .screenshots(true)
+                        .savePageSource(true)
+                        .includeSelenideSteps(true)
+        );
+    }
+
+    @Override
+    public void onFinish(ITestContext context) {
+        System.out.println("📙 FINISH TEST RUN: " + context.getName());
+        SelenideLogger.removeListener("AllureSelenide");
+    }
 
     @Override
     public void onTestStart(ITestResult result) {
@@ -55,10 +75,8 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result) {
-
         System.out.println("🟥 FAILED TEST: " + result.getName());
 
-        // ⚠ Всегда прикладываем артефакты для анализа
         attachScreenshot();
         attachPageSource();
         attachException(result.getThrowable());
@@ -69,21 +87,4 @@ public class TestListener implements ITestListener {
         System.out.println("⚠ SKIPPED TEST: " + result.getName());
         attachScreenshot();
     }
-
-    @Override
-    public void onStart(ITestContext context) {
-        System.out.println("📘 START TEST RUN: " + context.getName());
-    }
-
-    @Override
-    public void onFinish(ITestContext context) {
-        System.out.println("📙 FINISH TEST RUN: " + context.getName());
-    }
 }
-
-
-
-
-
-
-

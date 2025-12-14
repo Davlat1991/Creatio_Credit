@@ -1,28 +1,33 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Creatio_Credit Suite"
-       verbose="1"
-       configfailurepolicy="continue">
+       verbose="2"
+       configfailurepolicy="continue"
+       junit="false"
+       parallel="none">
 
     <listeners>
+        <!-- Allure listener -->
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+        <!-- Кастомный listener -->
         <listener class-name="core.base.TestListener"/>
     </listeners>
 
-    <!-- Запуск ONLY SMOKE -->
-    <test name="Smoke Tests">
+    <!-- SMOKE -->
+    <test name="Smoke Tests" preserve-order="true">
         <packages>
             <package name="tests.smoke"/>
         </packages>
     </test>
 
-    <!-- Запуск ONLY REGRESSION -->
-    <test name="Regression Tests" parallel="classes" thread-count="4">
+    <!-- REGRESSION -->
+    <test name="Regression Tests" preserve-order="true">
         <packages>
             <package name="tests.regression"/>
         </packages>
     </test>
 
-    <!-- Запуск ONLY NEGATIVE -->
-    <test name="Negative Tests" parallel="classes" thread-count="4">
+    <!-- NEGATIVE -->
+    <test name="Negative Tests" preserve-order="true">
         <packages>
             <package name="tests.negative"/>
         </packages>

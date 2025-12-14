@@ -1,71 +1,80 @@
 package core.config;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigProperties {
 
-    private static final Properties PROPERTIES = new Properties();
+    private static final Properties properties = new Properties();
 
     static {
-        try (InputStream is = ConfigProperties.class
-                .getClassLoader()
-                .getResourceAsStream("framework.properties")) {
+        loadEnvironment();
+    }
 
-            if (is == null)
-                throw new RuntimeException("framework.properties not found in resources!");
+    private static void loadEnvironment() {
 
-            PROPERTIES.load(is);
+        // --------------------------
+        // 1. Определяем какой env файл грузить
+        // --------------------------
+        String env = System.getProperty("env", "local"); // default local
+        String path = "env/environment." + env + ".properties";
 
+        System.out.println("🔧 Loading environment config: " + path);
+
+        try (FileInputStream fis = new FileInputStream(path)) {
+            properties.load(fis);
+            System.out.println("✅ Environment loaded successfully: " + env);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot load framework.properties", e);
+            throw new RuntimeException("❌ Failed to load: " + path, e);
         }
     }
 
-    //
-    // MAIN GETTER
-    //
+    // --------------------------
+    // GET STRING
+    // --------------------------
     public static String get(String key) {
-
-        // 1) ENV → highest priority
-        String envValue = System.getenv(key.toUpperCase().replace('.', '_'));
-        if (envValue != null && !envValue.isEmpty()) return envValue;
-
-        // 2) JVM -D override
-        String sysProp = System.getProperty(key);
-        if (sysProp != null && !sysProp.isEmpty()) return sysProp;
-
-        // 3) framework.properties
-        return PROPERTIES.getProperty(key);
+        return System.getProperty(key, properties.getProperty(key));
     }
 
-    //
-    // GETTER WITH DEFAULT VALUE  ← ЭТО ВАЖНО!
-    //
     public static String get(String key, String defaultValue) {
-        String value = get(key);
-        return (value == null || value.isEmpty()) ? defaultValue : value;
+        return System.getProperty(key, properties.getProperty(key, defaultValue));
     }
 
-    //
-    // Int getters
-    //
+    // --------------------------
+    // GET BOOLEAN
+    // --------------------------
+    public static boolean getBoolean(String key) {
+        return Boolean.parseBoolean(get(key, "false"));
+    }
+
+    public static boolean getBoolean(String key, boolean defaultValue) {
+        return Boolean.parseBoolean(get(key, String.valueOf(defaultValue)));
+    }
+
+    // --------------------------
+    // GET INT
+    // --------------------------
     public static int getInt(String key) {
         return Integer.parseInt(get(key));
     }
 
     public static int getInt(String key, int defaultValue) {
-        String value = get(key);
-        return (value == null || value.isEmpty())
-                ? defaultValue
-                : Integer.parseInt(value);
+        try {
+            return Integer.parseInt(get(key, String.valueOf(defaultValue)));
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 
-    //
-    // Boolean getter
-    //
-    public static boolean getBoolean(String key) {
-        return Boolean.parseBoolean(get(key));
+    // --------------------------
+    // REQUIRED PROPERTY
+    // --------------------------
+    public static String require(String key) {
+        String value = get(key);
+        if (value == null) {
+            throw new IllegalStateException("❌ Missing required property: " + key);
+        }
+        return value;
     }
 }
