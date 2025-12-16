@@ -1,4 +1,4 @@
-package core.pages.credit;
+package core.pages.routes;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;

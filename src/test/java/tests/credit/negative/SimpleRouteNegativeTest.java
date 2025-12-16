@@ -2,7 +2,7 @@ package tests.credit.negative;
 
 
 import core.base.BaseTest;
-import core.pages.credit.SimpleRoutePage;
+import core.pages.routes.SimpleRoutePage;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import core.config.Environment;

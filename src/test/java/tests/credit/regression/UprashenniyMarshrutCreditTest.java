@@ -67,7 +67,7 @@ public class UprashenniyMarshrutCreditTest extends BaseTest {
         // -------------------------------------------------------------
         // 🔵 2. АВТОРИЗАЦИЯ
         // -------------------------------------------------------------
-        login.openLoginPage(BASE_URL)
+        login.openLoginPage()
                 .enterUsername(Users.DAVLAT.getUsername())
                 .enterPassword(Users.DAVLAT.getPassword())
                 .clickLogin()

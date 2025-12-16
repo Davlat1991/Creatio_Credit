@@ -29,7 +29,7 @@ public class LoginPage {
 
     @Step("Открыть страницу логина")
     public LoginPage openLoginPage() {
-        open("/");
+        open("http://10.10.202.254/");
         usernameInput.shouldBe(visible);
         return this;
     }

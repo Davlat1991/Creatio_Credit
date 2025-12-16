@@ -18,8 +18,8 @@ public class LoginSteps {
     // ---------------------------------------------------------
 
     @Step("Открыть страницу логина: {url}")
-    public LoginSteps openLoginPage(String url) {
-        page.openLoginPage(url);
+    public LoginSteps openLoginPage() {
+        page.openLoginPage();
         return this;
     }
 

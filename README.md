@@ -1,165 +1,176 @@
 📘 Creatio Credit — UI Automation Framework (Enterprise Edition)
-<p align="center"> <img src="https://img.shields.io/badge/Java-17-red?logo=java&logoColor=white" /> <img src="https://img.shields.io/badge/Selenide-7.x-brightgreen?logo=selenide&logoColor=white" /> <img src="https://img.shields.io/badge/TestNG-Framework-orange?logo=testng&logoColor=white" /> <img src="https://img.shields.io/badge/Allure-Reports-purple?logo=allure&logoColor=white" /> <img src="https://img.shields.io/badge/Maven-Build-blue?logo=apachemaven&logoColor=white" /> </p> <p align="center"> <img src="https://img.shields.io/github/last-commit/Davlat1991/Creatio_Credit?color=blue" /> <img src="https://img.shields.io/github/repo-size/Davlat1991/Creatio_Credit?color=lightgrey" /> <img src="https://img.shields.io/badge/Status-Active-success" /> </p>
-💳 Creatio Credit UI Automation
+<p align="center"> <img src="https://img.shields.io/badge/Java-17-red?logo=java&logoColor=white" /> <img src="https://img.shields.io/badge/Selenide-7.x-brightgreen?logo=selenide&logoColor=white" /> <img src="https://img.shields.io/badge/TestNG-orange?logo=testng&logoColor=white" /> <img src="https://img.shields.io/badge/Allure-purple?logo=allure&logoColor=white" /> <img src="https://img.shields.io/badge/Maven-blue?logo=apachemaven&logoColor=white" /> </p> <p align="center"> <img src="https://img.shields.io/github/last-commit/Davlat1991/Creatio_Credit?color=blue" /> <img src="https://img.shields.io/github/repo-size/Davlat1991/Creatio_Credit?color=lightgrey" /> <img src="https://img.shields.io/badge/Status-Active-success" /> </p>
+💳 Creatio Credit UI Automation Framework
 
-Фреймворк разработан для автоматизации UI-тестирования модулей Creatio Credit, включая кредитные заявки, карточки клиента, консультации, стандартный и упрощённый маршруты.
+Надёжный фреймворк для автоматизации UI-тестирования Creatio Credit:
+кредитные заявки, карточки клиента, консультации, стандартный и упрощённый маршруты.
 
-Основные цели:
+# 🎯 Основные цели:
 
-обеспечение стабильных nightly/CI запусков
+ - стабильные nightly / CI / regression запуски
 
-ускорение smoke и regression тестирования
+ - сокращение smoke- и full-regression времени
 
-покрытие ключевых кредитных процессов
+ - единый корпоративный стандарт автоматизации
 
-повышение качества релизов платформенной команды
+ - модульная архитектура PageObject + Components
 
-создание единого архитектурного стандарта автоматизации
+ - информативные Allure отчёты для команды и руководства
 
-🧱 1. Архитектура фреймворка
-src/main/java/core/
 
-📂 Основные модули
+# 🧱 1. Архитектура проекта
+
+```bash
+
+src/
+├── main/java/core/
+│    ├── base/
+│    ├── config/
+│    ├── data/
+│    ├── pages/
+│    │     ├── login
+│    │     ├── ui
+│    │     ├── workspace
+│    │     ├── credit
+│    │     └── ...
+│    └── common/components/
+│           ├── FieldComponent
+│           ├── LookupComponent
+│           ├── GridComponent
+│           └── ButtonsComponent
+└── test/java/core/
+├── tests/
+│     ├── smoke
+│     ├── regression
+│     ├── negative
+│     ├── boundary
+│     ├── simple_route
+│     └── standard_route
+├── steps/
+├── listeners/
+└── utils/
+
+```
+
+# 📂 Основные модули
 ✔ base
 
-BaseTest — настройка окружения, Allure, WebDriver
+ - BaseTest — инициализация окружения, драйвера, Allure
 
-BasePage — общий функционал страниц
+ - BasePage — общие методы страниц
 
-common/components — FieldComponent, LookupComponent, GridComponent
+✔ components
 
-универсальные действия Creatio DOM
+ - UI-компоненты Creatio:
+
+ - FieldComponent
+
+ - LookupComponent
+
+ - DetailComponent
+
+ - GridComponent
+
+ - ButtonsComponent
 
 ✔ config
 
-DriverFactory — конфигурация браузера
+ - DriverFactory
 
-ConfigProperties — загрузка env-настроек
+ - ConfigProperties
 
-Environment — пользователи, URL
+ - Environment (users, URL, DB)
 
 ✔ data
 
-Модели и тестовые сущности:
+Тестовые модели:
 
-users
+ - users
 
-contacts
+ - contacts
 
-products
+ - products
 
-DbConnectionData
+ - DbConnectionData
 
 ✔ pages
 
-PageObject для всех модулей:
+PageObject-архитектура для всех модулей Creatio.
 
-login
+# 🌍 2. Multi-Environment Configuration
 
-ui (общие UI-компоненты)
+Файлы окружений:
 
-workspace
-
-credit (маршруты Creatio)
-
-🧪 2. Тестовая архитектура
-src/test/java/core/
-
-✔ tests
-
-smoke
-
-regression
-
-negative
-
-boundary
-
-упрощённый маршрут
-
-стандартный маршрут
-
-✔ steps
-
-Опциональный слой бизнес-степов для Allure.
-
-✔ listeners
-
-AllureTestListener (attachments)
-
-WebDriver handlers
-
-✔ utils
-
-Вспомогательные утилиты.
-
-🌍 3. Multi-Environment Configuration
+```matlab
 src/test/resources/env/
 ├── environment.local.properties
 ├── environment.qa.properties
 └── environment.dev.properties
+```
 
-▶ Выбор окружения:
+▶ Выбор окружения
 
-LOCAL
+LOCAL (default)
 
+```bash
 mvn clean test
-
-
+```
 QA
-
+```bash
 mvn clean test -Denv=qa
-
-
+```
 DEV
-
+```bash
 mvn clean test -Denv=dev
+```
+Автоматически подставляются:
 
+✔ base.url
 
-Автоматически подставляет:
+✔ browser
 
-URL Creatio
+✔ credentials
 
-browser
+✔ timeouts
 
-таймауты
+✔ remote / selenoid settings
 
-авторизацию
-
-параметры remote-запуска
-
-⚙ 4. DriverFactory
+# ⚙ 3. DriverFactory
 
 Функционал:
 
-настройка таймаутов Creatio (DOM очень динамичный)
+ - стабильные таймауты для динамичного Creatio DOM
 
-стратегия загрузки страницы normal
+ - стратегия загрузки normal
 
-headless / non-headless режим
+ - headless / headed
 
-remote Selenoid/Grid
+ - поддержка Selenoid / Selenium Grid
 
-отключение шумных логов Chrome
+ - отключение лишних Chrome-логов
 
 DriverFactory вызывается в BaseTest @BeforeSuite.
 
-🧬 5. Пример PageObject (коротко)
+# 🧬 4. Пример PageObject (короткий)
+
+```java
 @Step("Открыть страницу логина")
 public LoginPage openLoginPage() {
-open(BASE_URL);
-return this;
+    open(BASE_URL);
+    return this;
 }
 
-@Step("Авторизация пользователем {login}")
+@Step("Авторизация пользователем {user.login}")
 public LoginPage loginAs(LoginData user) {
-enterUsername(user.getLogin());
-enterPassword(user.getPassword());
-clickLoginButton();
-return this;
+    enterUsername(user.getLogin());
+    enterPassword(user.getPassword());
+    loginButton.click();
+    return this;
 }
+```
+# 🧪 5. Пример теста
 
-🧪 6. Пример теста
+```java
 @Test(description = "Smoke: создание кредитной заявки")
 public void createCreditApplicationTest() {
 
@@ -174,105 +185,128 @@ public void createCreditApplicationTest() {
             .save()
             .verifyStatus("Создано");
 }
-
-📊 7. Allure Reporting (Standard)
+```
+# 📊 6. Allure Reporting
 
 Фреймворк поддерживает:
 
-Timeline
+ - Timeline
 
-History
+ - Categories
 
-Categories
+ - History
 
-Environment
+ - Environment
 
-Attachments
+ - Attachments (скриншоты, логи, HTML)
 
-AllureSelenide
+ - Автоматические шаги через @Step
 
 ▶ Генерация отчёта:
+```bash
 allure serve target/allure-results
+```
 
-🚦 8. Команды запуска
+# 🚦 7. Команды запуска
 Все тесты:
+```bash
 mvn clean test
-
+```
 Smoke:
+```bash
 mvn test -Dgroups=smoke
-
+```
 Negative:
+```bash
 mvn test -Dgroups=negative
-
+```
 Boundary:
+```bash
 mvn test -Dgroups=boundary
-
+```
 Параллельно:
+```bash
 mvn test -Dthreads=5
+```
 
-📄 9. Как добавить новый тест
+# 📄 8. Как добавить новый тест
 
-Создать класс в src/test/java/core/tests/...
+1. Создать класс в src/test/java/core/tests/...
 
-Наследовать BaseTest
+2. Наследовать BaseTest
 
-Использовать PageObject
+3. Использовать PageObjects
 
-Добавить аннотации:
+4. Добавить Allure-метки:
 
-@Epic
+ - @Epic
 
-@Feature
+ - @Feature
 
-@Story
+ - @Story
 
-@Severity
+ - @Severity
 
-@Owner
+ - @Owner
 
-Добавить тест в нужную TestNG-группу
+5. Добавить группу TestNG
 
-Запустить локально
+6. Запустить локально
 
-🧱 10. Как добавить новую страницу (PageObject)
+# 🧱 9. Как добавить новую страницу (PageObject)
 
-Создать файл в /core/pages/...
+1. Создать файл в core/pages/...
 
-Добавить локаторы через Selenide
+2. Добавить локаторы через Selenide
 
-Реализовать методы действий
+3. Реализовать действия
 
-Реализовать проверки и ожидания
+4. Реализовать проверки и ожидания
 
-Вынести общие элементы в компоненты
+5. Вынести общие функции в компоненты
 
-Добавить шаги Allure
+6. Описать шаги Allure
 
-🧭 11. Документация по Упрощённому маршруту (Спринт 3)
+# 📚 10. Документация по маршрутам
 
-Полный документ вынесен в:
+   ✔ Упрощённый маршрут (Спринт 3)
 
-docs/simple-route.md
+Подробная документация, негативные кейсы, boundary, PageObjects:
 
+```
+👉 docs/simple-route.md
+```
+# 🚀 11. Стандартный маршрут (Краткое описание)
 
-Содержит:
+```
+Фреймворком покрыт полный цикл:
+```
+ - Создание заявки
 
-Smoke сценарий
+ - Подбор продукта
 
-Negative сценарии
+ - Этап «Оформление»
 
-Boundary сценарии
+ - Предварительная проверка
 
-Структуру PageObjects
+ - Обеспечение → Сбор документов
 
-Навигационные шаги
+ - Рассмотрение (КК4)
 
-Примеры тестов
+ - Информирование клиента
 
-Стандарты Allure
+ - Подписание
 
-Гайд по расширению покрытия
+ - Выдача кредита
 
+ - Подтверждение ордеров
+
+ - Полный документ размещён здесь:
+
+```
+👉 docs/standard-route.md
+```
+```
 🤝 Автор
 
 Davlat — QA Automation Engineer
@@ -280,3 +314,4 @@ Davlat — QA Automation Engineer
 
 Проект: Creatio Credit UI Automation
 Команда: Platform Creatio
+```
