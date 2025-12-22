@@ -9,7 +9,7 @@ public class DetailPage {
     /**
      * Надёжно открывает деталь по её заголовку.
      */
-    public DetailPage openDetailByName(String detailName) {
+    public DetailPage openDetailByName1(String detailName) {
 
         SelenideElement header =
                 $x("//span[normalize-space()='" + detailName + "']")
@@ -63,5 +63,20 @@ public class DetailPage {
 
         return this;
     }
+
+
+    //Работает 19.12.2025
+    public DetailPage openDetailByName(String detailName) {
+        if ($x("//span[.='" + detailName + "']/../..")
+                .getAttribute("class")
+                .contains("collapsed")) {
+
+            $x("//span[.='" + detailName + "']").click();
+        }
+        return this;
+    }
 }
+
+
+
 

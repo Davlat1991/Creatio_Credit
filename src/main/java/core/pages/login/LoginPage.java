@@ -78,6 +78,12 @@ public class LoginPage {
         return login(user.getLogin(), user.getPassword());
     }
 
+    public LoginPage openUrl(String baseURL){
+        open(baseURL);
+
+        return this;
+    }
+
 
 
 }

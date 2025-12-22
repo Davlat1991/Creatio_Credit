@@ -1,9 +1,9 @@
-package tests.credit.smoke;
+package flows.credit;
+
 
 
 import core.base.BaseTest;
 import core.pages.login.LoginPage;
-import core.pages.routes.SimpleRoutePage;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import steps.login.LoginSteps;
@@ -13,7 +13,9 @@ import steps.login.LoginSteps;
 @Story("Smoke: создание заявки")
 @Owner("Davlat")
 @Severity(SeverityLevel.CRITICAL)
-public class SimpleRouteSmokeTest extends BaseTest {
+
+
+public class AuthorizationAndClientSearchFlow extends BaseTest {
 
     private final LoginSteps login = new LoginSteps();
     private final LoginPage openUrl = new LoginPage();
@@ -33,17 +35,15 @@ public class SimpleRouteSmokeTest extends BaseTest {
                 .clickLogin()
                 .verifyLogin();
 
-        // 2. Переход в рабочее место и раздел
-        workspaceSteps.openWorkspaceAndSection("Розничный менеджер", "Заявки");
+        workspaceSteps
+                .selectWorkAccess("Розничный менеджер");
+        contractPage
+                .clickButtonById("view-button-OBSW-imageEl");
 
-        // 3. Создание заявки
-        dashboardPage.openCreateMenu();
 
-        // 4. Заполнение упрощённой формы
-        new SimpleRoutePage()
-                .waitOpened()
-                .fillRequiredFields("Иванов Иван", "9000000000")
-                .save()
-                .verifyStatus("Создано");
+
     }
 }
+
+
+

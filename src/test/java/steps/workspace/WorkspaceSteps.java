@@ -15,6 +15,18 @@ public class WorkspaceSteps {
     private final ButtonsComponent buttons = new ButtonsComponent();
     private final GridComponent grid = new GridComponent();
 
+    SelenideElement
+            workPlaceList = $x("//span[@id='menu-workplace-button-menuWrapEl']");
+
+    // Выбор рабочего места и раздела
+    public WorkspaceSteps selectWorkPlace(String nameWorkPlace, String sectionMenuModule){
+        workPlaceList.click();
+        $x("//ul[@data-item-marker='TopWorkplaceMenu']//li[.='" + nameWorkPlace + "']").click();
+        $x("//div[@id='sectionMenuModule']//div[contains(@class, 'ts-sidebar')]//div[.=' " + sectionMenuModule + " ']").click();
+
+        return this;
+    }
+
 
     // ---------------------------------------------------------
     // 1. Открыть рабочее место
@@ -82,6 +94,14 @@ public class WorkspaceSteps {
     public WorkspaceSteps openRecord(String text) {
 
         grid.doubleClickRowByText(text);
+
+        return this;
+    }
+
+    // Выбор рабочего места (работает 18.12.2025)
+    public WorkspaceSteps selectWorkAccess(String nameWorkAccess){
+        workPlaceList.click();
+        $x("//ul[@data-item-marker='TopWorkplaceMenu']//li[.='" + nameWorkAccess + "']").click();
 
         return this;
     }

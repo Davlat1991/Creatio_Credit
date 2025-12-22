@@ -41,20 +41,54 @@ public class ContactData {
     }
 
     // Геттеры
-    public String getFirstName() { return firstName; }
-    public String getMiddleName() { return middleName; }
-    public String getLastName() { return lastName; }
-    public String getFullName() { return firstName + " " + lastName; }
-    public LocalDate getBirthDate() { return birthDate; }
-    public String getPassportNumber() { return passportNumber; }
-    public String getPassportIssuedBy() { return passportIssuedBy; }
-    public LocalDate getPassportIssueDate() { return passportIssueDate; }
-    public String getMobilePhone() { return mobilePhone; }
-    public String getEmail() { return email; }
-    public String getAddress() { return address; }
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public String getPassportNumber() {
+        return passportNumber;
+    }
+
+    public String getPassportIssuedBy() {
+        return passportIssuedBy;
+    }
+
+    public LocalDate getPassportIssueDate() {
+        return passportIssueDate;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
 
     @Override
     public String toString() {
         return "ContactData{fullName='" + getFullName() + "'}";
     }
+
+
 }

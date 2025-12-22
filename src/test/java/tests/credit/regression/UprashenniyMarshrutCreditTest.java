@@ -4,6 +4,7 @@ import core.base.BaseTest;
 import core.base.common.components.*;
 import core.pages.credit.ConsultationPanelPage;
 import core.pages.credit.ContractCreditApplicationPage;
+import core.pages.login.LoginPage;
 import core.pages.ui.DetailPage;
 import core.data.contacts.ContactData;
 import core.data.users.Users;
@@ -16,6 +17,7 @@ import steps.workspace.WorkspaceSteps;
 
 import java.time.LocalDate;
 
+
 @Epic("Кредитование")
 @Feature("Упрощённый маршрут оформления кредита")
 @Story("Полный E2E процесс от консультации до выдачи")
@@ -23,8 +25,11 @@ import java.time.LocalDate;
 @Severity(SeverityLevel.CRITICAL)
 public class UprashenniyMarshrutCreditTest extends BaseTest {
 
+    private final LoginPage openUrl = new LoginPage();
+
     @Test(description = "Упрощённый маршрут оформления потребительского кредита")
     public void testSimplifiedCreditFlow() {
+
 
         // -------------------------------------------------------------
         // 🔵 0. ТЕСТОВЫЕ ДАННЫЕ
@@ -64,10 +69,13 @@ public class UprashenniyMarshrutCreditTest extends BaseTest {
         BorrowerSteps borrower = new BorrowerSteps();
 
 
+
         // -------------------------------------------------------------
         // 🔵 2. АВТОРИЗАЦИЯ
         // -------------------------------------------------------------
-        login.openLoginPage()
+        openUrl
+                .openUrl(BASE_ULR_1);
+        login
                 .enterUsername(Users.DAVLAT.getUsername())
                 .enterPassword(Users.DAVLAT.getPassword())
                 .clickLogin()

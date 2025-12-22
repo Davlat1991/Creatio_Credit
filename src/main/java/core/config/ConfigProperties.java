@@ -9,30 +9,20 @@ public class ConfigProperties {
     private static final Properties properties = new Properties();
 
     static {
-        loadEnvironment();
+        loadProperties();
     }
 
-    private static void loadEnvironment() {
+    private static void loadProperties() {
+        String envFile = "environment.properties";
 
-        // --------------------------
-        // 1. Определяем какой env файл грузить
-        // --------------------------
-        String env = System.getProperty("env", "local"); // default local
-        String path = "env/environment." + env + ".properties";
-
-        System.out.println("🔧 Loading environment config: " + path);
-
-        try (FileInputStream fis = new FileInputStream(path)) {
+        try (FileInputStream fis = new FileInputStream(envFile)) {
             properties.load(fis);
-            System.out.println("✅ Environment loaded successfully: " + env);
+            System.out.println("🔧 Loaded config from: " + envFile);
         } catch (IOException e) {
-            throw new RuntimeException("❌ Failed to load: " + path, e);
+            System.err.println("⚠ environment.properties NOT FOUND. Only system properties will be used.");
         }
     }
 
-    // --------------------------
-    // GET STRING
-    // --------------------------
     public static String get(String key) {
         return System.getProperty(key, properties.getProperty(key));
     }
@@ -41,9 +31,6 @@ public class ConfigProperties {
         return System.getProperty(key, properties.getProperty(key, defaultValue));
     }
 
-    // --------------------------
-    // GET BOOLEAN
-    // --------------------------
     public static boolean getBoolean(String key) {
         return Boolean.parseBoolean(get(key, "false"));
     }
@@ -52,24 +39,22 @@ public class ConfigProperties {
         return Boolean.parseBoolean(get(key, String.valueOf(defaultValue)));
     }
 
-    // --------------------------
-    // GET INT
-    // --------------------------
     public static int getInt(String key) {
         return Integer.parseInt(get(key));
     }
 
     public static int getInt(String key, int defaultValue) {
+        String value = get(key);
+        if (value == null) return defaultValue;
+
         try {
-            return Integer.parseInt(get(key, String.valueOf(defaultValue)));
-        } catch (Exception e) {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            System.err.println("⚠ Invalid integer for key: " + key + " → using default: " + defaultValue);
             return defaultValue;
         }
     }
 
-    // --------------------------
-    // REQUIRED PROPERTY
-    // --------------------------
     public static String require(String key) {
         String value = get(key);
         if (value == null) {

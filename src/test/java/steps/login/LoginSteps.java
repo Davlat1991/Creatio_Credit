@@ -18,7 +18,7 @@ public class LoginSteps {
     // ---------------------------------------------------------
 
     @Step("Открыть страницу логина: {url}")
-    public LoginSteps openLoginPage() {
+    public LoginSteps openLoginPage(String baseURL) {
         page.openLoginPage();
         return this;
     }

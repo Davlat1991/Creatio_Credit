@@ -6,11 +6,13 @@ import com.codeborne.selenide.SelenideElement;
 import core.base.common.components.Components;
 import io.qameta.allure.Step;
 import core.pages.ui.DetailPage;
+import core.base.BasePage;
 
 import static com.codeborne.selenide.Selenide.$x;
 
 public class ConsultationPanelPage extends Components {
 
+    public BasePage basePage = new BasePage();
     private final DetailPage detailPage = new DetailPage();
 
     /**
@@ -82,7 +84,7 @@ public class ConsultationPanelPage extends Components {
      * Старый DIM-метод (твой оригинальный)
      */
     @Step("Выбрать продукт по data-item-marker (DIM): {dim}")
-    public ConsultationPanelPage registerProductByDIM(String dim) {
+    public ConsultationPanelPage registerProductByDIM1(String dim) {
 
         detailPage.openDetailByName("Оформить заявку");
 
@@ -92,6 +94,20 @@ public class ConsultationPanelPage extends Components {
 
         return this;
     }
+
+
+    public ConsultationPanelPage registerProductByDIM(String name) {
+
+        detailPage
+                .openDetailByName("Оформить заявку");
+
+        basePage
+                .clickElementByTagAndDIM("label", name);
+
+        return this;
+    }
+
+
 }
 
 
