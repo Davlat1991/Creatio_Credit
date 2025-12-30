@@ -2,11 +2,16 @@ package core.base.common.utils;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
 import java.util.concurrent.Callable;
+
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class FieldUtils {
+
+    private String savedValue;
 
     private static final int DEFAULT_RETRY = 5;
 
@@ -174,6 +179,61 @@ public class FieldUtils {
             throw new RuntimeException("Не удалось получить значение поля '" + label + "'");
 
         }, 5);
+    }
+
+
+
+    //Работает!!!
+    // Метод №1 — сохранить значение из поля + проверить, что оно действительно сохранено (с RETRY до 5 раз)
+    public FieldUtils saveValueDIMCheckWork(String sourceMarker) {
+
+        String value = null;
+        int attempts = 0;
+
+        while (attempts < 3) {
+            attempts++;
+
+            try {
+                // Находим элемент в каждой попытке (DOM может обновляться)
+                SelenideElement source = $x("//*[@data-item-marker='" + sourceMarker + "']")
+                        .shouldBe(visible);
+
+                String tag = source.getTagName();
+
+                // Если это input/textarea → берем value
+                if ("input".equals(tag) || "textarea".equals(tag)) {
+                    value = source.getValue();
+                } else {
+                    // Если это lookup/div/span → берем текст
+                    value = source.getText();
+                }
+
+                // Проверка №1 — значение не должно быть пустым
+                if (value == null || value.isEmpty()) {
+                    System.out.println("⚠ Попытка " + attempts + ": значение пустое, пробуем снова...");
+                    continue;
+                }
+
+                // Сохраняем
+                this.savedValue = value;
+
+                // Проверка №2 — корректно ли сохранилось
+                if (!value.equals(this.savedValue)) {
+                    System.out.println("⚠ Попытка " + attempts + ": не удалось сохранить значение, повтор...");
+                    continue;
+                }
+
+                // Успешно — выходим
+                System.out.println("✅ Значение успешно сохранено за " + attempts + " попыток: [" + value + "]");
+                return this;
+
+            } catch (Throwable e) {
+                System.out.println("⚠ Ошибка на попытке " + attempts + ": " + e.getMessage());
+            }
+        }
+
+        // Если сюда дошли — все 3 попыток провалены
+        throw new AssertionError("❌ Не удалось сохранить значение (marker: " + sourceMarker + ") после 3 попыток!");
     }
 
 

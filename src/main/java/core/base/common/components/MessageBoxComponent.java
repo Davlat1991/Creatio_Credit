@@ -3,8 +3,13 @@ package core.base.common.components;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 
 /**
@@ -90,5 +95,67 @@ public class MessageBoxComponent extends Components {
         waitClose();
         return this;
     }
+
+
+    //Миграция
+
+    public MessageBoxComponent shouldSeeModalWithText(String expectedText) {
+        $x("//div[contains(@class,'modal') or contains(@class,'dialog') or contains(@class,'message')]"
+                + "[contains(., '" + expectedText + "')]")
+                .shouldBe(visible, Duration.ofSeconds(50));
+
+        return this;
+    }
+
+
+    //Работает //06.12.2025
+    @Step("Проверить открытие модального окна: {title}")
+    public MessageBoxComponent shouldBeModalOpened(String title) {
+
+        // Ищем главный контейнер модалки (id оканчивается на -box)
+        SelenideElement modal = $x(
+                "//*[substring(@id, string-length(@id)-3)='-box']"
+        ).shouldBe(visible, Duration.ofSeconds(10));
+
+        // Проверяем заголовок
+        modal.$x(".//label[contains(@id,'HeaderCaptionLabel')]")
+                .shouldBe(visible)
+                .shouldHave(Condition.exactText(title));
+
+        // Проверяем кнопку Подтвердить
+        modal.$x(".//span[@data-item-marker='ConfirmButton']")
+                .shouldBe(visible)
+                .shouldBe(enabled);
+
+        // Проверяем кнопку Отмена
+        modal.$x(".//span[@data-item-marker='CancelButton']")
+                .shouldBe(visible)
+                .shouldBe(enabled);
+
+        return this;
+    }
+
+
+    //РЕКОМЕНДУЕМОЕ ИСПРАВЛЕНИЕ
+    //Разделить на 2 метода:
+    // public void clickMenuItem(String name) { ... }
+    // public void shouldBeOpened(String title) { ... }
+    //В PageObject:
+    //messages.clickMenuItem("Выдача кредита");
+    //messages.shouldBeOpened("Выдача кредита");
+
+    public MessageBoxComponent clickAndCheckModal(String liName) {
+
+        SelenideElement liElement = $x("//li[contains(text(), '" + liName + "')]")
+                .shouldBe(visible)
+                .shouldBe(enabled);
+
+        liElement.click();
+
+        return this;
+    }
+
+
+
 }
 

@@ -1,18 +1,28 @@
 package core.base.common.components;
 
 import com.codeborne.selenide.*;
+import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.*;
+
 
 /**
  * Универсальный компонент справочника Creatio (Lookup).
  * Работает стабильно с динамическим DOM, hidden listview, JS-перекрытиями.
  */
 public class LookupComponent extends Components {
+
+    public static final Logger log =
+            LoggerFactory.getLogger(LookupComponent.class);
+    private String savedValue;
+
 
     /**
      * Возвращает контейнер поля по его label.
@@ -170,6 +180,154 @@ public class LookupComponent extends Components {
         $x("//div[contains(@class,'listview')]//li[normalize-space()='" + value + "']")
                 .shouldBe(Condition.visible)
                 .click();
+
+        return this;
+    }
+
+
+    @Step("Выбрать значение '{value}' в выпадающем поле '{marker}'")
+    public LookupComponent selectDropdownValueWithCheck(String marker, String value) {
+
+        SelenideElement input = $x("//*[@data-item-marker='" + marker + "']//input");
+
+        for (int attempt = 1; attempt <= 5; attempt++) {
+            try {
+                log.warn(
+                        "Попытка №%s: выбор значения '%s' в поле '%s'",
+                        attempt, value, marker
+                );
+
+                // 1️⃣ Кликаем по полю
+                input.scrollIntoView(true)
+                        .shouldBe(visible, enabled)
+                        .click();
+
+                // 2️⃣ ЖДЁМ появления списка
+                SelenideElement dropdownContainer =
+                        $x("//div[contains(@class,'listview-scroll')]")
+                                .shouldBe(visible);
+
+                // 3️⃣ ИЩЕМ ПУНКТ ПО ТЕКСТУ ИЛИ MARKER
+                SelenideElement option = dropdownContainer
+                        .$x(".//li[normalize-space(.)='" + value + "' or @data-item-marker='" + value + "']")
+                        .shouldBe(visible);
+
+                // 4️⃣ КЛИК ПО ЗНАЧЕНИЮ
+                option.scrollIntoView(true).click();
+
+                // 5️⃣ ПРОВЕРКА, ЧТО ЗНАЧЕНИЕ УСТАНОВИЛОСЬ
+                input.shouldHave(Condition.value(value));
+
+                log.info(String.format(
+                        "Значение '%s' успешно выбрано в поле '%s'",
+                        value, marker
+                ));
+
+                return this;
+
+            } catch (Exception e) {
+
+                log.warn("Ошибка на попытке " + attempt + ": " + e.getMessage());
+
+                if (attempt == 5) {
+                    throw new AssertionError(
+                            "Не удалось выбрать значение '" + value +
+                                    "' в поле '" + marker + "' за 5 попыток", e);
+                }
+            }
+        }
+
+        return this;
+    }
+
+
+    public LookupComponent clickSearchIconID(String lookupID) {
+
+        // 1: Находим wrapper (куда нужно наводить мышку, чтобы лупа показалась)
+        SelenideElement wrap = $x("//div[@id='" + lookupID + "-wrap']")
+                .shouldBe(visible);
+
+        wrap.hover(); // Обязательно!
+
+        // 2: Находим правую иконку — ЭТО ЛУПА
+        SelenideElement searchIcon = $x("//div[@id='" + lookupID + "-right-icon']")
+                .shouldBe(visible)
+                .shouldBe(enabled);
+
+        // 3: Делаем JS-клик, потому что обычный click() может не работать
+        executeJavaScript("arguments[0].click();", searchIcon);
+
+        return this;
+    }
+
+
+    //Работает !!! Всталвяет сохраненное значение Сберегательного счёта
+    public LookupComponent selectValueInLookupWork(String marker) {
+
+        if (this.savedValue == null) {
+            throw new IllegalStateException("❌ Нет сохранённого значения для вставки!");
+        }
+
+        // 1) Ищем wrapper lookup по data-item-marker
+        SelenideElement wrapper = $x("//*[@data-item-marker='" + marker + "']")
+                .shouldBe(visible)
+                .shouldBe(enabled);
+
+        // 2) Ищем input внутри wrapper
+        SelenideElement input = wrapper.$("input")
+                .shouldBe(visible)
+                .shouldBe(enabled);
+
+        // 3) Вставляем значение
+        input.click();
+        input.setValue(this.savedValue);
+
+        // 4) Проверяем, что значение реально вставлено
+        input.shouldHave(value(this.savedValue));
+
+        // 5) RETRY ПОИСКА результата (до 10 попыток)
+        SelenideElement itemRow = null;
+
+        for (int i = 0; i < 10; i++) {
+            try {
+                // Нажимаем кнопку "Поиск"
+                $x("//*[@data-tag='SearchButton']")
+                        .shouldBe(visible)
+                        .shouldBe(enabled)
+                        .click();
+
+                // Ищем строку результата по data-item-marker (это самый точный локатор!)
+                itemRow = $x("//div[contains(@class,'grid-listed-row') and @data-item-marker='"
+                        + this.savedValue + "']")
+                        .shouldBe(visible, Duration.ofSeconds(1));
+
+                break; // найдено → выходим
+
+            } catch (Throwable ignored) {
+                System.out.println("⏳ Ждём, пока появится счёт или номер..." + (i+1) + "/10");
+                Selenide.sleep(1000);
+            }
+        }
+
+        // Если после 10 попыток строка так и не появилась
+        if (itemRow == null) {
+            throw new AssertionError("❌ Счёт '" + this.savedValue + "' не найден в lookup после 10 попыток!");
+        }
+
+        // 6) Клик по найденной строке
+        itemRow.click();
+
+        // 7) Проверяем, что строка выделена
+        // ВЫДЕЛЕННАЯ строка имеет класс grid-row-selected — мы нашли это по твоему DOM!
+        itemRow.shouldHave(cssClass("grid-row-selected"));
+
+        // 8) Нажимаем кнопку "Выбрать"
+        $x("//*[@data-tag='SelectButton']")
+                .shouldBe(visible)
+                .shouldBe(enabled)
+                .click();
+
+        System.out.println("✅ Значение успешно выбрано в lookup: " + this.savedValue);
 
         return this;
     }

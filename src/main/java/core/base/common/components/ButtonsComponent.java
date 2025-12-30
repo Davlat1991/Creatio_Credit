@@ -1,7 +1,9 @@
 package core.base.common.components;
 
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
 
 import java.time.Duration;
@@ -145,6 +147,59 @@ public class ButtonsComponent extends Components {
         el.doubleClick();
         return this;
     }
+
+        //Миграция методов
+
+    public ButtonsComponent clickButtonByName(String name) {
+        $x("//span[normalize-space()='" + name + "']")
+                .shouldBe(visible, enabled)
+                .scrollIntoView(true)
+                .click();
+        return this;
+    }
+
+    public ButtonsComponent clickButtonByNameCheck(String nameButton) {
+
+        SelenideElement button = $x("//span[.='" + nameButton + "']")
+                .shouldBe(visible)
+                .shouldBe(enabled);
+
+        button.click();
+
+        return this;
+    }
+
+    public ButtonsComponent clickButtonByContainName(String NameNew) {
+        $x("//span[contains(text(), '" + NameNew + "')]").click();
+        return this;
+    }
+
+    public ButtonsComponent doubleclickButtonByName(String nameButton){
+        $x("//span[.='" + nameButton + "']").doubleClick();
+
+        return this;
+    }
+
+    public ButtonsComponent clickButtonByContainNameCheck(String Value) {
+        SelenideElement element = $x("//span[contains(text(), '" + Value + "')]")
+                .shouldBe(Condition.visible)
+                .shouldBe(Condition.enabled)
+                .shouldHave(Condition.text(Value));
+
+        element.hover();                    // помогает "активировать" элемент
+        element.shouldBe(Condition.interactable); // теперь interactable безопасен
+
+        element.click();
+
+        return this;
+    }
+
+    /** Клик кнопки по частичному совпадение имени и индекс */
+    public ButtonsComponent clickButtonByNameContains(String nameButton, int index){
+        $x("(//span[contains(.,'" + nameButton + " (')])[" + index + "]").click(); //span[contains(.,'Файлы (')][1]
+        return this;
+    }
+
 
 
 }

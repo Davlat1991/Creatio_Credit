@@ -2,11 +2,14 @@ package core.base.common.components;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
 
 import java.io.File;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 /**
  * Компонент для стабильной загрузки файлов в Creatio.
@@ -89,5 +92,38 @@ public class FileUploadComponent extends Components {
 
         return this;
     }
+
+    //imigration
+
+    public FileUploadComponent startUpload(){
+        executeJavaScript(
+                "const originalOpen = XMLHttpRequest.prototype.open;" +
+                        "XMLHttpRequest.prototype.open = function(method, url) {" +
+                        "  if (url.includes('FileApiService')) {" +
+                        "    console.log('Подмена URL на TsiFileApiService');" +
+                        "    url = url.replace(/(?:Tsi)*FileApiService/, 'TsiFileApiService');" +
+                        "  }" +
+                        "  return originalOpen.apply(this, arguments);" +
+                        "};"
+        );
+        return this;
+    }
+
+
+    /** Загрузка файла по названию и индексу поля */
+    public FileUploadComponent uploadFile(String nameFile, int index) {
+        $x("//input[@data-item-marker='AddRecordButton'][" + index + "]").uploadFile(
+                new File("src/main/resources/resourcesFiles/" + nameFile));
+
+        return this;
+    }
+
+    public FileUploadComponent validateUploadFile(String nameFile) {
+        $x("//div[@data-item-marker='" + nameFile + "']")
+                .shouldBe(visible);
+        return this;
+    }
+
+
 }
 

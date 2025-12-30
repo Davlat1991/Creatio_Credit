@@ -24,7 +24,7 @@ public class AllureTestListener implements ITestListener {
     }
 
     @Attachment(value = "Screenshot", type = "image/png")
-    public byte[] saveScreenshot() {
+    public static byte[] saveScreenshot() {
         try {
             return ((TakesScreenshot) WebDriverRunner.getWebDriver())
                     .getScreenshotAs(OutputType.BYTES);
@@ -34,7 +34,7 @@ public class AllureTestListener implements ITestListener {
     }
 
     @Attachment(value = "Page Source", type = "text/html")
-    public byte[] savePageSource() {
+    public static byte[] savePageSource() {
         try {
             return WebDriverRunner.source().getBytes(StandardCharsets.UTF_8);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class AllureTestListener implements ITestListener {
     }
 
     @Attachment(value = "Browser Console Logs", type = "text/plain")
-    public String saveBrowserLogs() {
+    public static String saveBrowserLogs() {
         try {
             return String.join("\n", getWebDriverLogs("browser"));
         } catch (Exception e) {
@@ -52,12 +52,12 @@ public class AllureTestListener implements ITestListener {
     }
 
     @Attachment(value = "Test Failure Reason", type = "text/plain")
-    public String saveErrorMessage(Throwable throwable) {
+    public static String saveErrorMessage(Throwable throwable) {
         return throwable == null ? "No error message" : throwable.getMessage();
     }
 
     @Attachment(value = "Stacktrace", type = "text/plain")
-    public String saveStackTrace(Throwable throwable) {
+    public static String saveStackTrace(Throwable throwable) {
         if (throwable == null) return "No stacktrace";
         StringBuilder sb = new StringBuilder();
         for (StackTraceElement element : throwable.getStackTrace()) {

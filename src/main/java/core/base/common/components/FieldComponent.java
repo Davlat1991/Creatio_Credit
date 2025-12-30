@@ -5,6 +5,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ElementsCollection;
+import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
@@ -444,6 +445,92 @@ public class FieldComponent extends Components {
 
         // 8️⃣ 🔥 ВОЗВРАЩАЕМ СТРАНИЦУ ВВЕРХ, чтобы последующие кнопки были кликабельны
         executeJavaScript("window.scrollTo(0, 0);");
+
+        return this;
+    }
+
+
+
+
+    //Imigration
+
+
+    public FieldComponent clickDivbyId(String nameField , String value) {
+        $x("//div[@id='" + nameField + "']/input").setValue(value).click();
+        return this;
+    }
+
+
+    //Работает 06.12.2025
+    @Step("Ввести и выбрать значение '{value}' в поле по DIM '{name}'")
+    public FieldComponent setFieldScheduleDetailByDIMCheck(String name, String value) {
+
+        // 1️⃣ Находим input
+        SelenideElement input = $x("//div[@data-item-marker='" + name + "']/input")
+                .shouldBe(visible, enabled)
+                .scrollIntoView(true);
+
+        // 2️⃣ Вводим текст
+        input.click();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        input.sendKeys(Keys.BACK_SPACE);
+        input.sendKeys(value);
+
+        // 3️⃣ Ждём появления видимого listview
+        SelenideElement listView = $$x("//div[contains(@class,'listview')]")
+                .findBy(visible)
+                .shouldBe(visible);
+
+        // 4️⃣ Ищем LI по data-item-marker или тексту
+        SelenideElement item = listView.$x(".//li[@data-item-marker='" + value + "' or normalize-space(.)='" + value + "']")
+                .shouldBe(visible, enabled);
+
+        // 5️⃣ Делаем стабильный JS-клик (для Creatio критично)
+        Selenide.executeJavaScript("arguments[0].click();", item);
+
+        // 6️⃣ Ждём, что список закроется = выбор зафиксирован
+        listView.should(disappear);
+
+        // 7️⃣ Проверяем, что поле теперь имеет выбранное значение
+        input.shouldHave(Condition.exactValue(value));
+
+        return this;
+    }
+
+
+
+    //Работает 06.12.2025
+    @Step("Ввести и выбрать значение '{value}' в поле по DIM '{name}'")
+    public FieldComponent setFieldScheduleDetailByDIMNewCheck(String name, String value) {
+
+        // 1️⃣ Находим input
+        SelenideElement input = $x("//div[@data-item-marker='" + name + "']/input")
+                .shouldBe(visible, enabled)
+                .scrollIntoView(true);
+
+        // 2️⃣ Вводим текст
+        input.click();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        input.sendKeys(Keys.BACK_SPACE);
+        input.sendKeys(value);
+
+        // 3️⃣ Ждём появления видимого listview
+        SelenideElement listView = $$x("//div[contains(@class,'listview')]")
+                .findBy(visible)
+                .shouldBe(visible);
+
+        // 4️⃣ Ищем LI по data-item-marker или тексту
+        SelenideElement item = listView.$x(".//li[@data-item-marker='" + value + "' or normalize-space(.)='" + value + "']")
+                .shouldBe(visible, enabled);
+
+        // 5️⃣ Делаем стабильный JS-клик (для Creatio критично)
+        Selenide.executeJavaScript("arguments[0].click();", item);
+
+        // 6️⃣ Ждём, что список закроется = выбор зафиксирован
+        listView.should(disappear);
+
+        // 7️⃣ Проверяем, что поле теперь имеет выбранное значение
+        input.shouldHave(Condition.exactValue(value));
 
         return this;
     }

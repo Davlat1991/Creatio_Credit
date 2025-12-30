@@ -3,16 +3,24 @@ package core.base.common.components;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
+
 
 /**
  * Универсальный компонент для работы с чекбоксами Creatio.
  * Надежно ставит/снимает галку, даже если DOM динамический.
  */
 public class CheckboxComponent extends Components {
+
+    public static final Logger log =
+            LoggerFactory.getLogger(CheckboxComponent.class);
 
     /**
      * Находит чекбокс по label.
@@ -126,6 +134,39 @@ public class CheckboxComponent extends Components {
         if (cb.$("input").isSelected()) {
             retryClick(cb, "Unset checkbox " + marker);
         }
+        return this;
+    }
+
+    public CheckboxComponent CheckBoxValue(String value) {
+        $x("//input[@id='" + value + "']").click();
+        return this;
+
+    }
+
+
+    @Step("Поставить чекбокс '{marker}', если он не установлен")
+    public CheckboxComponent ensureCheckboxChecked(String marker) {
+
+        SelenideElement checkboxWrap = $x(
+                "//*[@data-item-marker='" + marker + "'][contains(@class,'t-checkboxedit-wrap')]"
+        ).shouldBe(visible);
+
+        boolean isChecked = checkboxWrap.has(cssClass("t-checkboxedit-checked"));
+
+        // ✅ Если уже установлен — просто выходим
+        if (isChecked) {
+            log.info("Чекбокс '{}' уже установлен. Пропускаем клик.", marker);
+            return this;
+        }
+
+        // ✅ Ставим галочку
+        checkboxWrap.scrollIntoView(true).click();
+
+        // ✅ Жёсткая проверка после клика
+        checkboxWrap.shouldHave(cssClass("t-checkboxedit-checked"));
+
+        log.info("Чекбокс '{}' успешно установлен.", marker);
+
         return this;
     }
 

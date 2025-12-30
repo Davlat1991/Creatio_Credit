@@ -2,8 +2,13 @@ package tests.routes;
 
 
 import com.codeborne.selenide.Selenide;
+import core.assertions.FieldAssertions;
 import core.base.BaseTest;
+import core.base.common.HeaderPage;
+import core.base.common.components.*;
+import core.base.common.utils.FieldUtils;
 import core.data.contacts.ContactData;
+import core.pages.contacts.ContactAddressPage;
 import core.pages.login.LoginPage;
 import org.testng.annotations.Test;
 import steps.credit.CreditApplicationAssertions;
@@ -22,6 +27,26 @@ public class SimpleRouteTest extends BaseTest {
     private final LoginPage openUrl = new LoginPage();
     CreditApplicationAssertions creditAssert =
             new CreditApplicationAssertions(contractPage);
+    MessageBoxComponent messageBoxComponent = new MessageBoxComponent();
+    ButtonsComponent buttonsComponent = new ButtonsComponent();
+    MenuComponent menuComponent = new MenuComponent();
+    GridComponent gridComponent = new GridComponent();
+    LookupComponent lookupComponent = new LookupComponent();
+    ContactAddressPage contactAddressPage = new ContactAddressPage();
+    CheckboxComponent checkboxComponent = new CheckboxComponent();
+    FieldComponent fieldComponent = new FieldComponent();
+    DetailComponent detailComponent = new DetailComponent();
+    DashboardComponent dashboardComponent = new DashboardComponent();
+    FileUploadComponent fileUploadComponent = new FileUploadComponent();
+    FiltersComponent filtersComponent = new FiltersComponent();
+    FieldUtils fieldUtils = new FieldUtils();
+    FieldAssertions fieldAssertions = new FieldAssertions();
+    PrintComponent printComponent = new PrintComponent();
+    HeaderPage headerPage = new HeaderPage();
+
+
+
+
 
 
     @Test
@@ -66,11 +91,13 @@ public class SimpleRouteTest extends BaseTest {
         fieldPage
                 .setHandBookFieldByValueCheck ("Вид продукта", "Карзхои гуногунмаксад")
                 .setHandBookFieldByValueCheck("Цель кредитования", "Барои эхтиёчоти оилави")
-                .setFieldByValueCheck("Сумма", "50000")
+                .setFieldByValueCheck("Сумма", "25000")
                 .setFieldByValueCheck("Срок, мес.", "36")
                 .setHandBookFieldByValueCheck("Валюта", "Сомони Чумхурии Точикистон");
         contractPage
-                .clickButtonByNameCheck("Подобрать")
+                .clickButtonByNameCheck("Подобрать");
+        contractPage
+
                 .clickFirstRowInGridAndWaitButton("grid-TsiOpportunityConditionSelectionDetailDataGridGrid-wrap","Выбрать");
         basePage.
                 clickButtonByDataItemMakerCheck("Выбрать");
@@ -87,60 +114,68 @@ public class SimpleRouteTest extends BaseTest {
                 .clickButtonByDataItemMaker("save")
                 .clickButtonByNameCheck("Рассчитать")
                 .clickButtonByNameCheck("Создать заявку");
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("Нет задолженности!"); // Проверка текста модального окна
         basePage
                 .clickButtonByDataItemMaker("ОК");
         fieldPage
                 .setHandBookFieldByValueCheck("Регион использования кредита", "ш. Хучанд")
                 .setHandBookFieldByValueCheck("Источник информации", "Интернет/Сайт");
-        contractPage
+        buttonsComponent
                 .clickButtonByContainName("Участники заявки");
               //.doubleclickButtonByName("Заемщик"); //Метод для продолжения заявки
 
        //Добавление "Заёмщика"
         basePage
                 .clickButtonById("BnzVwFinApplicationAllParticipantDetailAddTypedRecordButtonButton-imageEl"); // Нажать на кнопку "+"
-        contractPage
+        menuComponent
                 .clickButtonByLiName("Заемщик");
 
         // Заполнение чекбокса в анкете заёмщика "Согласие на обработку БКИ"
 
         fieldPage
                 .setHandBookFieldByValueCheck("Страна рождения", "Точикистон")
-                .setFieldByValueCheck("Дата выдачи", "01.01.2020")
-                .getNonEmptyValue("Дата выдачи");
+                .setFieldByValueCheck("Дата выдачи", "01.01.2020");
+                //.getNonEmptyValue("Дата выдачи");
         fieldPage
-                .setFieldByValueCheck("Действителен до", "01.01.2030")
-                .getNonEmptyValue("Действителен до");
-        contractPage
-                .DoubleclickByDIM("Шиносномаи ЧТ")
+                .setFieldByValueCheck("Действителен до", "01.01.2030");
+        // .getNonEmptyValue("Действителен до");
+        gridComponent
+                .DoubleclickByDIM("Шиносномаи ЧТ");
+        basePage
                 .checkCurrentPage("RegDocumentPageV2Container"); //Проверка текущей страницы
         fieldPage
-                .setFieldByValueCheck("Дата выдачи", "01.01.2020")
-                .getNonEmptyValue("Дата выдачи");
+                .setFieldByValueCheck("Дата выдачи", "01.01.2020");
+               // .getNonEmptyValue("Дата выдачи");
         fieldPage
-                .setFieldByValueCheck("Действует до", "01.01.2030")
-                .getNonEmptyValue("Действует до");
+                .setFieldByValueCheck("Действует до", "01.01.2030");
+                //.getNonEmptyValue("Действует до");
         contractPage
-                .clickButtonByNameCheck("Сохранить")
-                .checkCurrentPage("EntityLoaded")
-                .selectDropdownValueWithCheckNew("BnzAffiliation","Мобильный")
-                .doubleclickButtonByName("Регистрация") //Деталь адреса - строка типа адреса "Регистрация"
-                .checkCurrentPage("ContactAddressPageV2Container") //Проверка текущей страницы
+                .clickButtonByNameCheck("Сохранить");
+        basePage
+                .checkCurrentPage("EntityLoaded");
+        lookupComponent
+                .selectDropdownValueWithCheck("BnzAffiliation","Мобильный");
+        buttonsComponent
+                .doubleclickButtonByName("Регистрация"); //Деталь адреса - строка типа адреса "Регистрация"
+        basePage
+                .checkCurrentPage("ContactAddressPageV2Container"); //Проверка текущей страницы
+        contactAddressPage
                 .waitForAddressPageLoaded();
         fieldPage
-                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020")
-                .getNonEmptyValue("Дата регистрации");
+                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
+                //.getNonEmptyValue("Дата регистрации");
         contractPage
                 .clickButtonByNameCheck("Сохранить");
         basePage
                 .waitForPage();
         fieldPage
                 .setHandBookFieldByValueCheck("Тип клиента", "Нав");
-        contractPage
-                .doubleclickButtonByName("Фактический") //Деталь адреса - строка типа адреса "Фактический"
-                .checkCurrentPage("ContactAddressPageV2Container") //Проверка текущей страницы
+        buttonsComponent
+                .doubleclickButtonByName("Фактический"); //Деталь адреса - строка типа адреса "Фактический"
+        basePage
+                .checkCurrentPage("ContactAddressPageV2Container"); //Проверка текущей страницы
+        contactAddressPage
                 .waitForAddressPageLoaded();
         fieldPage
                 .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020")
@@ -149,7 +184,7 @@ public class SimpleRouteTest extends BaseTest {
                 .clickButtonByNameCheck("Сохранить");
         fieldPage
                 .setHandBookFieldByValueCheck("Уровень риска","Низкий");
-        contractPage
+        buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
         fieldPage
                 .setHandBookFieldByValueCheck("Клиент предоставил подтверждение дохода","Да")
@@ -157,18 +192,26 @@ public class SimpleRouteTest extends BaseTest {
         basePage
                 .clickButtonById("BnzAppIncomesDetailAddRecordButtonButton-imageEl"); //Нажать на кнопку "+" в детали "Доходы"
         contractPage
-                .setfieldScheduleDetailByDIM("TsiKind","Зарплата по основному месту работы")
-                .clickButtonByLiName("Зарплата по основному месту работы")
-                .setfieldScheduleDetailByDIM("TsiFrequencyType","Ежемесячно")
-                .clickButtonByLiName("Ежемесячно")
+                .setfieldScheduleDetailByDIM("TsiKind","Зарплата по основному месту работы");
+        menuComponent
+                .clickButtonByLiName("Зарплата по основному месту работы");
+        contractPage
+                .setfieldScheduleDetailByDIM("TsiFrequencyType","Ежемесячно");
+        menuComponent
+                .clickButtonByLiName("Ежемесячно");
+        contractPage
                 .setfieldScheduleDetailByDIM("TsiAmountBC","11000");
         basePage
                 .clickButtonById("BnzAppExpensesDetailAddRecordButtonButton-imageEl"); // Нажать на кнопку "+" в детали "Расходы"
-        contractPage
-                .CheckBoxValue("BnzAppExpensesDetailTsiKindComboBoxEdit-el")
-                .clickButtonByLiName("Коммунальные платежи")
-                .CheckBoxValue("BnzAppExpensesDetailTsiFrequencyTypeComboBoxEdit-el")
-                .clickButtonByLiName("Единоразово")
+        checkboxComponent
+                .CheckBoxValue("BnzAppExpensesDetailTsiKindComboBoxEdit-el");
+        menuComponent
+                .clickButtonByLiName("Коммунальные платежи");
+        checkboxComponent
+                .CheckBoxValue("BnzAppExpensesDetailTsiFrequencyTypeComboBoxEdit-el");
+        menuComponent
+                .clickButtonByLiName("Единоразово");
+        fieldComponent
                 .clickDivbyId("BnzAppExpensesDetailTsiAmountBCFloatEdit-wrap","600");
         fieldPage
                 .setHandBookFieldByValueCheck("Семейное положение","Мучаррад (мард)")
@@ -178,31 +221,37 @@ public class SimpleRouteTest extends BaseTest {
                 .setHandBookFieldByValueCheck("Причина отсутствия работы","Получатель Д/П");
         basePage
                 .scrollToTop();
-        contractPage
+        buttonsComponent
                 .clickButtonByContainNameCheck("ОЦЕНКА ИНФОРМАЦИИ");
         fieldPage
                 .setHandBookFieldByValueCheck("Тип собственности на недвижимость","Более 2-ух квартир")
                 .setHandBookFieldByValueCheck("Тип владения автомобилем","Есть автомобиль");
-        contractPage
+        checkboxComponent
                 .ensureCheckboxChecked("IsConsentBKIProcessing")
                 .clickButtonByNameCheck("Сохранить")
-                .clickButtonByNameCheck("Закрыть")
+                .clickButtonByNameCheck("Закрыть");
+        buttonsComponent
                 .clickButtonByContainName("Участники заявки")
-                .clickButtonByNameCheck("Заемщик")
-                .openDetailMenu("Участники заявки") // кнопка "Действия" (Троеточие)
-                .clickButtonByLiName("Печать Анкеты-заявки")
+                .clickButtonByNameCheck("Заемщик");
+        detailComponent
+                .openDetailMenu("Участники заявки"); // кнопка "Действия" (Троеточие)
+        menuComponent
+                .clickButtonByLiName("Печать Анкеты-заявки");
+        dashboardComponent
                 .clickElementDashboardCheck("Добавьте и заполните анкеты участников заявки","Execute",
-                        "//*[@data-item-marker='MiniPage']") //Нажать на кнопку "Завершить"
+                        "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
 
-                .setfieldScheduleDetailByDIM("Result","Выполнена")
+        contractPage
+                .setfieldScheduleDetailByDIM("Result","Выполнена");
+        menuComponent
                 .clickButtonByLiName("Выполнена");
         basePage
                 .clickButtonByDataItemMakerCheck("SaveEditButton"); //Кнопка "Сохранить"
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("Нет задолженности!"); // Проверка текста модального окна
         basePage
                 .clickButtonByDataItemMaker("ОК");
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("У клиента нет просроченных дней"); // Проверка текста модального окна
         basePage
                 .clickButtonByDataItemMaker("ОК");
@@ -210,14 +259,16 @@ public class SimpleRouteTest extends BaseTest {
         //2.Стадия "Предварительная проверка" Процесс заполнения заявки кредита Физ.Лица
         //Тест-кейс №2
 
-        contractPage.
+        dashboardComponent.
                 clickElementDashboardWait("Проверка клиента","Approve"); //Кнопка "Утвердить"
         basePage
                 .clickButtonByDataItemMaker("SaveEditButton"); //Кнопка "Выполнить"
-        contractPage
+        dashboardComponent
                 .clickElementDashboardCheck("Заполните данные обеспечения и поручительства","Execute",
-                        "//*[@data-item-marker='MiniPage']") //Нажать на кнопку "Завершить"
-                .setfieldScheduleDetailByDIM("ProcessResult","Выполнена")
+                        "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
+        contractPage
+                .setfieldScheduleDetailByDIM("ProcessResult","Выполнена");
+        menuComponent
                 .clickButtonByLiName("Выполнена");
         basePage
                 .clickButtonByDataItemMaker("SaveEditButton"); //Нажать на кнопку "Сохранить"
@@ -225,38 +276,43 @@ public class SimpleRouteTest extends BaseTest {
         //4.Стадия "Сбор документов" Процесс заполнения заявки кредита Физ.Лица
         //Тест-кейс №3 - Загрузка документов заёмщика
 
-        contractPage
+        buttonsComponent
                 .clickButtonByContainName("Документы"); //Переход на вкладку "Документы"
         detailPage
                 .openDetailByName("Финансовое досье");
 
-        contractPage
+        fileUploadComponent
                 .startUpload()
                 .uploadFile("Registration (Example).xlsx",1);
-        contractPage
-                .clickButtonByNameContains("Файлы", 1)
+        buttonsComponent
+                .clickButtonByNameContains("Файлы", 1);
+        fileUploadComponent
                 .validateUploadFile("Registration (Example).xlsx");
         detailPage
                 .openDetailByName("Досье клиента");
-        contractPage
+        fileUploadComponent
                 .uploadFile("Registration (Example).xlsx",2);
-        contractPage
-                .clickButtonByNameContains("Файлы", 2)
+        buttonsComponent
+                .clickButtonByNameContains("Файлы", 2);
+        fileUploadComponent
                 .validateUploadFile("Registration (Example).xlsx");
-        contractPage
+        fileUploadComponent
                 .uploadFile("Registration (Example).xlsx",3);
-        contractPage
-                .clickButtonByNameContains("Файлы", 3)
+        buttonsComponent
+                .clickButtonByNameContains("Файлы", 3);
+        fileUploadComponent
                 .validateUploadFile("Registration (Example).xlsx");
-        contractPage
+        dashboardComponent
                 .clickElementDashboardCheck("Вложить документы и отправить на рассмотрение","Execute",
-                        "//*[@data-item-marker='MiniPage']") //Нажать на кнопку "Завершить"
+                        "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
 
-                .setfieldScheduleDetailByDIM("Result","Выполнена")
+        contractPage
+                .setfieldScheduleDetailByDIM("Result","Выполнена");
+        menuComponent
                 .clickButtonByLiName("Выполнена");
         basePage
                 .clickButtonByDataItemMaker("SaveEditButton"); //Нажать на кнопку "Сохранить"
-        contractPage
+        buttonsComponent
                 .clickButtonByContainNameCheck("Проверки"); //Открыть вкладку "Проверки"
 
         //  ЯВНОЕ ОЖИДАНИЕ 10 СЕКУНДЫ ПЕРЕД ПРОВЕРКОЙ НОВОЙ СТРАНИЦЫ
@@ -264,15 +320,17 @@ public class SimpleRouteTest extends BaseTest {
 
         contractPage
                 .scrollDownSmall();
-        contractPage
+        gridComponent
                 .waitForCreditDecision("Решение по кредиту","Одобрить");
         contractPage
                 .scrollToTop();
-        contractPage
+        dashboardComponent
                 .clickElementDashboardCheck("Информирование клиента","Execute",
-                        "//*[@data-item-marker='MiniPage']") //Нажать на кнопку "Завершить"
+                        "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
                 //.clickElementDashboard("Укажите дату и время идентификации клиента","Execute") //Нажать на кнопку "Завершить" - Продолжение заявки
-                .setfieldScheduleDetailByDIM("Result","Клиент согласен")
+        contractPage
+                .setfieldScheduleDetailByDIM("Result","Клиент согласен");
+        menuComponent
                 .clickButtonByLiName("Клиент согласен");
         basePage
                 .clickButtonByDataItemMaker("SaveEditButton"); //Нажать на кнопку "Сохранить"
@@ -280,7 +338,7 @@ public class SimpleRouteTest extends BaseTest {
                 .setHandBookFieldByValueCheck("Ответственный за подписание", "Рустамова Саодатчон Валиевна");
         basePage
                 .clickButtonByNameCheck("Подтвердить");
-        basePage
+        headerPage
                 .logout(); //Выйти из системы
 
         openUrl
@@ -293,32 +351,36 @@ public class SimpleRouteTest extends BaseTest {
 
         basePage
                 .clickByDataMarker("Заявки"); //Нажать в разделе на кнопку "Заявки"
-        contractPage
+        filtersComponent
                 .removeFilterIfExists();//Закрыть предыдущий результат поиска
         basePage
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
+        menuComponent
+                .clickButtonByLiName("Добавить условие");//Выбрать "Добавить условие"
+        fieldComponent
+                .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
-                .clickButtonByLiName("Добавить условие")//Выбрать "Добавить условие"
-                .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер") //Первое поле выбрать "Номер"
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер заявки, нажать на кнопку галочки
-        contractPage
-                .clickFirstRowInGridAndWaitButtonNew("grid-FinApplicationSectionDataGridGrid-wrap","Открыть"); //Выделить найденный результат
+        gridComponent
+                .clickFirstRowInGridAndWaitButton("grid-FinApplicationSectionDataGridGrid-wrap","Открыть"); //Выделить найденный результат
         basePage
                 .clickButtonByDataItemMakerCheck("Открыть"); //Нажать на кнопку "Открыть"
-        contractPage
+        dashboardComponent
                 .clickElementDashboardCheck("Проверка решения КК","Execute",
-                        "//*[@data-item-marker='MiniPage']") //Нажать на кнопку "Завершить"
-
-                .setfieldScheduleDetailByDIM("Result","Выполнена")
+                        "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
+        contractPage
+                .setfieldScheduleDetailByDIM("Result","Выполнена");
+        menuComponent
                 .clickButtonByLiName("Выполнена");
         basePage
                 .clickButtonByDataItemMaker("SaveEditButton"); //Нажать на кнопку "Сохранить"
+        dashboardComponent
+                .clickElementDashboardName("Создание договора в АБС (печать договоров для встречи)");
         contractPage
-                .clickElementDashboardName("Создание договора в АБС (печать договоров для встречи)")
                 .clickContractAutoWait(CONTRACT_PAGE_MARKER); //Нажать на номер договора
         basePage
                 .clickButtonOnPageByName(CONTRACT_PAGE_MARKER,"Действия");  //Создание договора
-        contractPage
+        menuComponent
                 .clickButtonByLiName("Создание договора");
         fieldPage
                 .setHandBookFieldByValueCheck("Вид планирования","Аннуитетный_005")
@@ -330,77 +392,77 @@ public class SimpleRouteTest extends BaseTest {
                 .getFieldValueSmart("Тип получения кредита");
         basePage
                 .clickButtonByName("Выбрать");
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("Нет задолженности!"); // Проверка текста модального окна
         basePage
                 .clickButtonByNameCheck("ОК");
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("Договор успешно создан"); // Проверка текста модального окна "Создание кредитного договора"
         basePage
-                .clickButtonByNameCheck("ОК");
-        basePage
+                .clickButtonByNameCheck("ОК")
                 .clickButtonById("BnzContractCreditPageBnzCreateSavingAcountContractButtonButton-imageEl"); // Нажать на кнопку "+"
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("Депозитный договор успешно создан в АБС");
         basePage
                 .clickButtonByNameCheck("ОК");
+        fieldUtils
+                .saveValueDIMCheckWork("BnzDepositBankAccount");
         contractPage
-                .saveValueDIMCheckWork("BnzDepositBankAccount")
                 .clickButtonByNameCheck("Закрыть");
 
         refresh();
 
-        contractPage
+        lookupComponent
                 .clickSearchIconID("BnzContractCreditPageBnzCreditBankAccountLookupEdit")
                 .selectValueInLookupWork("searchEdit");
         basePage
-                .clickButtonByNameCheck("Сохранить");
-        basePage
+                .clickButtonByNameCheck("Сохранить")
                 .clickButtonByNameCheck("Действия"); //Получение графика платежей
-        contractPage
-                .clickAndCheckModal("Получение графика платежей","График платежей успешно получен");
+        messageBoxComponent
+                .clickAndCheckModal("Получение графика платежей")
+                .shouldSeeModalWithText("График платежей успешно получен");
         basePage
-                .clickButtonByNameCheck("ОК");
-        basePage
+                .clickButtonByNameCheck("ОК")
                 .clickButtonByNameCheck("Действия"); //Привязка счета к договору
-        contractPage
-                .clickAndCheckModal("Привязка счета к договору","Счет успешно привязан к кредитному договору");
+        messageBoxComponent
+                .clickAndCheckModal("Привязка счета к договору")
+                .shouldSeeModalWithText("Счет успешно привязан к кредитному договору");
         basePage
                 .clickButtonByNameCheck("ОК");
 
-        contractPage
+        dashboardComponent
                 .clickElementDashboardCheck("Создание договора в АБС (печать договоров для встречи)","Execute",
-                        "//*[@data-item-marker='MiniPage']") //Нажать на кнопку "Завершить"
-
-                .setfieldScheduleDetailByDIM("Result","Выполнена")
+                        "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
+        contractPage
+                .setfieldScheduleDetailByDIM("Result","Выполнена");
+        menuComponent
                 .clickButtonByLiName("Выполнена");
         basePage
-                .clickButtonByDataItemMaker("SaveEditButton"); //Нажать на кнопку "Сохранить"
-        basePage
+                .clickButtonByDataItemMaker("SaveEditButton") //Нажать на кнопку "Сохранить"
                 .clickButtonByNameCheck("Действия"); //Подписание договора
-        contractPage
-                .clickAndCheckModal("Подписание договора","Резервирование счетов выполнено успешно");
+        messageBoxComponent
+                .clickAndCheckModal("Подписание договора")
+                .shouldSeeModalWithText("Резервирование счетов выполнено успешно");
         basePage
-                .clickButtonByNameCheck("ОК");
-        basePage
+                .clickButtonByNameCheck("ОК")
                 .clickButtonByNameCheck("Действия"); //Выдача кредита
         contractPage
                 .issueCreditUniversal("Наличными");
         basePage
                 .clickButtonByNameCheck("Подтвердить");
-        contractPage
+        messageBoxComponent
                 .shouldBeModalOpened("Комиссия за выдачу кредита");
         basePage
                 .clickButtonByNameCheck("Подтвердить");
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("Действие успешно выполнено. Необходимо оплатить комиссию за кредит");
         basePage
                 .clickButtonByNameCheck("ОК");
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("Кассовый ордер успешно сформирован");
         basePage
                 .clickButtonByNameCheck("ОК");
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("График платежей успешно получен");
         basePage
                 .clickButtonByNameCheck("ОК");
@@ -414,29 +476,33 @@ public class SimpleRouteTest extends BaseTest {
         // Продолжение заявки
 
         contractPage
-                .saveValueByMarker("Number")//Копирование номера "Кредитного договора"
-                .clickButtonByContainNameCheck("Операции по договору") //Перейти на вкладку "Операции по договору"
-                .doubleclickButtonByName("Приходный") //Проверка наличия ордеров
+                .saveValueByMarker("Number"); //Копирование номера "Кредитного договора"
+        buttonsComponent
+                .clickButtonByContainNameCheck("Операции по договору"); //Перейти на вкладку "Операции по договору"
+        buttonsComponent
+                .doubleclickButtonByName("Приходный"); //Проверка наличия ордеров
+        basePage
                 .checkCurrentPage("BnzOrderPageContainer"); //Проверка текущей страницы
         creditAssert
                 .assertOrderState("Новый");  //Проверить состояние ордеров
-        contractPage
+        fieldAssertions
                 .checkFieldValueNormalized("Сумма документа","200,00");//Проверить поле суммы
         basePage
                 .clickButtonByNameCheck("Закрыть");//Нажать кнопку закрыть
-        contractPage
-                .doubleclickButtonByName("Расходный")  //Проверка наличия ордеров
+        buttonsComponent
+                .doubleclickButtonByName("Расходный");  //Проверка наличия ордеров
+        basePage
                 .checkCurrentPage("BnzOrderPageContainer");//Проверка текущей страницы
         creditAssert
                 .assertOrderState("Новый");  //Проверить состояние ордеров
-        contractPage
+        fieldAssertions
                 .checkFieldValueNormalized("Сумма документа","50 000,00");//Проверить поле суммы
         basePage
                 .clickButtonByNameCheck("Закрыть");//Нажать кнопку закрыть
-        contractPage
-                .selectPrintOptionUniversal("Чек лист маълумотнома(оферта)");//нажать на кнопку "ПЕЧАТЬ" Скачать ПФ "Чек лист маълумотнома (Оферта)"
+        printComponent
+                .selectPrintOption("Чек лист маълумотнома(оферта)");//нажать на кнопку "ПЕЧАТЬ" Скачать ПФ "Чек лист маълумотнома (Оферта)"
 
-        basePage
+        headerPage
                 .logout(); //Выйти из системы
 
         openUrl
@@ -449,60 +515,64 @@ public class SimpleRouteTest extends BaseTest {
 
         basePage
                 .clickByDataMarker("Договоры"); //Перейти в раздел "Договоры"
-        contractPage
+        filtersComponent
                 .removeFilterIfExists();//Закрыть предыдущий результат поиска
         basePage
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
+        menuComponent
+                .clickButtonByLiName("Добавить условие"); //Выбрать "Добавить условие"
+        fieldComponent
+                .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
-                .clickButtonByLiName("Добавить условие")//Выбрать "Добавить условие"
-                .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер") //Первое поле выбрать "Номер"
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер договора, нажать на кнопку галочки
-        contractPage
-                .clickFirstRowInGridAndWaitButtonNew("grid-ContractSectionV2DataGridGrid-wrap","Открыть"); //Выделить найденный результат
+        gridComponent
+                .clickFirstRowInGridAndWaitButton("grid-ContractSectionV2DataGridGrid-wrap","Открыть"); //Выделить найденный результат
         basePage
                 .clickButtonByDataItemMakerCheck("Открыть"); //Нажать на кнопку "Открыть"
-        contractPage
+        buttonsComponent
                 .clickButtonByContainNameCheck("Операции по договору"); //Перейти на вкладку "Операции по договору"
+        buttonsComponent
+                .doubleclickButtonByName("Приходный"); //Открыть ордер у которого тип ордера "Приходный"
         contractPage
-                .doubleclickButtonByName("Приходный") //Открыть ордер у которого тип ордера "Приходный"
                 .checkCurrentPage("BnzOrderPageContainer"); //Проверка текущей страницы
         creditAssert
                 .assertOrderState("Новый");  //Проверить состояние ордеров
-        contractPage
+        fieldAssertions
                 .checkFieldValueNormalized("Сумма документа","200,00");//Проверить поле суммы
         basePage
                 .clickButtonByNameCheck("Подтвердить");//Нажать на кнопку "Подтвердить"
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("Кассовый ордер успешно подтвержден");//Проверить текст модального окна
         basePage
                 .clickButtonByNameCheck("ОК");//Нажать кнопку "ОК"
         creditAssert
                 .assertOrderState("Подтвержден");  //Проверить состояние ордеров
-        contractPage
-                .selectPrintOptionUniversal("Приходный кассовый ордер по комиссии");//нажать на кнопку "ПЕЧАТЬ" //Скачать ПФ "Взымание комиссии"
+        printComponent
+                .selectPrintOption("Приходный кассовый ордер по комиссии");//нажать на кнопку "ПЕЧАТЬ" //Скачать ПФ "Взымание комиссии"
         basePage
                 .clickButtonByNameCheck("Закрыть");//Нажать кнопку закрыть
+        buttonsComponent
+                .doubleclickButtonByName("Расходный"); //Открыть ордер у которого тип ордера "Расходный"
         contractPage
-                .doubleclickButtonByName("Расходный") //Открыть ордер у которого тип ордера "Расходный"
                 .checkCurrentPage("BnzOrderPageContainer"); //Проверка текущей страницы
         creditAssert
                 .assertOrderState("Новый");  //Проверить состояние ордеров
-        contractPage
+        fieldAssertions
                 .checkFieldValueNormalized("Сумма документа","50 000,00");//Проверить поле суммы
         basePage
                 .clickButtonByNameCheck("Подтвердить");//Нажать на кнопку "Подтвердить"
-        contractPage
+        messageBoxComponent
                 .shouldSeeModalWithText("Кассовый ордер успешно подтвержден");//Проверить текст модального окна
         basePage
                 .clickButtonByNameCheck("ОК");//Нажать кнопку "ОК"
         creditAssert
                 .assertOrderState("Подтвержден");  //Проверить состояние ордеров
-        contractPage
-                .selectPrintOptionUniversal("Расходный кассовый ордер");//нажать на кнопку "ПЕЧАТЬ" Скачать ПФ "Выдача кредита"
+        printComponent
+                .selectPrintOption("Расходный кассовый ордер");//нажать на кнопку "ПЕЧАТЬ" Скачать ПФ "Выдача кредита"
         basePage
                 .clickButtonByNameCheck("Закрыть");//Нажать кнопку закрыть
 
-        basePage
+        headerPage
                 .logout(); //Выйти из системы
 
         openUrl
@@ -515,40 +585,42 @@ public class SimpleRouteTest extends BaseTest {
 
         basePage
                 .clickByDataMarker("Договоры"); //Перейти в раздел "Договоры"
-        contractPage
+        filtersComponent
                 .removeFilterIfExists();//Закрыть предыдущий результат поиска
         basePage
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
+        menuComponent
+                .clickButtonByLiName("Добавить условие");//Выбрать "Добавить условие"
+        fieldComponent
+                .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
-                .clickButtonByLiName("Добавить условие")//Выбрать "Добавить условие"
-                .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер") //Первое поле выбрать "Номер"
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер договора, нажать на кнопку галочки
-        contractPage
-                .clickFirstRowInGridAndWaitButtonNew("grid-ContractSectionV2DataGridGrid-wrap","Открыть"); //Выделить найденный результат
+        gridComponent
+                .clickFirstRowInGridAndWaitButton("grid-ContractSectionV2DataGridGrid-wrap","Открыть"); //Выделить найденный результат
         basePage
                 .clickButtonByDataItemMakerCheck("Открыть"); //Нажать на кнопку "Открыть"
-        contractPage
-                .clickButtonByContainNameCheck("Операции по договору"); //Перейти на вкладку "Операции по договору"
-        contractPage
-                .doubleclickButtonByName("Приходный") //Проверка наличия ордеров
+        buttonsComponent
+                .clickButtonByContainNameCheck("Операции по договору") //Перейти на вкладку "Операции по договору"
+                .doubleclickButtonByName("Приходный"); //Проверка наличия ордеров
+        basePage
                 .checkCurrentPage("BnzOrderPageContainer"); //Проверка текущей страницы
         creditAssert
                 .assertOrderState("Подтвержден");  //Проверить состояние ордеров
         basePage
                 .clickButtonByNameCheck("Закрыть");//Нажать кнопку закрыть
-        contractPage
-                .doubleclickButtonByName("Расходный")  //Проверка наличия ордеров
+        buttonsComponent
+                .doubleclickButtonByName("Расходный");  //Проверка наличия ордеров
+        basePage
                 .checkCurrentPage("BnzOrderPageContainer"); //Проверка текущей страницы
         creditAssert
                 .assertOrderState("Подтвержден");  //Проверить состояние ордеров
         basePage
-                .clickButtonByNameCheck("Закрыть");//Нажать кнопку закрыть
-        basePage
+                .clickButtonByNameCheck("Закрыть")//Нажать кнопку закрыть
                 .clickButtonById("view-button-OBSW-imageEl"); //Открыть "Консультационную панель"
-        basePage
+        contractPage
                 .completeConsultation();  //Завершить выдачу кредита
 
-        basePage
+        headerPage
                 .logout(); //Выйти из системы
 
     }

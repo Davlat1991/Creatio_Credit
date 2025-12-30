@@ -38,6 +38,8 @@ import java.util.Properties;
 @Listeners({AllureTestListener.class})
 public class BaseTest {
 
+
+
     // URL из environment.properties
     protected final String BASE_URL = ConfigProperties.get("base.url");
 
@@ -53,6 +55,7 @@ public class BaseTest {
     protected BasePage basePage;
     protected LoginData retailManager =
             new LoginData("S_RUSTMOVA_796", "S_RUSTMOVA_796S_RUSTMOVA_796");
+
 
 
 
@@ -113,6 +116,7 @@ public class BaseTest {
         basePage = new BasePage();
 
 
+
     }
 
     // -------------------------- ATTACHMENTS --------------------------
@@ -132,6 +136,8 @@ public class BaseTest {
     public String attachBrowserLogs() {
         return String.join("\n", Selenide.getWebDriverLogs("browser"));
     }
+
+
 
     // -------------------------- AFTER METHOD --------------------------
 

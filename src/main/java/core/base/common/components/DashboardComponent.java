@@ -2,7 +2,10 @@ package core.base.common.components;
 
 
 import com.codeborne.selenide.*;
+import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$x;
@@ -93,6 +96,68 @@ public class DashboardComponent extends Components {
         ).shouldBe(visible, enabled);
 
         retryClick(stage, "Стадия процесса '" + stageName + "'");
+
+        return this;
+    }
+
+    // Imigration
+
+    @Step("Кликнуть на дашборд '{nameDashboard}' с DIM '{DIMvalue}' и дождаться мини-пейджа")
+    public DashboardComponent clickElementDashboardCheck(
+            String nameDashboard,
+            String DIMvalue,
+            String miniPageXpath   // ✅ СЮДА ты будешь передавать нужный XPath
+    ) {
+
+        int maxAttempts = 4;
+
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+
+            // ✅ ТВОЙ ИСХОДНЫЙ КЛИК — БЕЗ ИЗМЕНЕНИЙ
+            $x("//div[.='" + nameDashboard + "']/..//span[@data-item-marker='" + DIMvalue + "']")
+                    .scrollIntoView(false)
+                    .hover()
+                    .click();
+
+            try {
+                // ✅ ТЕПЕРЬ XPath мини-пейджа УНИВЕРСАЛЬНЫЙ
+                $x(miniPageXpath)
+                        .shouldBe(visible, Duration.ofSeconds(5));
+
+                return this;
+
+            } catch (AssertionError e) {
+                if (attempt == maxAttempts) {
+                    throw e;
+                }
+            }
+        }
+
+        return this;
+    }
+
+
+    public DashboardComponent clickElementDashboardWait(String nameDashboard, String DIMvalue) {
+
+        $x("//div[.='" + nameDashboard + "']").shouldBe(visible, Duration.ofSeconds(60));
+
+        $x("//div[.='" + nameDashboard + "']/..//span[@data-item-marker='" + DIMvalue + "']")
+                .scrollIntoView(false)
+                .hover()
+                .click();
+
+        return this;
+    }
+
+
+
+    public DashboardComponent clickElementDashboardName(String nameDashboard) {
+
+        SelenideElement element = $x("//div[.='" + nameDashboard + "']")
+                .shouldBe(visible)       // элемент виден
+                .shouldBe(enabled);      // элемент кликабелен
+
+        element.click();                 // безопасный клик
 
         return this;
     }
