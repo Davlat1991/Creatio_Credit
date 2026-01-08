@@ -18,15 +18,6 @@ import core.listeners.AllureTestListener;
 import core.config.DriverFactory;
 import core.config.ConfigProperties;
 
-import core.base.common.components.FieldComponent;
-import core.pages.credit.ConsultationPanelPage;
-import core.pages.credit.ContractCreditApplicationPage;
-import core.pages.login.LoginPage;
-import core.pages.ui.DetailPage;
-import core.pages.ui.DashboardPage;
-
-import steps.workspace.WorkspaceSteps;
-
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -35,8 +26,11 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 
+
+
 @Listeners({AllureTestListener.class})
 public class BaseTest {
+
 
 
 
@@ -44,19 +38,10 @@ public class BaseTest {
     protected final String BASE_URL = ConfigProperties.get("base.url");
 
     // PageObject'ы
-    protected LoginPage loginPage;
-    protected FieldComponent fieldPage;
-    protected DashboardPage dashboardPage;
-    protected ContractCreditApplicationPage contractPage;
-    protected ConsultationPanelPage consultationPanel;
-    protected DetailPage detailPage;
-    protected WorkspaceSteps workspaceSteps;
     protected AuthorizationAndClientSearchFlow authAndClientFlow;
-    protected BasePage basePage;
     protected LoginData retailManager =
-            new LoginData("S_RUSTMOVA_796", "S_RUSTMOVA_796S_RUSTMOVA_796");
-
-
+            new LoginData("S_RUSTMOVA_796", "S_RUSTMOVA_796!@#$%qwerty");
+    protected TestContext ctx;
 
 
 
@@ -104,20 +89,18 @@ public class BaseTest {
         );
     }
 
+
+
     @BeforeMethod(alwaysRun = true)
-    public void initPages() {
-        loginPage = new LoginPage();
-        fieldPage = new FieldComponent();
-        dashboardPage = new DashboardPage();
-        consultationPanel = new ConsultationPanelPage();
-        detailPage = new DetailPage();
-        workspaceSteps = new WorkspaceSteps();
-        contractPage = new ContractCreditApplicationPage();
-        basePage = new BasePage();
-
-
-
+    public void initContext() {
+        ctx = new TestContext();
     }
+
+    @BeforeMethod(alwaysRun = true)
+    public void initFlows() {
+        authAndClientFlow = new AuthorizationAndClientSearchFlow(ctx);
+    }
+
 
     // -------------------------- ATTACHMENTS --------------------------
 
@@ -175,3 +158,4 @@ public class BaseTest {
     public String BASE_ULR_1 = "http://10.10.202.254/";
 
 }
+

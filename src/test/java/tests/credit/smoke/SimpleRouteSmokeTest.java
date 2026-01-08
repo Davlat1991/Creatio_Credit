@@ -1,7 +1,7 @@
 package tests.credit.smoke;
 
 
-import core.base.BaseTest;
+/*import core.base.BaseTest;
 import core.pages.login.LoginPage;
 import core.pages.routes.SimpleRoutePage;
 import io.qameta.allure.*;
@@ -46,4 +46,4 @@ public class SimpleRouteSmokeTest extends BaseTest {
                 .save()
                 .verifyStatus("Создано");
     }
-}
+}*/

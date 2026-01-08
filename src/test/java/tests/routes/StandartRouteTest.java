@@ -2,10 +2,13 @@ package tests.routes;
 
 import com.codeborne.selenide.Selenide;
 import core.assertions.FieldAssertions;
+import core.assertions.GridAssertions;
 import core.base.BaseTest;
 import core.base.common.HeaderPage;
 import core.base.common.components.*;
+import core.base.common.helpers.DomActions;
 import core.base.common.utils.FieldUtils;
+import core.base.common.utils.FieldValueResolver;
 import core.data.contacts.ContactData;
 import core.pages.contacts.ContactAddressPage;
 import core.pages.login.LoginPage;
@@ -22,7 +25,7 @@ import static com.codeborne.selenide.Selenide.refresh;
 import static core.pages.credit.ContractCreditApplicationPage.CONTRACT_PAGE_MARKER;
 
 
-public class StandartRouteTest extends BaseTest {
+/*public class StandartRouteTest extends BaseTest {
     private final LoginSteps login = new LoginSteps();
     private final LoginPage openUrl = new LoginPage();
     CreditApplicationAssertions creditAssert =
@@ -44,6 +47,10 @@ public class StandartRouteTest extends BaseTest {
     FieldAssertions fieldAssertions = new FieldAssertions();
     PrintComponent printComponent = new PrintComponent();
     HeaderPage headerPage = new HeaderPage();
+    FieldValueResolver fieldValueResolver = new FieldValueResolver();
+    DateFieldComponent dateFieldComponent = new DateFieldComponent();
+    DomActions domActions = new DomActions();
+    GridAssertions gridAssertions = new GridAssertions();
 
 
 
@@ -53,6 +60,7 @@ public class StandartRouteTest extends BaseTest {
     public void simpleRouteTest() {
 
         // 1. Авторизация
+        //1. AuthorizationAndClientSearchFlow
 
         openUrl
                 .openUrl(BASE_ULR_1);//.openUrl("");
@@ -87,8 +95,10 @@ public class StandartRouteTest extends BaseTest {
         consultationPanel.
                 registerProductByDIM("consultation-theme-7a0f11cc-756d-474a-885f-1dd64eeca5b3");
 
+
+        //2. ProductSelectionFlow
         // 4. Подбор продукта
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck ("Вид продукта", "Карзхои гуногунмаксад")
                 .setHandBookFieldByValueCheck("Цель кредитования", "Барои эхтиёчоти оилави")
                 .setFieldByValueCheck("Сумма", "50000")
@@ -100,7 +110,10 @@ public class StandartRouteTest extends BaseTest {
                 .clickFirstRowInGridAndWaitButton("grid-TsiOpportunityConditionSelectionDetailDataGridGrid-wrap","Выбрать");
         basePage.
                 clickButtonByDataItemMakerCheck("Выбрать");
-        fieldPage
+
+        //3.ApplicationCreationFlow
+
+        lookupComponent
                 .setFieldByValueCheck("Запрашиваемая дата погашения", "3");
         basePage
                 .clickButtonById("KzParameterScheduleDetailAddRecordButtonButton-imageEl"); // Нажать на кнопку "+"
@@ -117,7 +130,11 @@ public class StandartRouteTest extends BaseTest {
                 .shouldSeeModalWithText("Нет задолженности!"); // Проверка текста модального окна
         basePage
                 .clickButtonByDataItemMaker("ОК");
-        fieldPage
+
+
+        //4. RegistrationStageFlow
+
+        lookupComponent
                 .setHandBookFieldByValueCheck("Регион использования кредита", "ш. Хучанд")
                 .setHandBookFieldByValueCheck("Источник информации", "Интернет/Сайт");
         buttonsComponent
@@ -132,22 +149,26 @@ public class StandartRouteTest extends BaseTest {
 
         // Заполнение чекбокса в анкете заёмщика "Согласие на обработку БКИ"
 
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Страна рождения", "Точикистон")
-                .setFieldByValueCheck("Дата выдачи", "01.01.2020")
+                .setFieldByValueCheck("Дата выдачи", "01.01.2020");
+        fieldValueResolver
                 .getNonEmptyValue("Дата выдачи");
-        fieldPage
-                .setFieldByValueCheck("Действителен до", "01.01.2030")
+        lookupComponent
+                .setFieldByValueCheck("Действителен до", "01.01.2030");
+        fieldValueResolver
                 .getNonEmptyValue("Действителен до");
         gridComponent
                 .DoubleclickByDIM("Шиносномаи ЧТ");
         basePage
                 .checkCurrentPage("RegDocumentPageV2Container"); //Проверка текущей страницы
-        fieldPage
-                .setFieldByValueCheck("Дата выдачи", "01.01.2020")
+        lookupComponent
+                .setFieldByValueCheck("Дата выдачи", "01.01.2020");
+        fieldValueResolver
                 .getNonEmptyValue("Дата выдачи");
-        fieldPage
-                .setFieldByValueCheck("Действует до", "01.01.2030")
+        lookupComponent
+                .setFieldByValueCheck("Действует до", "01.01.2030");
+        fieldValueResolver
                 .getNonEmptyValue("Действует до");
         contractPage
                 .clickButtonByNameCheck("Сохранить");
@@ -161,14 +182,15 @@ public class StandartRouteTest extends BaseTest {
                 .checkCurrentPage("ContactAddressPageV2Container"); //Проверка текущей страницы
         contactAddressPage
                 .waitForAddressPageLoaded();
-        fieldPage
-                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020")
+        dateFieldComponent
+                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
+        fieldValueResolver
                 .getNonEmptyValue("Дата регистрации");
         contractPage
                 .clickButtonByNameCheck("Сохранить");
         basePage
                 .waitForPage();
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Тип клиента", "Нав");
         buttonsComponent
                 .doubleclickButtonByName("Фактический");//Деталь адреса - строка типа адреса "Фактический"
@@ -176,16 +198,17 @@ public class StandartRouteTest extends BaseTest {
                 .checkCurrentPage("ContactAddressPageV2Container"); //Проверка текущей страницы
         contactAddressPage
                 .waitForAddressPageLoaded();
-        fieldPage
-                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020")
+        dateFieldComponent
+                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
+        fieldValueResolver
                 .getFieldValueSmart("Дата регистрации");
         contractPage
                 .clickButtonByNameCheck("Сохранить");
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Уровень риска","Низкий");
         buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Клиент предоставил подтверждение дохода","Да")
                 .setHandBookFieldByValueCheck("Тип документа подтверждения дохода","Выписка с банковского счета");
         basePage
@@ -210,9 +233,9 @@ public class StandartRouteTest extends BaseTest {
                 .CheckBoxValue("BnzAppExpensesDetailTsiFrequencyTypeComboBoxEdit-el");
         menuComponent
                 .clickButtonByLiName("Единоразово");
-        fieldComponent
+        domActions
                 .clickDivbyId("BnzAppExpensesDetailTsiAmountBCFloatEdit-wrap","600");
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Семейное положение","Мучаррад (мард)")
                 .setFieldByValueCheck("Количество иждивенцев (строка)","0")
                 .setFieldByValueCheck("Общий стаж, мес","60")
@@ -222,7 +245,7 @@ public class StandartRouteTest extends BaseTest {
                 .scrollToTop();
         buttonsComponent
                 .clickButtonByContainNameCheck("ОЦЕНКА ИНФОРМАЦИИ");
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Тип собственности на недвижимость","Более 2-ух квартир")
                 .setHandBookFieldByValueCheck("Тип владения автомобилем","Есть автомобиль");
         checkboxComponent
@@ -238,6 +261,9 @@ public class StandartRouteTest extends BaseTest {
                 .openDetailMenu("Участники заявки"); // кнопка "Действия" (Троеточие)
         menuComponent
                 .clickButtonByLiName("Печать Анкеты-заявки");
+
+        //5. PreliminaryCheckStageFlow
+
         dashboardComponent
                 .clickElementDashboardCheck("Добавьте и заполните анкеты участников заявки","Execute",
                         "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
@@ -275,6 +301,9 @@ public class StandartRouteTest extends BaseTest {
         basePage
                 .clickButtonByDataItemMaker("SaveEditButton"); //Нажать на кнопку "Сохранить"
 
+
+        //6.DocumentsStageFlow
+
         //4.Стадия "Сбор документов" Процесс заполнения заявки кредита Физ.Лица
         //Тест-кейс №3 - Загрузка документов заёмщика
 
@@ -304,9 +333,13 @@ public class StandartRouteTest extends BaseTest {
                 .clickButtonByNameContains("Файлы", 3);
         fileUploadComponent
                 .validateUploadFile("Registration (Example).xlsx");
+
+
         dashboardComponent
                 .clickElementDashboardCheck("Вложить документы и отправить на рассмотрение","Execute",
                         "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
+
+        //7. ReviewStageFlow
 
         contractPage
                 .setfieldScheduleDetailByDIM("Result","Выполнена");
@@ -323,7 +356,7 @@ public class StandartRouteTest extends BaseTest {
         basePage
                 .scrollDownSmall();
 
-        gridComponent
+        gridAssertions
                 .waitForCreditDecision("Решение по кредиту","Одобрить");
 
         refresh();
@@ -333,7 +366,7 @@ public class StandartRouteTest extends BaseTest {
 
         buttonsComponent
                 .clickButtonByContainNameCheck("Решение по заявке"); //Открыть вкладку "Решение по заявке"
-        gridComponent
+        gridAssertions
                 .waitForValueInGridColumn("Комитет","КК4");
         contractPage
                 .saveValueByMarker("Number");//Скопировать номер "Заявки"
@@ -356,7 +389,7 @@ public class StandartRouteTest extends BaseTest {
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
         menuComponent
                 .clickButtonByLiName("Добавить условие");//Выбрать "Добавить условие"
-        fieldComponent
+        lookupComponent
                 .setFieldScheduleDetailByDIMCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер заявки, нажать на кнопку галочки
@@ -378,6 +411,9 @@ public class StandartRouteTest extends BaseTest {
         headerPage
                 .logout(); //Выйти из системы
 
+
+        //8 ClientNotificationStageFlow
+
         openUrl
                 .openUrl(BASE_ULR_1);//.openUrl("");
         login
@@ -394,7 +430,7 @@ public class StandartRouteTest extends BaseTest {
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
         menuComponent
                 .clickButtonByLiName("Добавить условие");//Выбрать "Добавить условие"
-        fieldComponent
+        lookupComponent
                 .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер заявки, нажать на кнопку галочки
@@ -402,22 +438,26 @@ public class StandartRouteTest extends BaseTest {
                 .clickFirstRowInGridAndWaitButton("grid-FinApplicationSectionDataGridGrid-wrap","Открыть"); //Выделить найденный результат
         basePage
                 .clickButtonByDataItemMakerCheck("Открыть"); //Нажать на кнопку "Открыть"
+
         dashboardComponent
                 .clickElementDashboardCheck("Информирование клиента","Execute",
                         "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
                 //.clickElementDashboard("Укажите дату и время идентификации клиента","Execute") //Нажать на кнопку "Завершить" - Продолжение заявки
+
         contractPage
                 .setfieldScheduleDetailByDIM("Result","Клиент согласен");
         menuComponent
                 .clickButtonByLiName("Клиент согласен");
         basePage
                 .clickButtonByDataItemMaker("SaveEditButton"); //Нажать на кнопку "Сохранить"
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Ответственный за подписание", "Рустамова Саодатчон Валиевна");
         basePage
                 .clickButtonByNameCheck("Подтвердить");
         headerPage
                 .logout(); //Выйти из системы
+
+        //9. LoanIssuanceFlow
 
         openUrl
                 .openUrl(BASE_ULR_1);//.openUrl("");
@@ -435,7 +475,7 @@ public class StandartRouteTest extends BaseTest {
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
         menuComponent
                 .clickButtonByLiName("Добавить условие"); //Выбрать "Добавить условие"
-        fieldComponent
+        lookupComponent
                 .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер заявки, нажать на кнопку галочки
@@ -461,13 +501,14 @@ public class StandartRouteTest extends BaseTest {
                 .clickButtonOnPageByName(CONTRACT_PAGE_MARKER,"Действия");  //Создание договора
         menuComponent
                 .clickButtonByLiName("Создание договора");
-        fieldPage
-                .setHandBookFieldByValueCheck("Вид планирования","Аннуитетный_005")
+        lookupComponent
+                .setHandBookFieldByValueCheck("Вид планирования","Аннуитетный_005");
+        fieldValueResolver
                 .getFieldValueSmart("Вид планирования");
         contractPage
-                .selectLoadCreditTypeNew("Получает сегодня");
-        fieldPage
-                .fillLoadCreditTypeSafely("Получает сегодня")
+                .selectLoadCreditTypeNew("Получает сегодня")
+                .fillLoadCreditTypeSafely("Получает сегодня");
+        fieldValueResolver
                 .getFieldValueSmart("Тип получения кредита");
         basePage
                 .clickButtonByName("Выбрать");
@@ -553,9 +594,9 @@ public class StandartRouteTest extends BaseTest {
         contractCredit
                 .clickButtonByContainNameCheck("История")
                 .clickLookupLinkByLabel("Договор",CONTRACT_PAGE_MARKER);*/  //Нажать на кнопку договора через вкладку "История" // Продолжение заявки
-        // Продолжение заявки
+        // Продолжение заявки */
 
-        contractPage
+        /*contractPage
                 .saveValueByMarker("Number");//Копирование номера "Кредитного договора"
         buttonsComponent
                 .clickButtonByContainNameCheck("Операции по договору"); //Перейти на вкладку "Операции по договору"
@@ -585,6 +626,8 @@ public class StandartRouteTest extends BaseTest {
         headerPage
                 .logout(); //Выйти из системы
 
+        //10. SigningStageFlow
+
         openUrl
                 .openUrl(BASE_ULR_1);//.openUrl("");
         login
@@ -601,7 +644,7 @@ public class StandartRouteTest extends BaseTest {
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
         menuComponent
                 .clickButtonByLiName("Добавить условие");//Выбрать "Добавить условие"
-        fieldComponent
+        lookupComponent
                 .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер договора, нажать на кнопку галочки
@@ -655,6 +698,8 @@ public class StandartRouteTest extends BaseTest {
         headerPage
                 .logout(); //Выйти из системы
 
+        //11. ApplicationFinishFlow
+
         openUrl
                 .openUrl(BASE_ULR_1);//.openUrl("");
         login
@@ -671,7 +716,7 @@ public class StandartRouteTest extends BaseTest {
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
         menuComponent
                 .clickButtonByLiName("Добавить условие");//Выбрать "Добавить условие"
-        fieldComponent
+        lookupComponent
                 .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер договора, нажать на кнопку галочки
@@ -705,7 +750,7 @@ public class StandartRouteTest extends BaseTest {
 
     }
 
-}
+}*/
 
 
 

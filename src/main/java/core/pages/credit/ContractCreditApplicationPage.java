@@ -6,6 +6,7 @@ import core.base.BasePage;
 import core.base.common.components.*;
 
 import core.base.common.utils.FieldUtils;
+import core.base.common.waiters.UiWaiter;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
@@ -53,9 +54,10 @@ public class ContractCreditApplicationPage extends BasePage {
     private final FileUploadComponent files = new FileUploadComponent();
     private final MessageBoxComponent messages = new MessageBoxComponent();
     private final CheckboxComponent checkbox = new CheckboxComponent();
-    public static final Logger log =
-            LoggerFactory.getLogger(ContractCreditApplicationPage.class);
+    public static final Logger log = LoggerFactory.getLogger(ContractCreditApplicationPage.class);
     private String savedValue;
+
+
 
 
     @Step("Выбрать продукт '{product}'")
@@ -390,6 +392,107 @@ public class ContractCreditApplicationPage extends BasePage {
 
         return this;
     }
+
+
+
+    // Работает !!!! 06.12.2025
+    @Step("Заполнить поле 'Тип получения кредита' значением '{value}' (без скролла страницы)")
+    public ContractCreditApplicationPage fillLoadCreditTypeSafely(String value) {
+
+        // 1️⃣ Находим input БЕЗ scrollIntoView
+        SelenideElement input = $x("//label[normalize-space()='Тип получения кредита']/../..//input[@type='text']")
+                .shouldBe(Condition.visible);
+
+        // 2️⃣ Фокус через JS (НЕ скроллит страницу)
+        executeJavaScript("arguments[0].focus();", input);
+
+        // 3️⃣ Принудительно заполняем input через JS
+        executeJavaScript(
+                "arguments[0].value='';" +
+                        "arguments[0].dispatchEvent(new Event('input', {bubbles:true}));" +
+                        "arguments[0].value=arguments[1];" +
+                        "arguments[0].dispatchEvent(new Event('input', {bubbles:true}));",
+                input, value
+        );
+
+        // 4️⃣ Даём шанс Creatio открыть listview
+        sleep(250);
+
+        ElementsCollection lists = $$x("//div[contains(@class,'listview')]")
+                .filter(Condition.visible);
+
+        if (!lists.isEmpty()) {
+
+            SelenideElement list = lists.first();
+
+            SelenideElement item = list.$x(".//li[contains(normalize-space(.), '" + value + "')]")
+                    .should(Condition.exist);
+
+            // 5️⃣ Выбираем через JS без скролла
+            executeJavaScript(
+                    "arguments[0].dispatchEvent(new MouseEvent('mousedown',{bubbles:true}));" +
+                            "arguments[0].dispatchEvent(new MouseEvent('mouseup',{bubbles:true}));" +
+                            "arguments[0].click();",
+                    item
+            );
+
+            list.should(Condition.disappear);
+
+        } else {
+            // 6️⃣ Если списка нет — просто blur
+            executeJavaScript("arguments[0].blur();", input);
+        }
+
+        // 7️⃣ Проверка
+        input.shouldHave(Condition.value(value));
+
+        // 8️⃣ 🔥 ВОЗВРАЩАЕМ СТРАНИЦУ ВВЕРХ, чтобы последующие кнопки были кликабельны
+        executeJavaScript("window.scrollTo(0, 0);");
+
+        return this;
+    }
+
+
+    //Нужно протеститровать метод + waitForButton
+
+    public ContractCreditApplicationPage clickFirstRowAndWaitButton(
+            String gridWrapId,
+            String buttonText
+    ) {
+        grid.clickFirstRow(gridWrapId);
+        UiWaiter.waitForButton(buttonText, Duration.ofSeconds(5));
+        return this;
+    }
+
+    public void approve() {
+
+        SelenideElement approveButton = $x("//span[@data-item-marker='Approve']")
+                .shouldBe(Condition.visible, Condition.enabled);
+
+        approveButton.click();
+
+        // Ожидаем открытие мини-страницы или модалки (Creatio style)
+        $x("//*[contains(@id,'MiniPage') or contains(@class,'mini-page')]")
+                .shouldBe(Condition.visible);
+    }
+
+    public void issueCredit(String type) {
+        // Открываем меню
+        SelenideElement menu = $x("//li[@data-item-marker='Выдача кредита']")
+                .shouldBe(Condition.visible, Condition.enabled);
+
+        menu.hover();
+
+        // Нажимаем тип выдачи
+        SelenideElement option = $x("//li[@data-item-marker='" + type + "']")
+                .shouldBe(Condition.visible, Condition.enabled);
+        option.click();
+
+        // Проверяем открытие модалки
+        $x("//*[@data-item-marker='Выдача кредита']")
+                .shouldBe(Condition.visible);
+    }
+
 
 
 

@@ -1,6 +1,7 @@
 package steps.contacts;
 
 
+import core.base.common.components.DetailComponent;
 import io.qameta.allure.Step;
 import core.base.common.components.FieldComponent;
 import core.pages.contacts.ContactCardPage;
@@ -12,8 +13,9 @@ public class ContactAddressSteps {
     private final FieldComponent field = new FieldComponent();
     private final BasePage base = new BasePage();
     private final ContactCardPage card = new ContactCardPage();
+    private final DetailComponent openDetail = new DetailComponent();
 
-    @Step("Открыть адрес типа '{addressType}'")
+    /*@Step("Открыть адрес типа '{addressType}'")
     public ContactAddressSteps openAddressByType(String addressType) {
         card.openDetail("Адреса");
         card.openAddressRow(addressType);
@@ -52,7 +54,7 @@ public class ContactAddressSteps {
         return addNewAddress(addressType)
                 .fillAddress(addressType, region, date)
                 .saveAddress();
-    }
+    }*/
 }
 
 

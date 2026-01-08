@@ -20,16 +20,6 @@ public class LoginData {
 
     @Override
     public String toString() {
-        return "LoginData{login='" + login + "'}";
+        return login;
     }
-
-
-
 }
-
-
-
-
-
-
-

@@ -14,7 +14,7 @@ public class ContactCommunicationSteps {
     private final LookupComponent lookup = new LookupComponent();
     private final BasePage base = new BasePage();
 
-    @Step("Открыть деталь 'Коммуникации'")
+    /*@Step("Открыть деталь 'Коммуникации'")
     public ContactCommunicationSteps openCommunications() {
         card.openDetail("Коммуникации");
         card.waitForDetailLoaded("Коммуникации");
@@ -26,7 +26,7 @@ public class ContactCommunicationSteps {
         card.clickAddRecordInDetail("Коммуникации");
         card.waitForMiniPage();
         return this;
-    }
+    }*/
 
     @Step("Выбрать тип коммуникации: {type}")
     public ContactCommunicationSteps selectCommunicationType(String type) {
@@ -56,7 +56,7 @@ public class ContactCommunicationSteps {
         return this;
     }
 
-    @Step("Добавить коммуникацию: Тип = {type}, Вид = {kind}, Значение = {value}")
+   /* @Step("Добавить коммуникацию: Тип = {type}, Вид = {kind}, Значение = {value}")
     public ContactCommunicationSteps createCommunication(String type, String kind, String value) {
         return openCommunications()
                 .addCommunication()
@@ -70,6 +70,6 @@ public class ContactCommunicationSteps {
     public ContactCommunicationSteps validateCommunicationExists(String value) {
         card.assertRowExistsInDetail("Коммуникации", value);
         return this;
-    }
+    }*/
 }
 

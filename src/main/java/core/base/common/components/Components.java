@@ -64,4 +64,7 @@ public class Components extends BasePage {
     protected void waitDisappear(SelenideElement element) {
         element.shouldBe(disappear);
     }
+
+
+
 }

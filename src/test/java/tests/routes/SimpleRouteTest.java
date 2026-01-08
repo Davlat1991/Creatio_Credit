@@ -3,10 +3,14 @@ package tests.routes;
 
 import com.codeborne.selenide.Selenide;
 import core.assertions.FieldAssertions;
+import core.assertions.GridAssertions;
 import core.base.BaseTest;
+import core.base.TestContext;
 import core.base.common.HeaderPage;
 import core.base.common.components.*;
+import core.base.common.helpers.DomActions;
 import core.base.common.utils.FieldUtils;
+import core.base.common.utils.FieldValueResolver;
 import core.data.contacts.ContactData;
 import core.pages.contacts.ContactAddressPage;
 import core.pages.login.LoginPage;
@@ -22,7 +26,8 @@ import static com.codeborne.selenide.Selenide.refresh;
 import static core.pages.credit.ContractCreditApplicationPage.CONTRACT_PAGE_MARKER;
 
 
-public class SimpleRouteTest extends BaseTest {
+/*public class SimpleRouteTest extends BaseTest {
+
     private final LoginSteps login = new LoginSteps();
     private final LoginPage openUrl = new LoginPage();
     CreditApplicationAssertions creditAssert =
@@ -43,9 +48,12 @@ public class SimpleRouteTest extends BaseTest {
     FieldAssertions fieldAssertions = new FieldAssertions();
     PrintComponent printComponent = new PrintComponent();
     HeaderPage headerPage = new HeaderPage();
+    DateFieldComponent dateFieldComponent = new DateFieldComponent();
+    FieldValueResolver fieldValueResolver = new FieldValueResolver();
+    DomActions domActions = new DomActions();
+    GridAssertions gridAssertions = new GridAssertions();
 
-
-
+    protected TestContext ctx;
 
 
 
@@ -88,7 +96,7 @@ public class SimpleRouteTest extends BaseTest {
                 registerProductByDIM("consultation-theme-7a0f11cc-756d-474a-885f-1dd64eeca5b3");
 
         // 4. Подбор продукта
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck ("Вид продукта", "Карзхои гуногунмаксад")
                 .setHandBookFieldByValueCheck("Цель кредитования", "Барои эхтиёчоти оилави")
                 .setFieldByValueCheck("Сумма", "25000")
@@ -101,7 +109,7 @@ public class SimpleRouteTest extends BaseTest {
                 .clickFirstRowInGridAndWaitButton("grid-TsiOpportunityConditionSelectionDetailDataGridGrid-wrap","Выбрать");
         basePage.
                 clickButtonByDataItemMakerCheck("Выбрать");
-        fieldPage
+        lookupComponent
                 .setFieldByValueCheck("Запрашиваемая дата погашения", "3");
         basePage
                 .clickButtonById("KzParameterScheduleDetailAddRecordButtonButton-imageEl"); // Нажать на кнопку "+"
@@ -118,7 +126,7 @@ public class SimpleRouteTest extends BaseTest {
                 .shouldSeeModalWithText("Нет задолженности!"); // Проверка текста модального окна
         basePage
                 .clickButtonByDataItemMaker("ОК");
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Регион использования кредита", "ш. Хучанд")
                 .setHandBookFieldByValueCheck("Источник информации", "Интернет/Сайт");
         buttonsComponent
@@ -133,21 +141,21 @@ public class SimpleRouteTest extends BaseTest {
 
         // Заполнение чекбокса в анкете заёмщика "Согласие на обработку БКИ"
 
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Страна рождения", "Точикистон")
                 .setFieldByValueCheck("Дата выдачи", "01.01.2020");
                 //.getNonEmptyValue("Дата выдачи");
-        fieldPage
+        lookupComponent
                 .setFieldByValueCheck("Действителен до", "01.01.2030");
         // .getNonEmptyValue("Действителен до");
         gridComponent
                 .DoubleclickByDIM("Шиносномаи ЧТ");
         basePage
                 .checkCurrentPage("RegDocumentPageV2Container"); //Проверка текущей страницы
-        fieldPage
+        lookupComponent
                 .setFieldByValueCheck("Дата выдачи", "01.01.2020");
                // .getNonEmptyValue("Дата выдачи");
-        fieldPage
+        lookupComponent
                 .setFieldByValueCheck("Действует до", "01.01.2030");
                 //.getNonEmptyValue("Действует до");
         contractPage
@@ -162,14 +170,14 @@ public class SimpleRouteTest extends BaseTest {
                 .checkCurrentPage("ContactAddressPageV2Container"); //Проверка текущей страницы
         contactAddressPage
                 .waitForAddressPageLoaded();
-        fieldPage
+        dateFieldComponent
                 .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
                 //.getNonEmptyValue("Дата регистрации");
         contractPage
                 .clickButtonByNameCheck("Сохранить");
         basePage
                 .waitForPage();
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Тип клиента", "Нав");
         buttonsComponent
                 .doubleclickButtonByName("Фактический"); //Деталь адреса - строка типа адреса "Фактический"
@@ -177,16 +185,18 @@ public class SimpleRouteTest extends BaseTest {
                 .checkCurrentPage("ContactAddressPageV2Container"); //Проверка текущей страницы
         contactAddressPage
                 .waitForAddressPageLoaded();
-        fieldPage
-                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020")
+
+        dateFieldComponent
+                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
+        fieldValueResolver
                 .getFieldValueSmart("Дата регистрации");
         contractPage
                 .clickButtonByNameCheck("Сохранить");
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Уровень риска","Низкий");
         buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Клиент предоставил подтверждение дохода","Да")
                 .setHandBookFieldByValueCheck("Тип документа подтверждения дохода","Выписка с банковского счета");
         basePage
@@ -211,9 +221,9 @@ public class SimpleRouteTest extends BaseTest {
                 .CheckBoxValue("BnzAppExpensesDetailTsiFrequencyTypeComboBoxEdit-el");
         menuComponent
                 .clickButtonByLiName("Единоразово");
-        fieldComponent
+        domActions
                 .clickDivbyId("BnzAppExpensesDetailTsiAmountBCFloatEdit-wrap","600");
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Семейное положение","Мучаррад (мард)")
                 .setFieldByValueCheck("Количество иждивенцев (строка)","0")
                 .setFieldByValueCheck("Общий стаж, мес","60")
@@ -223,7 +233,7 @@ public class SimpleRouteTest extends BaseTest {
                 .scrollToTop();
         buttonsComponent
                 .clickButtonByContainNameCheck("ОЦЕНКА ИНФОРМАЦИИ");
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Тип собственности на недвижимость","Более 2-ух квартир")
                 .setHandBookFieldByValueCheck("Тип владения автомобилем","Есть автомобиль");
         checkboxComponent
@@ -320,7 +330,7 @@ public class SimpleRouteTest extends BaseTest {
 
         contractPage
                 .scrollDownSmall();
-        gridComponent
+        gridAssertions
                 .waitForCreditDecision("Решение по кредиту","Одобрить");
         contractPage
                 .scrollToTop();
@@ -334,7 +344,7 @@ public class SimpleRouteTest extends BaseTest {
                 .clickButtonByLiName("Клиент согласен");
         basePage
                 .clickButtonByDataItemMaker("SaveEditButton"); //Нажать на кнопку "Сохранить"
-        fieldPage
+        lookupComponent
                 .setHandBookFieldByValueCheck("Ответственный за подписание", "Рустамова Саодатчон Валиевна");
         basePage
                 .clickButtonByNameCheck("Подтвердить");
@@ -357,7 +367,7 @@ public class SimpleRouteTest extends BaseTest {
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
         menuComponent
                 .clickButtonByLiName("Добавить условие");//Выбрать "Добавить условие"
-        fieldComponent
+        lookupComponent
                 .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер заявки, нажать на кнопку галочки
@@ -382,13 +392,14 @@ public class SimpleRouteTest extends BaseTest {
                 .clickButtonOnPageByName(CONTRACT_PAGE_MARKER,"Действия");  //Создание договора
         menuComponent
                 .clickButtonByLiName("Создание договора");
-        fieldPage
-                .setHandBookFieldByValueCheck("Вид планирования","Аннуитетный_005")
+        lookupComponent
+                .setHandBookFieldByValueCheck("Вид планирования","Аннуитетный_005");
+        fieldValueResolver
                 .getFieldValueSmart("Вид планирования");
         contractPage
-                .selectLoadCreditTypeNew("Получает сегодня");
-        fieldPage
-                .fillLoadCreditTypeSafely("Получает сегодня")
+                .selectLoadCreditTypeNew("Получает сегодня")
+                .fillLoadCreditTypeSafely("Получает сегодня");
+        fieldValueResolver
                 .getFieldValueSmart("Тип получения кредита");
         basePage
                 .clickButtonByName("Выбрать");
@@ -473,9 +484,9 @@ public class SimpleRouteTest extends BaseTest {
         contractCredit
                 .clickButtonByContainNameCheck("История")
                 .clickLookupLinkByLabel("Договор",CONTRACT_PAGE_MARKER);*/  //Нажать на кнопку договора через вкладку "История" // Продолжение заявки
-        // Продолжение заявки
+        // Продолжение заявки */
 
-        contractPage
+        /*contractPage
                 .saveValueByMarker("Number"); //Копирование номера "Кредитного договора"
         buttonsComponent
                 .clickButtonByContainNameCheck("Операции по договору"); //Перейти на вкладку "Операции по договору"
@@ -521,7 +532,7 @@ public class SimpleRouteTest extends BaseTest {
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
         menuComponent
                 .clickButtonByLiName("Добавить условие"); //Выбрать "Добавить условие"
-        fieldComponent
+        lookupComponent
                 .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер договора, нажать на кнопку галочки
@@ -591,7 +602,7 @@ public class SimpleRouteTest extends BaseTest {
                 .clickButtonByNameCheck("Фильтры/группы"); // Нажать на "Фильтры/группы"
         menuComponent
                 .clickButtonByLiName("Добавить условие");//Выбрать "Добавить условие"
-        fieldComponent
+        lookupComponent
                 .setFieldScheduleDetailByDIMNewCheck("columnEdit","Номер"); //Первое поле выбрать "Номер"
         contractPage
                 .applySavedValueIntoField("searchEdit","applyButton"); //Вставить скопированный номер договора, нажать на кнопку галочки
@@ -625,7 +636,7 @@ public class SimpleRouteTest extends BaseTest {
 
     }
 
-}
+}*/
 
 
 

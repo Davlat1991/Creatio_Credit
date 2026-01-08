@@ -3,6 +3,7 @@ package steps.contacts;
 import io.qameta.allure.Step;
 import core.pages.contacts.ContactCardPage;
 import core.base.BasePage;
+import core.base.common.components.DetailComponent;
 
 public class ContactCardSteps {
 
@@ -15,7 +16,7 @@ public class ContactCardSteps {
         return this;
     }
 
-    @Step("Открыть деталь '{detailName}' в карточке контакта")
+   /* @Step("Открыть деталь '{detailName}' в карточке контакта")
     public ContactCardSteps openDetail(String detailName) {
         card.openDetail(detailName);
         return this;
@@ -37,7 +38,7 @@ public class ContactCardSteps {
     public ContactCardSteps openDetailRow(String rowName) {
         card.openDetailRow(rowName);
         return this;
-    }
+    }*/
 
     @Step("Перейти в режим редактирования карточки")
     public ContactCardSteps editCard() {

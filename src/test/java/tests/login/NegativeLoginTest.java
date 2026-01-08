@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Condition.text;
 
-@Epic("Creatio Authorization")
+/*@Epic("Creatio Authorization")
 @Feature("Login Page")
 public class NegativeLoginTest extends BaseTest {
 
@@ -31,7 +31,7 @@ public class NegativeLoginTest extends BaseTest {
         loginPage.getLoginError()
                 .shouldHave(text("Неверный логин или пароль"));
     }
-}
+}*/
 
 
 

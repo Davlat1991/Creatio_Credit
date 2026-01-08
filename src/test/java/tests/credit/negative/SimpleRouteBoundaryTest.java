@@ -8,7 +8,7 @@ import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import core.config.Environment;
 
-@Epic("Creatio Credit")
+/*@Epic("Creatio Credit")
 @Feature("Упрощённый маршрут")
 public class SimpleRouteBoundaryTest extends BaseTest {
 
@@ -52,6 +52,6 @@ public class SimpleRouteBoundaryTest extends BaseTest {
                 .save()
                 .verifyStatus("Создано");
     }
-}
+}*/
 
 

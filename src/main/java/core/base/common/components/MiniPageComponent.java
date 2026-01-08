@@ -2,6 +2,7 @@ package core.base.common.components;
 
 
 import com.codeborne.selenide.*;
+import core.pages.contacts.ContactCardPage;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.*;
@@ -133,6 +134,12 @@ public class MiniPageComponent extends Components {
 
         $x(xpath).shouldBe(visible);
 
+        return this;
+    }
+
+    public MiniPageComponent waitForMiniPage() {
+        $x("//*[@data-item-marker='MiniPage']")
+                .shouldBe(Condition.visible);
         return this;
     }
 

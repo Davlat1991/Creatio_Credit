@@ -1,49 +1,54 @@
 package flows.credit;
 
+import core.base.TestContext;
+import core.data.contacts.ContactData;
+import io.qameta.allure.Step;
 
+/**
+ * Business flow:
+ * старт консультации и поиск клиента
+ * (БЕЗ логина и пароля)
+ */
+public class AuthorizationAndClientSearchFlow {
 
-import core.base.BaseTest;
-import core.pages.login.LoginPage;
-import io.qameta.allure.*;
-import org.testng.annotations.Test;
-import steps.login.LoginSteps;
+    private final TestContext ctx;
 
-@Epic("Creatio Credit")
-@Feature("Упрощённый маршрут")
-@Story("Smoke: создание заявки")
-@Owner("Davlat")
-@Severity(SeverityLevel.CRITICAL)
+    public AuthorizationAndClientSearchFlow(TestContext ctx) {
+        this.ctx = ctx;
+    }
 
+    @Step("Выбор рабочего места, ввод ФИО и запуск консультации")
+    public void startConsultation(
+            String workspace,
+            ContactData contact
+    ) {
+        selectWorkspace(workspace);
+        fillClientFio(contact);
+        startConsultation();
+    }
 
-public class AuthorizationAndClientSearchFlow extends BaseTest {
+    // ======================
+    // INTERNAL STEPS
+    // ======================
 
-    private final LoginSteps login = new LoginSteps();
-    private final LoginPage openUrl = new LoginPage();
+    private void selectWorkspace(String workspace) {
+        ctx.workspaceSteps.selectWorkAccess(workspace);
+        ctx.basePage.clickButtonById("view-button-OBSW-imageEl");
+    }
 
-    @Test(
-            groups = {"smoke"},
-            description = "Smoke: создание заявки через упрощённый маршрут. Проверка статуса 'Создано'"
-    )
-    public void simpleRouteSmokeTest() {
+    private void fillClientFio(ContactData contact) {
+        ctx.fieldPage
+                .setFieldByValue("Фамилия", contact.getLastName(), true, false)
+                .setFieldByValue("Имя", contact.getFirstName(), true, false)
+                .setFieldByValue("Отчество", contact.getMiddleName(), true, false);
+    }
 
-        // 1. Авторизация
-        openUrl
-                .openUrl(BASE_ULR_1).openUrl("http://10.10.202.254/0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/666a922f-d170-4ee8-9d76-3a3a6f1708ca");
-        login
-                .enterUsername(retailManager.getLogin())
-                .enterPassword(retailManager.getPassword())
-                .clickLogin()
-                .verifyLogin();
-
-        workspaceSteps
-                .selectWorkAccess("Розничный менеджер");
-        contractPage
-                .clickButtonById("view-button-OBSW-imageEl");
-
-
-
+    private void startConsultation() {
+        ctx.contractPage.clickButtonByNameCheck("Поиск");
+        ctx.basePage.clickButtonByDataItemMaker("Начать консультацию");
+        ctx.detailPage.openDetailByName("Оформить заявку");
+        ctx.consultationPanel.registerProductByDIM(
+                "consultation-theme-7a0f11cc-756d-474a-885f-1dd64eeca5b3"
+        );
     }
 }
-
-
-

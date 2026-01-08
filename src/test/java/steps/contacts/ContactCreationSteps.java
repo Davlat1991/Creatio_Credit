@@ -19,12 +19,12 @@ public class ContactCreationSteps {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    @Step("Открыть mini-page создания контакта")
+    /*@Step("Открыть mini-page создания контакта")
     public ContactCreationSteps openContactCreationMiniPage() {
         contactsPage.clickAddContactButton();
         cardPage.waitForMiniPage();
         return this;
-    }
+    }*/
 
     @Step("Заполнить ФИО: {data.getLastName()} {data.getFirstName()} {data.getMiddleName()}")
     public ContactCreationSteps fillFullName(ContactData data) {
@@ -60,7 +60,7 @@ public class ContactCreationSteps {
         return this;
     }
 
-    @Step("Создать контакт полностью: {data.getFullName()}")
+   /* @Step("Создать контакт полностью: {data.getFullName()}")
     public ContactCreationSteps createContact(ContactData data) {
         return openContactCreationMiniPage()
                 .fillFullName(data)
@@ -68,7 +68,7 @@ public class ContactCreationSteps {
                 .fillMobilePhone(data)
                 .fillEmail(data)
                 .saveContact();
-    }
+    }*/
 }
 
 

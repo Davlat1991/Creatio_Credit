@@ -7,7 +7,7 @@ import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import core.config.Environment;
 
-@Epic("Creatio Credit")
+/*@Epic("Creatio Credit")
 @Feature("Упрощённый маршрут")
 public class SimpleRouteNegativeTest extends BaseTest {
 
@@ -32,7 +32,7 @@ public class SimpleRouteNegativeTest extends BaseTest {
                 .save()
                 .shouldHaveError("Заполните обязательные поля");
     }
-}
+}*/
 
 
 

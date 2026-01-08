@@ -4,6 +4,8 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import core.base.common.components.ButtonsComponent;
+import core.base.common.components.Components;
 import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
@@ -129,29 +131,6 @@ public class BasePage {
             }
         }
         throw new RuntimeException("Retry failed after " + attempts + " attempts", last);
-    }
-
-
-    protected void clickElementByTagAndNameNew(String tag, String name) {
-        SelenideElement element = $x("//" + tag + "[normalize-space()='" + name + "']")
-                .shouldBe(visible)
-                .scrollIntoView(true);
-
-        safeClick(element);
-    }
-
-
-    @Step("Клик по элементу <{tag}> с текстом '{name}'")
-    public BasePage clickElementByTagAndName(String tag, String name) {
-
-        SelenideElement element = $x("//" + tag + "[normalize-space()='" + name + "']")
-                .shouldBe(visible)
-                .scrollIntoView(true);
-
-        // Creatio DOM: обычный .click() часто не срабатывает → используем JS
-        Selenide.executeJavaScript("arguments[0].click();", element);
-
-        return this;
     }
 
 
@@ -473,6 +452,40 @@ public class BasePage {
                 "Кнопка с data-item-marker='" + marker + "' не появилась за отведённое время"
         );
     }
+
+
+    /**
+     * Универсальная безопасная обёртка (для внешнего использования).
+     * Делегирует в retryClick (Components).
+     */
+    @Step("Безопасный клик по элементу (универсальный)")
+    public BasePage safeClickElement(SelenideElement element) {
+        retryClick(element, "safeClickElement");
+        return this;
+    }
+
+    private void retryClick(SelenideElement element, String safeClickElement) {
+    }
+
+
+    @Step("Двойной клик по элементу с marker '{marker}'")
+    public BasePage doubleClickByMarker(String marker) {
+        SelenideElement el = $x("//*[@data-item-marker='" + marker + "']")
+                .shouldBe(visible, enabled);
+
+        el.doubleClick();
+        return this;
+    }
+
+    @Step("Двойной клик по кнопке по имени '{name}'")
+    public BasePage doubleClickByName(String name) {
+        SelenideElement el = $x("//span[normalize-space(text())='" + name + "']")
+                .shouldBe(visible, enabled);
+
+        el.doubleClick();
+        return this;
+    }
+
 
 
 }

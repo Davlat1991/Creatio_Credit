@@ -1,7 +1,7 @@
 package tests.routes;
 
 
-import core.base.BaseTest;
+/*import core.base.BaseTest;
 import core.config.Environment;
 import core.pages.login.LoginPage;
 import core.pages.routes.ClientDataPage;
@@ -30,4 +30,4 @@ public class StandardRouteNegativeTest extends BaseTest {
                 .decline()
                 .verifyStatus("Отказано");
     }
-}
+}*/

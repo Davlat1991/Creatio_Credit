@@ -332,5 +332,103 @@ public class LookupComponent extends Components {
         return this;
     }
 
+    public LookupComponent setHandBookFieldByValueCheck(String nameField, String value) {
+
+        setFieldByValueCheck(nameField, value);
+
+        SelenideElement item = $x("//div[contains(@class,'listview')]//li[normalize-space(.)='" + value + "']")
+                .shouldBe(Condition.visible);
+
+        item.click();
+
+        $x("//label[normalize-space(.)='" + nameField + "']/../..//input")
+                .shouldHave(Condition.exactValue(value));
+
+        return this;
+    }
+
+    public LookupComponent setFieldByValueCheck(String nameField, String value) {
+
+        SelenideElement input = $x("//label[.='" + nameField + "']/../..//input");
+
+        input.setValue(value)
+                .shouldHave(Condition.value(value));
+
+        return this;
+    }
+
+
+    //Работает 06.12.2025
+    @Step("Ввести и выбрать значение '{value}' в поле по DIM '{name}'")
+    public LookupComponent setFieldScheduleDetailByDIMCheck(String name, String value) {
+
+        // 1️⃣ Находим input
+        SelenideElement input = $x("//div[@data-item-marker='" + name + "']/input")
+                .shouldBe(visible, enabled)
+                .scrollIntoView(true);
+
+        // 2️⃣ Вводим текст
+        input.click();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        input.sendKeys(Keys.BACK_SPACE);
+        input.sendKeys(value);
+
+        // 3️⃣ Ждём появления видимого listview
+        SelenideElement listView = $$x("//div[contains(@class,'listview')]")
+                .findBy(visible)
+                .shouldBe(visible);
+
+        // 4️⃣ Ищем LI по data-item-marker или тексту
+        SelenideElement item = listView.$x(".//li[@data-item-marker='" + value + "' or normalize-space(.)='" + value + "']")
+                .shouldBe(visible, enabled);
+
+        // 5️⃣ Делаем стабильный JS-клик (для Creatio критично)
+        Selenide.executeJavaScript("arguments[0].click();", item);
+
+        // 6️⃣ Ждём, что список закроется = выбор зафиксирован
+        listView.should(disappear);
+
+        // 7️⃣ Проверяем, что поле теперь имеет выбранное значение
+        input.shouldHave(Condition.exactValue(value));
+
+        return this;
+    }
+
+    //Работает 06.12.2025
+    @Step("Ввести и выбрать значение '{value}' в поле по DIM '{name}'")
+    public LookupComponent setFieldScheduleDetailByDIMNewCheck(String name, String value) {
+
+        // 1️⃣ Находим input
+        SelenideElement input = $x("//div[@data-item-marker='" + name + "']/input")
+                .shouldBe(visible, enabled)
+                .scrollIntoView(true);
+
+        // 2️⃣ Вводим текст
+        input.click();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        input.sendKeys(Keys.BACK_SPACE);
+        input.sendKeys(value);
+
+        // 3️⃣ Ждём появления видимого listview
+        SelenideElement listView = $$x("//div[contains(@class,'listview')]")
+                .findBy(visible)
+                .shouldBe(visible);
+
+        // 4️⃣ Ищем LI по data-item-marker или тексту
+        SelenideElement item = listView.$x(".//li[@data-item-marker='" + value + "' or normalize-space(.)='" + value + "']")
+                .shouldBe(visible, enabled);
+
+        // 5️⃣ Делаем стабильный JS-клик (для Creatio критично)
+        Selenide.executeJavaScript("arguments[0].click();", item);
+
+        // 6️⃣ Ждём, что список закроется = выбор зафиксирован
+        listView.should(disappear);
+
+        // 7️⃣ Проверяем, что поле теперь имеет выбранное значение
+        input.shouldHave(Condition.exactValue(value));
+
+        return this;
+    }
+
 }
 
