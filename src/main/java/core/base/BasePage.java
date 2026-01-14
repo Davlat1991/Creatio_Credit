@@ -40,6 +40,7 @@ public class BasePage {
     }
 
 
+
 //Проверить метод и заменить или удалить !!!
     protected void safeClickNew(SelenideElement element) {
         int attempts = 0;
@@ -160,14 +161,23 @@ public class BasePage {
     }
 
 
+    public void openUrl(String url) {
+        com.codeborne.selenide.Selenide.open(url);
+    }
+
+
     protected void waitForLoader() {
         $x("//div[contains(@class,'ts-loader-mask')]")
                 .should(disappear, Duration.ofSeconds(15));
     }
 
 
+
+
+
+
 //Добавлен вручную 18.12.2025
-    public BasePage clickButtonById(String buttonId) {
+    public BasePage clickButtonByIdCheck(String buttonId) {
 
         SelenideElement button = $x("//span[@id='" + buttonId + "']")
                 .shouldBe(Condition.visible)
@@ -179,6 +189,12 @@ public class BasePage {
         } catch (Throwable e) {
             executeJavaScript("arguments[0].click();", button);
         }
+
+        return this;
+    }
+
+    public BasePage clickButtonById(String buttonId){
+        $x("//span[@id='" + buttonId + "']").click();
 
         return this;
     }

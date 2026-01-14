@@ -114,6 +114,14 @@ public class ButtonsComponent extends Components {
         return this;
     }
 
+    @Step("Открыть вкладку 'Документы'")
+    public void openDocumentsTab() {
+        $x("//span[normalize-space()='Документы']")
+                .shouldBe(Condition.visible)
+                .click();
+    }
+
+
 
 
 }

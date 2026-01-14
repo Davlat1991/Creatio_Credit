@@ -125,7 +125,7 @@ public class CreditApplicationSteps {
     // -------------------------------------------------------------
     // 🔵 5. ЗАГРУЗКА ДОКУМЕНТОВ
     // -------------------------------------------------------------
-    @Step("Загрузить документы клиента")
+   /* @Step("Загрузить документы клиента")
     public CreditApplicationSteps uploadDocuments() {
 
         buttons.clickByName("Документы");
@@ -137,7 +137,7 @@ public class CreditApplicationSteps {
         files.upload("Registration (Example).xlsx");
 
         return this;
-    }
+    }*/
 
     // -------------------------------------------------------------
     // 🔵 6. ПРОХОЖДЕНИЕ СТАДИЙ DASHBOARD

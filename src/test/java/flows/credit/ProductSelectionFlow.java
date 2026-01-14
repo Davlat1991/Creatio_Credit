@@ -1,21 +1,18 @@
 package flows.credit;
 
+import core.base.TestContext;
 import io.qameta.allure.Step;
-import core.base.BasePage;
-import core.base.common.components.LookupComponent;
-import core.base.common.components.MessageBoxComponent;
-import core.pages.credit.ContractCreditApplicationPage;
 
 public class ProductSelectionFlow {
 
-    private final LookupComponent lookup = new LookupComponent();
-    private final BasePage basePage = new BasePage();
-    private final MessageBoxComponent messageBox = new MessageBoxComponent();
-    private final ContractCreditApplicationPage contractPage =
-            new ContractCreditApplicationPage();
+    private final TestContext ctx;
 
-    @Step("Подбор и создание кредитного продукта")
-    public void selectAndCreateProduct(
+    public ProductSelectionFlow(TestContext ctx) {
+        this.ctx = ctx;
+    }
+
+    @Step("Подбор и выбор кредитного продукта")
+    public void selectProduct(
             String productType,
             String creditPurpose,
             String amount,
@@ -23,7 +20,7 @@ public class ProductSelectionFlow {
             String currency
     ) {
 
-        fillProductParameters(
+        fillProductCriteria(
                 productType,
                 creditPurpose,
                 amount,
@@ -31,62 +28,38 @@ public class ProductSelectionFlow {
                 currency
         );
 
-        selectProductFromGrid();
-        configureSchedule();
-        calculateAndCreateApplication();
+        findProducts();
+        chooseFirstProduct();
     }
 
-    // =========================
-    // INTERNAL STEPS
-    // =========================
+    // ---------------- PRIVATE STEPS ----------------
 
-    private void fillProductParameters(
+    private void fillProductCriteria(
             String productType,
             String creditPurpose,
             String amount,
             String term,
             String currency
     ) {
-        lookup
+
+        ctx.lookupComponent
                 .setHandBookFieldByValueCheck("Вид продукта", productType)
                 .setHandBookFieldByValueCheck("Цель кредитования", creditPurpose)
                 .setFieldByValueCheck("Сумма", amount)
                 .setFieldByValueCheck("Срок, мес.", term)
                 .setHandBookFieldByValueCheck("Валюта", currency);
-
-        contractPage.clickButtonByNameCheck("Подобрать");
     }
 
-    private void selectProductFromGrid() {
-        contractPage
-                .clickFirstRowInGridAndWaitButton(
-                        "grid-TsiOpportunityConditionSelectionDetailDataGridGrid-wrap",
-                        "Выбрать"
-                );
-
-        basePage.clickButtonByDataItemMakerCheck("Выбрать");
+    private void findProducts() {
+        ctx.contractPage.clickButtonByNameCheck("Подобрать");
     }
 
-    private void configureSchedule() {
-        lookup.setFieldByValueCheck("Запрашиваемая дата погашения", "3");
-
-        basePage.clickButtonById(
-                "KzParameterScheduleDetailAddRecordButtonButton-imageEl"
+    private void chooseFirstProduct() {
+        ctx.contractPage.clickFirstRowInGridAndWaitButton(
+                "grid-TsiOpportunityConditionSelectionDetailDataGridGrid-wrap",
+                "Выбрать"
         );
 
-        contractPage
-                .setfieldScheduleDetailByDIM("KzNumber", "2")
-                .setHandBookFieldByValue("KzTypeScheduler", "Аннуитетный")
-                .setfieldScheduleDetailByDIM("KzTermMonth", "36");
-    }
-
-    private void calculateAndCreateApplication() {
-        basePage
-                .clickButtonByDataItemMaker("save")
-                .clickButtonByNameCheck("Рассчитать")
-                .clickButtonByNameCheck("Создать заявку");
-
-        messageBox.shouldSeeModalWithText("Нет задолженности!");
-        basePage.clickButtonByDataItemMaker("ОК");
+        ctx.basePage.clickButtonByDataItemMakerCheck("Выбрать");
     }
 }

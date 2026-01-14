@@ -1,17 +1,29 @@
 {
   "users": {
-    "davlat": {
+    "retailManager": {
       "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796!@#aaa"
+      "password": "S_RUSTMOVA_796aaa!@#",
+      "role": "RETAIL_MANAGER"
     },
-    "manuchehr": {
+    "underwriter": {
       "login": "A.Khamidov",
-      "password": "A.Khamidov"
+      "password": "A.Khamidov",
+      "role": "UNDERWRITER"
+    },
+    "ikok": {
+      "login": "A.Khamidov",
+      "password": "A.Khamidov",
+      "role": "IKOK"
+    },
+    "cashier": {
+      "login": "S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796aaa!@#",
+      "role": "CASHIER"
     }
   },
 
-  "contacts": [
-    {
+  "contacts": {
+    "default": {
       "firstname": "Сафарали",
       "lastname": "Садуллоев",
       "middlename": "Нусратович",
@@ -19,19 +31,22 @@
       "documentType": "Паспорт",
       "documentNumber": "12345678"
     }
-  ],
-
-  "loan": {
-    "defaultAmount": "30000",
-    "defaultTerm": "24",
-    "currency": "Сомони Чумхурии Точикистон"
   },
 
-  "scenarios": {
-    "creditFlowBasic": {
-      "amount": "20000",
-      "term": "12",
-      "product": "Потребительский кредит"
-    }
+  "documents": {
+    "financialDossier": [
+      "Registration (Example).xlsx"
+    ],
+    "clientDossier": [
+      "Registration (Example).xlsx",
+      "Registration (Example).xlsx"
+    ]
+  },
+
+  "loanDefaults": {
+    "amount": "30000",
+    "term": "24",
+    "currency": "Сомони Чумхурии Точикистон"
   }
+
 }

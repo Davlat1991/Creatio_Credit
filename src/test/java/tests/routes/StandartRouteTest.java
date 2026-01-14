@@ -335,12 +335,12 @@ import static core.pages.credit.ContractCreditApplicationPage.CONTRACT_PAGE_MARK
                 .validateUploadFile("Registration (Example).xlsx");
 
 
+        //7. ReviewStageFlow
+
+
         dashboardComponent
                 .clickElementDashboardCheck("Вложить документы и отправить на рассмотрение","Execute",
                         "//*[@data-item-marker='MiniPage']"); //Нажать на кнопку "Завершить"
-
-        //7. ReviewStageFlow
-
         contractPage
                 .setfieldScheduleDetailByDIM("Result","Выполнена");
         menuComponent

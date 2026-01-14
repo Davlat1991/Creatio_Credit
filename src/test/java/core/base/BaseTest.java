@@ -1,12 +1,10 @@
 package core.base;
 
-import com.codeborne.selenide.Configuration;
+
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import core.data.contacts.ContactData;
-import core.data.users.LoginData;
-import flows.credit.AuthorizationAndClientSearchFlow;
+
 import io.qameta.allure.Attachment;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.OutputType;
@@ -29,28 +27,18 @@ import java.util.Properties;
 
 
 @Listeners({AllureTestListener.class})
-public class BaseTest {
+public abstract class BaseTest {
 
-
-
-
-    // URL из environment.properties
     protected final String BASE_URL = ConfigProperties.get("base.url");
+    protected final String BASE_URL_1 = "http://10.10.202.254/";
 
-    // PageObject'ы
-    protected AuthorizationAndClientSearchFlow authAndClientFlow;
-    protected LoginData retailManager =
-            new LoginData("S_RUSTMOVA_796", "S_RUSTMOVA_796!@#$%qwerty");
     protected TestContext ctx;
-
-
 
     // -------------------------- BEFORE SUITE --------------------------
 
     @BeforeSuite(alwaysRun = true)
     public void setUpDriver() {
         DriverFactory.configure();
-        System.out.println("⚙ DriverFactory configured");
     }
 
     @BeforeSuite(alwaysRun = true)
@@ -58,9 +46,8 @@ public class BaseTest {
         try {
             Properties props = new Properties();
             props.put("Environment", System.getProperty("environment", "QA"));
-            props.put("Base URL", ConfigProperties.get("base.url"));
+            props.put("Base URL", BASE_URL_1);
             props.put("Browser", ConfigProperties.get("browser"));
-            props.put("Author", "Davlat");
             props.put("Project", "Creatio Credit UI Tests");
 
             Path resultsDir = Paths.get("target", "allure-results");
@@ -83,24 +70,30 @@ public class BaseTest {
         SelenideLogger.addListener(
                 "AllureSelenide",
                 new AllureSelenide()
-                        .screenshots(true)              // Скрин только при ошибке → must-have
-                        .savePageSource(false)          // Creatio DOM огромный → не сохраняем
-                        .includeSelenideSteps(false)    // Оставляем только ручные @Step
+                        .screenshots(true)
+                        .savePageSource(false)
+                        .includeSelenideSteps(false)
         );
     }
-
-
 
     @BeforeMethod(alwaysRun = true)
     public void initContext() {
         ctx = new TestContext();
     }
 
-    @BeforeMethod(alwaysRun = true)
-    public void initFlows() {
-        authAndClientFlow = new AuthorizationAndClientSearchFlow(ctx);
-    }
+    // -------------------------- AFTER METHOD --------------------------
 
+    @AfterMethod(alwaysRun = true)
+    public void tearDown(ITestResult result) {
+
+        if (result.getStatus() == ITestResult.FAILURE) {
+            attachScreenshot();
+            attachPageSource();
+            attachBrowserLogs();
+        }
+
+        Selenide.closeWebDriver();
+    }
 
     // -------------------------- ATTACHMENTS --------------------------
 
@@ -119,43 +112,6 @@ public class BaseTest {
     public String attachBrowserLogs() {
         return String.join("\n", Selenide.getWebDriverLogs("browser"));
     }
-
-
-
-    // -------------------------- AFTER METHOD --------------------------
-
-    @AfterMethod(alwaysRun = true)
-    public void tearDown(ITestResult result) {
-
-        if (result.getStatus() == ITestResult.FAILURE) {
-            attachScreenshot();
-            attachPageSource();
-            attachBrowserLogs();
-        }
-
-        Selenide.closeWebDriver();
-    }
-
-    @BeforeClass(alwaysRun = true)
-    public void setBrowserSizeBeforeDriverStart() {
-        Configuration.browserSize = ConfigProperties.get("browser.size", "1530x970");
-        System.out.println("📏 Browser size configured: " + Configuration.browserSize);
-    }
-
-    public ContactData contact = new ContactData
-                (   "Сафарали",
-                    "Нусратович",
-                    "Садуллоев",
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null);
-
-    public String BASE_ULR = "http://10.10.202.245/";
-    public String BASE_ULR_1 = "http://10.10.202.254/";
-
 }
+
 

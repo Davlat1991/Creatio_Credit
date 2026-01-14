@@ -6,30 +6,28 @@
        parallel="none">
 
     <listeners>
-        <!-- Allure listener -->
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
-        <!-- Кастомный listener -->
         <listener class-name="core.base.TestListener"/>
     </listeners>
 
     <!-- SMOKE -->
     <test name="Smoke Tests" preserve-order="true">
         <packages>
-            <package name="tests.smoke"/>
+            <package name="tests.credit.smoke"/>
         </packages>
     </test>
 
     <!-- REGRESSION -->
     <test name="Regression Tests" preserve-order="true">
         <packages>
-            <package name="tests.regression"/>
+            <package name="tests.credit.regression"/>
         </packages>
     </test>
 
     <!-- NEGATIVE -->
     <test name="Negative Tests" preserve-order="true">
         <packages>
-            <package name="tests.negative"/>
+            <package name="tests.credit.negative"/>
         </packages>
     </test>
 

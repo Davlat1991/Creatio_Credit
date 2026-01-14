@@ -1,0 +1,135 @@
+---- AspectJ Properties ---
+AspectJ Compiler 1.9.21 built on Sunday Dec 10, 2023 at 18:55:52 PST
+---- Dump Properties ---
+Dump file: ajcore.20260114.133734.144.txt
+Dump reason: java.lang.ClassCircularityError
+Dump on exception: true
+Dump at exit condition: abort
+---- Exception Information ---
+java.lang.ClassCircularityError: java/lang/Module$ReflectionData
+	at java.base/java.lang.Module.isReflectivelyExportedOrOpen(Module.java:766)
+	at java.base/java.lang.Module.implIsExportedOrOpen(Module.java:712)
+	at java.base/java.lang.Module.isExported(Module.java:651)
+	at java.base/sun.invoke.util.VerifyAccess.isClassAccessible(VerifyAccess.java:213)
+	at java.base/java.lang.invoke.MethodHandles$Lookup.isClassAccessible(MethodHandles.java:3810)
+	at java.base/java.lang.invoke.MethodHandles$Lookup.resolveOrNull(MethodHandles.java:3776)
+	at java.base/java.lang.invoke.MethodHandles$Lookup.canBeCached(MethodHandles.java:4310)
+	at java.base/java.lang.invoke.MethodHandles$Lookup.linkMethodHandleConstant(MethodHandles.java:4276)
+	at java.base/java.lang.invoke.MethodHandleNatives.linkMethodHandleConstant(MethodHandleNatives.java:628)
+	at java.base/sun.net.www.protocol.jrt.JavaRuntimeURLConnection.<clinit>(JavaRuntimeURLConnection.java:56)
+	at java.base/sun.net.www.protocol.jrt.Handler.openConnection(Handler.java:42)
+	at java.base/java.net.URL.openConnection(URL.java:1258)
+	at java.xml/com.sun.org.apache.xerces.internal.impl.XMLEntityManager.setupCurrentEntity(XMLEntityManager.java:661)
+	at java.xml/com.sun.org.apache.xerces.internal.impl.XMLVersionDetector.determineDocVersion(XMLVersionDetector.java:150)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:862)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:826)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:134)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1225)
+	at java.xml/com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:643)
+	at java.xml/com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(SAXParserImpl.java:326)
+	at java.xml/javax.xml.parsers.SAXParser.parse(SAXParser.java:276)
+	at java.xml/javax.xml.catalog.CatalogImpl.parse(CatalogImpl.java:295)
+	at java.xml/javax.xml.catalog.CatalogImpl.load(CatalogImpl.java:171)
+	at java.xml/javax.xml.catalog.CatalogManager.catalog(CatalogManager.java:73)
+	at java.xml/jdk.xml.internal.JdkCatalog.init(JdkCatalog.java:43)
+	at java.xml/jdk.xml.internal.XMLSecurityManager.prepareCatalog(XMLSecurityManager.java:305)
+	at java.xml/jdk.xml.internal.XMLSecurityManager.<init>(XMLSecurityManager.java:290)
+	at java.xml/com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl.<init>(SAXParserFactoryImpl.java:72)
+	at java.xml/jdk.xml.internal.JdkXmlUtils.getSAXFactory(JdkXmlUtils.java:441)
+	at java.xml/jdk.xml.internal.JdkXmlUtils.<clinit>(JdkXmlUtils.java:97)
+	at java.xml/com.sun.org.apache.xerces.internal.util.ParserConfigurationSettings.<init>(ParserConfigurationSettings.java:102)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.XML11Configuration.<init>(XML11Configuration.java:485)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.XIncludeAwareParserConfiguration.<init>(XIncludeAwareParserConfiguration.java:136)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.XIncludeAwareParserConfiguration.<init>(XIncludeAwareParserConfiguration.java:93)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.SAXParser.<init>(SAXParser.java:121)
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.SAXParser.<init>(SAXParser.java:101)
+	at java.xml/org.xml.sax.helpers.XMLReaderFactory.createXMLReader(XMLReaderFactory.java:152)
+	at org.aspectj.weaver.loadtime.definition.DocumentParser.getXMLReader(DocumentParser.java:165)
+	at org.aspectj.weaver.loadtime.definition.DocumentParser.saxParsing(DocumentParser.java:135)
+	at org.aspectj.weaver.loadtime.definition.DocumentParser.parse(DocumentParser.java:122)
+	at org.aspectj.weaver.loadtime.ClassLoaderWeavingAdaptor.parseDefinitions(ClassLoaderWeavingAdaptor.java:288)
+	at org.aspectj.weaver.loadtime.DefaultWeavingContext.getDefinitions(DefaultWeavingContext.java:130)
+	at org.aspectj.weaver.loadtime.ClassLoaderWeavingAdaptor.initialize(ClassLoaderWeavingAdaptor.java:173)
+	at org.aspectj.weaver.loadtime.Aj$ExplicitlyInitializedClassLoaderWeavingAdaptor.initialize(Aj.java:335)
+	at org.aspectj.weaver.loadtime.Aj$ExplicitlyInitializedClassLoaderWeavingAdaptor.getWeavingAdaptor(Aj.java:340)
+	at org.aspectj.weaver.loadtime.Aj$WeaverContainer.getWeaver(Aj.java:314)
+	at org.aspectj.weaver.loadtime.Aj.preProcess(Aj.java:108)
+	at org.aspectj.weaver.loadtime.ClassPreProcessorAgentAdapter.transform(ClassPreProcessorAgentAdapter.java:51)
+	at java.instrument/java.lang.instrument.ClassFileTransformer.transform(ClassFileTransformer.java:242)
+	at java.instrument/sun.instrument.TransformerManager.transform(TransformerManager.java:188)
+	at java.instrument/sun.instrument.InstrumentationImpl.transform(InstrumentationImpl.java:610)
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1026)
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:150)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:862)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:760)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:681)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:639)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:528)
+	at java.instrument/sun.instrument.InstrumentationImpl.loadClassAndStartAgent(InstrumentationImpl.java:504)
+	at java.instrument/sun.instrument.InstrumentationImpl.loadClassAndCallPremain(InstrumentationImpl.java:572)
+---- System Properties ---
+java.specification.version=23
+sun.cpu.isalist=amd64
+sun.jnu.encoding=Cp1251
+java.class.path=C:\Program Files\JetBrains\IntelliJ IDEA 2024.1.4\lib\idea_rt.jar;C:\Program Files\JetBrains\IntelliJ IDEA 2024.1.4\plugins\testng\lib\testng-rt.jar;E:\QA\Git\Git\Creatio_Credit\target\test-classes;E:\QA\Git\Git\Creatio_Credit\target\classes;C:\Users\D_Khakimov\.m2\repository\com\codeborne\selenide\7.2.1\selenide-7.2.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-java\4.18.1\selenium-java-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-api\4.18.1\selenium-api-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\4.18.1\selenium-chrome-driver-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\com\google\auto\service\auto-service-annotations\1.1.1\auto-service-annotations-1.1.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-chromium-driver\4.18.1\selenium-chromium-driver-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-json\4.18.1\selenium-json-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-manager\4.18.1\selenium-manager-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v120\4.18.1\selenium-devtools-v120-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v121\4.18.1\selenium-devtools-v121-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v122\4.18.1\selenium-devtools-v122-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v85\4.18.1\selenium-devtools-v85-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\4.18.1\selenium-edge-driver-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\4.18.1\selenium-firefox-driver-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-http\4.18.1\selenium-http-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\dev\failsafe\failsafe\3.3.2\failsafe-3.3.2.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\4.18.1\selenium-ie-driver-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\4.18.1\selenium-remote-driver-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\semconv\opentelemetry-semconv\1.23.1-alpha\opentelemetry-semconv-1.23.1-alpha.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-api\1.35.0\opentelemetry-api-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-context\1.35.0\opentelemetry-context-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-exporter-logging\1.35.0\opentelemetry-exporter-logging-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-sdk-common\1.35.0\opentelemetry-sdk-common-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure-spi\1.35.0\opentelemetry-sdk-extension-autoconfigure-spi-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure\1.35.0\opentelemetry-sdk-extension-autoconfigure-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-api-events\1.35.0-alpha\opentelemetry-api-events-1.35.0-alpha.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-sdk-trace\1.35.0\opentelemetry-sdk-trace-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-extension-incubator\1.35.0-alpha\opentelemetry-extension-incubator-1.35.0-alpha.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-sdk\1.35.0\opentelemetry-sdk-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-sdk-metrics\1.35.0\opentelemetry-sdk-metrics-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\io\opentelemetry\opentelemetry-sdk-logs\1.35.0\opentelemetry-sdk-logs-1.35.0.jar;C:\Users\D_Khakimov\.m2\repository\net\bytebuddy\byte-buddy\1.14.12\byte-buddy-1.14.12.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-os\4.18.1\selenium-os-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\4.18.1\selenium-safari-driver-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\seleniumhq\selenium\selenium-support\4.18.1\selenium-support-4.18.1.jar;C:\Users\D_Khakimov\.m2\repository\org\slf4j\slf4j-api\2.0.12\slf4j-api-2.0.12.jar;C:\Users\D_Khakimov\.m2\repository\com\codeborne\selenide-core\7.2.1\selenide-core-7.2.1.jar;C:\Users\D_Khakimov\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\httpcomponents\client5\httpclient5\5.3.1\httpclient5-5.3.1.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\httpcomponents\core5\httpcore5\5.2.4\httpcore5-5.2.4.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\httpcomponents\core5\httpcore5-h2\5.2.4\httpcore5-h2-5.2.4.jar;C:\Users\D_Khakimov\.m2\repository\com\google\guava\guava\33.0.0-jre\guava-33.0.0-jre.jar;C:\Users\D_Khakimov\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\D_Khakimov\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\D_Khakimov\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\D_Khakimov\.m2\repository\org\checkerframework\checker-qual\3.41.0\checker-qual-3.41.0.jar;C:\Users\D_Khakimov\.m2\repository\com\google\errorprone\error_prone_annotations\2.23.0\error_prone_annotations-2.23.0.jar;C:\Users\D_Khakimov\.m2\repository\com\google\j2objc\j2objc-annotations\2.8\j2objc-annotations-2.8.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\commons\commons-lang3\3.14.0\commons-lang3-3.14.0.jar;C:\Users\D_Khakimov\.m2\repository\commons-io\commons-io\2.15.1\commons-io-2.15.1.jar;C:\Users\D_Khakimov\.m2\repository\org\testng\testng\7.11.0\testng-7.11.0.jar;C:\Users\D_Khakimov\.m2\repository\org\jcommander\jcommander\1.83\jcommander-1.83.jar;C:\Users\D_Khakimov\.m2\repository\org\webjars\jquery\3.7.1\jquery-3.7.1.jar;C:\Users\D_Khakimov\.m2\repository\io\rest-assured\rest-assured\5.4.0\rest-assured-5.4.0.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\groovy\groovy\4.0.16\groovy-4.0.16.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\groovy\groovy-xml\4.0.16\groovy-xml-4.0.16.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\httpcomponents\httpclient\4.5.13\httpclient-4.5.13.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\httpcomponents\httpcore\4.4.13\httpcore-4.4.13.jar;C:\Users\D_Khakimov\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar;C:\Users\D_Khakimov\.m2\repository\commons-codec\commons-codec\1.11\commons-codec-1.11.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\httpcomponents\httpmime\4.5.13\httpmime-4.5.13.jar;C:\Users\D_Khakimov\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\D_Khakimov\.m2\repository\org\ccil\cowan\tagsoup\tagsoup\1.2.1\tagsoup-1.2.1.jar;C:\Users\D_Khakimov\.m2\repository\io\rest-assured\json-path\5.4.0\json-path-5.4.0.jar;C:\Users\D_Khakimov\.m2\repository\org\apache\groovy\groovy-json\4.0.16\groovy-json-4.0.16.jar;C:\Users\D_Khakimov\.m2\repository\io\rest-assured\rest-assured-common\5.4.0\rest-assured-common-5.4.0.jar;C:\Users\D_Khakimov\.m2\repository\io\rest-assured\xml-path\5.4.0\xml-path-5.4.0.jar;C:\Users\D_Khakimov\.m2\repository\io\qameta\allure\allure-testng\2.27.0\allure-testng-2.27.0.jar;C:\Users\D_Khakimov\.m2\repository\io\qameta\allure\allure-java-commons\2.27.0\allure-java-commons-2.27.0.jar;C:\Users\D_Khakimov\.m2\repository\io\qameta\allure\allure-model\2.27.0\allure-model-2.27.0.jar;C:\Users\D_Khakimov\.m2\repository\io\qameta\allure\allure-test-filter\2.27.0\allure-test-filter-2.27.0.jar;C:\Users\D_Khakimov\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\D_Khakimov\.m2\repository\io\qameta\allure\allure-selenide\2.27.0\allure-selenide-2.27.0.jar;C:\Users\D_Khakimov\.m2\repository\org\aspectj\aspectjweaver\1.9.21\aspectjweaver-1.9.21.jar
+java.vm.vendor=Oracle Corporation
+sun.arch.data.model=64
+idea.test.cyclic.buffer.size=1048576
+user.variant=
+java.vendor.url=https://java.oracle.com/
+user.timezone=Asia/Tashkent
+java.vm.specification.version=23
+os.name=Windows 11
+sun.java.launcher=SUN_STANDARD
+user.country=RU
+sun.boot.library.path=C:\Users\D_Khakimov\.jdks\openjdk-23.0.2\bin
+sun.java.command=com.intellij.rt.testng.RemoteTestNGStarter -usedefaultlisteners false -socket63199 @w@C:\Users\D_Khakimov\AppData\Local\Temp\idea_working_dirs_testng.tmp -temp C:\Users\D_Khakimov\AppData\Local\Temp\idea_testng.tmp
+jdk.debug=release
+allure.results.directory=E:\QA\Git\Git\Creatio_Credit\target/allure-results
+sun.cpu.endian=little
+user.home=C:\Users\D_Khakimov
+user.language=ru
+sun.stderr.encoding=UTF-8
+java.specification.vendor=Oracle Corporation
+java.version.date=2025-01-21
+java.home=C:\Users\D_Khakimov\.jdks\openjdk-23.0.2
+file.separator=\
+java.vm.compressedOopsMode=Zero based
+sun.stdout.encoding=UTF-8
+line.separator=
+
+java.vm.specification.vendor=Oracle Corporation
+java.specification.name=Java Platform API Specification
+user.script=
+sun.management.compiler=HotSpot 64-Bit Tiered Compilers
+java.runtime.version=23.0.2+7-58
+user.name=D_Khakimov
+stdout.encoding=UTF-8
+path.separator=;
+os.version=10.0
+java.runtime.name=OpenJDK Runtime Environment
+file.encoding=UTF-8
+java.vm.name=OpenJDK 64-Bit Server VM
+java.vendor.url.bug=https://bugreport.java.com/bugreport/
+java.io.tmpdir=C:\Users\D_KHAK~1\AppData\Local\Temp\
+java.version=23.0.2
+user.dir=E:\QA\Git\Git\Creatio_Credit
+os.arch=amd64
+java.vm.specification.name=Java Virtual Machine Specification
+sun.os.patch.level=
+native.encoding=Cp1251
+java.library.path=C:\Users\D_Khakimov\.jdks\openjdk-23.0.2\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Amazon Corretto\jdk17.0.14_7\bin;C:\Oracle\product\11.2.0\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files (x86)\HP\Common\HPDestPlgIn\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\D_Khakimov\scoop\apps\maven\current\bin;C:\Users\D_Khakimov\scoop\shims;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\D_Khakimov\AppData\Local\Microsoft\WindowsApps;C:\Users\D_Khakimov\.dotnet\tools;C:\Program Files\JetBrains\IntelliJ IDEA 2024.1.4\bin;;E:\QA\Automation testing\Banza_Automation\5.Install\Tools\allure-2.34.1\allure-2.34.1\bin;E:\QA\Automation testing\Banza_Automation\5.Install\Tools\allure-2.34.1\allure-2.34.1;C:\Users\D_Khakimov\AppData\Local\GitHubDesktop\bin;C:\Program Files (x86)\HP\Common\HPDestPlgIn\;;.
+java.vm.info=mixed mode, sharing
+stderr.encoding=UTF-8
+java.vendor=Oracle Corporation
+java.vm.version=23.0.2+7-58
+sun.io.unicode.encoding=UnicodeLittle
+java.class.version=67.0
+---- Command Line ---
+Empty
+---- Full Classpath ---
+Empty
+---- Compiler Messages ---
+Empty

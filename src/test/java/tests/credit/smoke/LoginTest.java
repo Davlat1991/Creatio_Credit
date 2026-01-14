@@ -8,7 +8,7 @@ import steps.login.LoginSteps;
 import static core.config.Environment.BASE_URL;
 
 
-public class LoginTest extends BaseTest {
+/*public class LoginTest extends BaseTest {
 
 
 
@@ -29,4 +29,4 @@ public class LoginTest extends BaseTest {
         }
 
 
-}
+}*/

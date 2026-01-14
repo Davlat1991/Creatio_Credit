@@ -1,8 +1,11 @@
 package core.pages.ui;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import static com.codeborne.selenide.Selenide.$x;
+import io.qameta.allure.Step;
+
+import static com.codeborne.selenide.Selenide.*;
 
 public class DetailPage {
 
@@ -66,7 +69,8 @@ public class DetailPage {
 
 
     //Работает 19.12.2025
-    public DetailPage openDetailByName(String detailName) {
+
+    public DetailPage openDetailByName2(String detailName) {
         if ($x("//span[.='" + detailName + "']/../..")
                 .getAttribute("class")
                 .contains("collapsed")) {
@@ -75,6 +79,42 @@ public class DetailPage {
         }
         return this;
     }
+
+
+
+    // 14.01.2026
+
+    @Step("Открыть деталь '{detailTitle}'")
+    public void openDetailByName(String detailTitle) {
+        $x("//span[normalize-space()='" + detailTitle + "']")
+                .shouldBe(Condition.visible)
+                .click();
+    }
+
+    @Step("Дождаться загрузки grid детали")
+    public void waitUntilDetailGridReady() {
+        $x(".//div[contains(@class,'grid-layout')]")
+                .shouldBe(Condition.visible);
+    }
+
+    @Step("Получить ID активной записи детали")
+    public String getActiveDetailRecordId() {
+
+        SelenideElement row =
+                $(".doc-row")
+                        .shouldBe(Condition.exist);
+
+        return row.getAttribute("data-id");
+    }
+
+    @Step("Обновить деталь")
+    public void refreshDetail() {
+        Selenide.refresh();
+        waitUntilDetailGridReady();
+    }
+
+
+
 }
 
 

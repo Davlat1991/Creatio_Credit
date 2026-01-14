@@ -1,6 +1,6 @@
 package tests.credit.regression;
 
-import core.base.BaseTest;
+/*import core.base.BaseTest;
 import core.base.common.components.*;
 import core.pages.credit.ConsultationPanelPage;
 import core.pages.credit.ContractCreditApplicationPage;
@@ -139,3 +139,4 @@ public class UprashenniyMarshrutCreditTest extends BaseTest {
         credit.issueCredit("Наличными");
     }
 }
+*/

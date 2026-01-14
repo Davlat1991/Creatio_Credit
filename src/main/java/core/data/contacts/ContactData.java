@@ -5,16 +5,16 @@ import java.time.LocalDate;
 
 public class ContactData {
 
-    private final String firstName;
-    private final String middleName;
-    private final String lastName;
-    private final LocalDate birthDate;
-    private final String passportNumber;
-    private final String passportIssuedBy;
-    private final LocalDate passportIssueDate;
-    private final String mobilePhone;
-    private final String email;
-    private final String address;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private LocalDate birthDate;
+    private String passportNumber;
+    private String passportIssuedBy;
+    private LocalDate passportIssueDate;
+    private String mobilePhone;
+    private String email;
+    private String address;
 
     // Конструктор
     public ContactData(String firstName,
