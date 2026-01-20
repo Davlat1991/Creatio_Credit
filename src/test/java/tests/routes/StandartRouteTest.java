@@ -376,8 +376,8 @@ import static core.pages.credit.ContractCreditApplicationPage.CONTRACT_PAGE_MARK
         openUrl
                 .openUrl(BASE_ULR_1);//.openUrl("");
         login
-                .enterUsername(retailManager.getLogin())
-                .enterPassword(retailManager.getPassword())
+                .enterUsername(underwriter.getLogin())
+                .enterPassword(underwriter.getPassword())
                 .clickLogin()
                 .verifyLogin();
 
@@ -462,8 +462,8 @@ import static core.pages.credit.ContractCreditApplicationPage.CONTRACT_PAGE_MARK
         openUrl
                 .openUrl(BASE_ULR_1);//.openUrl("");
         login
-                .enterUsername(retailManager.getLogin())
-                .enterPassword(retailManager.getPassword())
+                .enterUsername(ikok.getLogin())
+                .enterPassword(ikok.getPassword())
                 .clickLogin()
                 .verifyLogin();
 
@@ -631,8 +631,8 @@ import static core.pages.credit.ContractCreditApplicationPage.CONTRACT_PAGE_MARK
         openUrl
                 .openUrl(BASE_ULR_1);//.openUrl("");
         login
-                .enterUsername(retailManager.getLogin())
-                .enterPassword(retailManager.getPassword())
+                .enterUsername(cashier.getLogin())
+                .enterPassword(cashier.getPassword())
                 .clickLogin()
                 .verifyLogin();
 
@@ -703,8 +703,8 @@ import static core.pages.credit.ContractCreditApplicationPage.CONTRACT_PAGE_MARK
         openUrl
                 .openUrl(BASE_ULR_1);//.openUrl("");
         login
-                .enterUsername(retailManager.getLogin())
-                .enterPassword(retailManager.getPassword())
+                .enterUsername(ikok.getLogin())
+                .enterPassword(ikok.getPassword())
                 .clickLogin()
                 .verifyLogin();
 

@@ -85,7 +85,7 @@ public class DetailPage {
     // 14.01.2026
 
     @Step("Открыть деталь '{detailTitle}'")
-    public void openDetailByName(String detailTitle) {
+    public void openDetailByName3(String detailTitle) {
         $x("//span[normalize-space()='" + detailTitle + "']")
                 .shouldBe(Condition.visible)
                 .click();
@@ -112,6 +112,20 @@ public class DetailPage {
         Selenide.refresh();
         waitUntilDetailGridReady();
     }
+
+    @Step("Открыть деталь '{detailName}'")
+    public DetailPage openDetailByName(String detailName) {
+
+        SelenideElement container =
+                $x("//span[.='" + detailName + "']/../..");
+
+        if (container.getAttribute("class").contains("collapsed")) {
+            $x("//span[.='" + detailName + "']").click();
+        }
+
+        return this;
+    }
+
 
 
 

@@ -1,6 +1,8 @@
 package core.base.common.components;
 
 import com.codeborne.selenide.*;
+import core.base.common.utils.FieldUtils;
+import core.base.common.utils.TestState;
 import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
@@ -262,10 +264,17 @@ public class LookupComponent extends Components {
 
 
     //Работает !!! Всталвяет сохраненное значение Сберегательного счёта
-    public LookupComponent selectValueInLookupWork(String marker) {
+    public LookupComponent selectValueInLookupWorkNEW(String marker) {
 
-        if (this.savedValue == null) {
-            throw new IllegalStateException("❌ Нет сохранённого значения для вставки!");
+        // =========================================================
+        // 🔐 Получаем сохранённое значение из TestState
+        // =========================================================
+        String savedValue = TestState.get("DEPOSIT_ACCOUNT");
+
+        if (savedValue == null || savedValue.isBlank()) {
+            throw new IllegalStateException(
+                    "❌ В TestState нет сохранённого значения для вставки (DEPOSIT_ACCOUNT)"
+            );
         }
 
         // 1) Ищем wrapper lookup по data-item-marker
@@ -280,10 +289,10 @@ public class LookupComponent extends Components {
 
         // 3) Вставляем значение
         input.click();
-        input.setValue(this.savedValue);
+        input.setValue(savedValue);
 
         // 4) Проверяем, что значение реально вставлено
-        input.shouldHave(value(this.savedValue));
+        input.shouldHave(value(savedValue));
 
         // 5) RETRY ПОИСКА результата (до 10 попыток)
         SelenideElement itemRow = null;
@@ -296,29 +305,31 @@ public class LookupComponent extends Components {
                         .shouldBe(enabled)
                         .click();
 
-                // Ищем строку результата по data-item-marker (это самый точный локатор!)
-                itemRow = $x("//div[contains(@class,'grid-listed-row') and @data-item-marker='"
-                        + this.savedValue + "']")
-                        .shouldBe(visible, Duration.ofSeconds(1));
+                // Ищем строку результата по data-item-marker
+                itemRow = $x(
+                        "//div[contains(@class,'grid-listed-row') and @data-item-marker='"
+                                + savedValue + "']"
+                ).shouldBe(visible, Duration.ofSeconds(1));
 
-                break; // найдено → выходим
+                break;
 
             } catch (Throwable ignored) {
-                System.out.println("⏳ Ждём, пока появится счёт или номер..." + (i+1) + "/10");
+                System.out.println("⏳ Ждём, пока появится счёт или номер..." + (i + 1) + "/10");
                 Selenide.sleep(1000);
             }
         }
 
         // Если после 10 попыток строка так и не появилась
         if (itemRow == null) {
-            throw new AssertionError("❌ Счёт '" + this.savedValue + "' не найден в lookup после 10 попыток!");
+            throw new AssertionError(
+                    "❌ Счёт '" + savedValue + "' не найден в lookup после 10 попыток!"
+            );
         }
 
         // 6) Клик по найденной строке
         itemRow.click();
 
         // 7) Проверяем, что строка выделена
-        // ВЫДЕЛЕННАЯ строка имеет класс grid-row-selected — мы нашли это по твоему DOM!
         itemRow.shouldHave(cssClass("grid-row-selected"));
 
         // 8) Нажимаем кнопку "Выбрать"
@@ -327,10 +338,98 @@ public class LookupComponent extends Components {
                 .shouldBe(enabled)
                 .click();
 
-        System.out.println("✅ Значение успешно выбрано в lookup: " + this.savedValue);
+        System.out.println("✅ Значение успешно выбрано в lookup: " + savedValue);
 
         return this;
     }
+
+
+
+
+
+    //19.01.2026
+
+    public LookupComponent selectValueInLookupWorkNew(String marker) {
+
+
+
+     // =========================================================
+     // ⏳ ОЖИДАНИЕ savedValue (фикс race condition)
+     // =========================================================
+     for (int i = 0; i < 10; i++) {
+         if (this.savedValue != null && !this.savedValue.isBlank()) {
+             break;
+         }
+         Selenide.sleep(500);
+     }
+
+     if (this.savedValue == null) {
+         throw new IllegalStateException("❌ Нет сохранённого значения для вставки!");
+     }
+
+     // 1) Ищем wrapper lookup по data-item-marker
+     SelenideElement wrapper = $x("//*[@data-item-marker='" + marker + "']")
+             .shouldBe(visible)
+             .shouldBe(enabled);
+
+     // 2) Ищем input внутри wrapper
+     SelenideElement input = wrapper.$("input")
+             .shouldBe(visible)
+             .shouldBe(enabled);
+
+     // 3) Вставляем значение
+     input.click();
+     input.setValue(this.savedValue);
+
+     // 4) Проверяем, что значение реально вставлено
+     input.shouldHave(value(this.savedValue));
+
+     // 5) RETRY ПОИСКА результата (до 10 попыток)
+     SelenideElement itemRow = null;
+
+     for (int i = 0; i < 10; i++) {
+         try {
+             // Нажимаем кнопку "Поиск"
+             $x("//*[@data-tag='SearchButton']")
+                     .shouldBe(visible)
+                     .shouldBe(enabled)
+                     .click();
+
+             // Ищем строку результата
+             itemRow = $x("//div[contains(@class,'grid-listed-row') and @data-item-marker='"
+                     + this.savedValue + "']")
+                     .shouldBe(visible, Duration.ofSeconds(1));
+
+             break;
+
+         } catch (Throwable ignored) {
+             System.out.println("⏳ Ждём, пока появится счёт или номер..." + (i + 1) + "/10");
+             Selenide.sleep(1000);
+         }
+     }
+
+     if (itemRow == null) {
+         throw new AssertionError("❌ Счёт '" + this.savedValue + "' не найден в lookup после 10 попыток!");
+     }
+
+     // 6) Клик по найденной строке
+     itemRow.click();
+
+     // 7) Проверяем, что строка выделена
+     itemRow.shouldHave(cssClass("grid-row-selected"));
+
+     // 8) Нажимаем кнопку "Выбрать"
+     $x("//*[@data-tag='SelectButton']")
+             .shouldBe(visible)
+             .shouldBe(enabled)
+             .click();
+
+     System.out.println("✅ Значение успешно выбрано в lookup: " + this.savedValue);
+
+     return this;
+ }
+
+
 
     public LookupComponent setHandBookFieldByValueCheck(String nameField, String value) {
 
@@ -394,6 +493,63 @@ public class LookupComponent extends Components {
         return this;
     }
 
+
+    //19.01.2026
+
+
+    @Step("Ввести и выбрать сохранённое значение в поле по DIM '{name}'")
+    public LookupComponent setFieldScheduleDetailByDIMCheckNEW(String ima) {
+
+        // =========================================================
+        // 🔐 Берём сохранённое значение из TestState
+        // =========================================================
+        String value = TestState.get("DEPOSIT_ACCOUNT");
+
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException(
+                    "❌ В TestState нет сохранённого значения для поля '" + ima + "'"
+            );
+        }
+
+        // 1️⃣ Находим input
+        SelenideElement input = $x("//div[@data-item-marker='" + ima + "']/input")
+                .shouldBe(visible, enabled)
+                .scrollIntoView(true);
+
+        // 2️⃣ Вводим текст
+        input.click();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        input.sendKeys(Keys.BACK_SPACE);
+        input.sendKeys(value);
+
+        // 3️⃣ Ждём появления видимого listview
+        SelenideElement listView = $$x("//div[contains(@class,'listview')]")
+                .findBy(visible)
+                .shouldBe(visible);
+
+        // 4️⃣ Ищем LI по data-item-marker или тексту
+        SelenideElement item = listView.$x(
+                ".//li[@data-item-marker='" + value + "' or normalize-space(.)='" + value + "']"
+        ).shouldBe(visible, enabled);
+
+        // 5️⃣ Стабильный JS-клик (Creatio)
+        Selenide.executeJavaScript("arguments[0].click();", item);
+
+        // 6️⃣ Ждём закрытие списка = выбор зафиксирован
+        listView.should(disappear);
+
+        // 7️⃣ Контроль, что значение реально выбрано
+        input.shouldHave(Condition.exactValue(value));
+
+        return this;
+    }
+
+
+
+
+
+
+
     //Работает 06.12.2025
     @Step("Ввести и выбрать значение '{value}' в поле по DIM '{name}'")
     public LookupComponent setFieldScheduleDetailByDIMNewCheck(String name, String value) {
@@ -428,6 +584,12 @@ public class LookupComponent extends Components {
         input.shouldHave(Condition.exactValue(value));
 
         return this;
+    }
+
+    public LookupComponent setfieldScheduleDetailByDIM(String name, String value) {
+        $x("//div[@data-item-marker='" + name+  "']/input").setValue(value);
+        return this;
+
     }
 
 }

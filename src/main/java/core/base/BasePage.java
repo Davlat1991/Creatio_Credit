@@ -26,7 +26,7 @@ public class BasePage {
         while (attempts < 3) {
             try {
                 element.shouldBe(Condition.visible, Condition.enabled)
-                        .scrollIntoView(true)
+                        .scrollIntoView(false)
                         .click();
                 return;
             } catch (Exception e) {
@@ -86,15 +86,51 @@ public class BasePage {
     }
 
 
-    public void scrollToTop() {
+    /*public void scrollToTop() {
         executeJavaScript("window.scrollTo(0,0);");
+    }*/
+    @Step("Стабилизировать страницу перед refresh")
+    public void stabilizePageBeforeRefresh() {
+
+        // 1️⃣ Корневой контейнер страницы заявки
+        SelenideElement pageContainer =
+                $x("//*[@data-item-marker='FinApplicationPageContainer']")
+                        .shouldBe(Condition.visible);
+
+        // 2️⃣ Жёстко сбрасываем scroll контейнера
+        Selenide.executeJavaScript(
+                "arguments[0].scrollTop = 0;", pageContainer
+        );
+
+        // 3️⃣ Дополнительно страхуемся (на случай вложенных контейнеров)
+        Selenide.executeJavaScript(
+                "document.querySelectorAll('div').forEach(d => d.scrollTop = 0);"
+        );
+
+        // 4️⃣ Даём Creatio стабилизировать layout
+        Selenide.sleep(300);
     }
+
+
+    @Step("Скролл страницы в начало")
+    public void scrollToTop() {
+        System.out.println("Скроллим на один экран вверх");
+        executeJavaScript("window.scrollTo(0, 0);");
+    }
+
 
 
     @Step("Скроллим немного вниз")
     public void scrollDownSmall() {
         System.out.println("🔽 Скроллим на один экран вниз");
         executeJavaScript("window.scrollBy(0, 500)");
+    }
+
+    public void ensureTabsAreReady() {
+
+        $x("//*[@id='FinApplicationPageTabsTabPanel']")
+                .shouldBe(Condition.visible)
+                .shouldBe(Condition.enabled);
     }
 
 
@@ -109,6 +145,35 @@ public class BasePage {
                 .filter(Condition.visible)
                 .shouldHave(CollectionCondition.size(0));
     }
+
+
+    @Step("Сброс скролла центральной панели (устойчиво)")
+    public void resetCenterPanelScroll() {
+
+        // 1️⃣ Даём Creatio стабилизировать layout
+        Selenide.sleep(15000);
+
+        // 2️⃣ Принудительный JS-скролл всех возможных контейнеров
+        Selenide.executeJavaScript(
+                ""
+                        + "var candidates = ["
+                        + "  document.querySelector('#centerPanel'),"
+                        + "  document.querySelector('#default-center-panel-content'),"
+                        + "  document.querySelector('[data-item-marker=\"FinApplicationPageContainer\"]'),"
+                        + "  document.querySelector('.center-panel'),"
+                        + "  document.querySelector('.content-wrapper')"
+                        + "];"
+                        + "candidates.forEach(function(p){"
+                        + "  if(p && p.scrollTop !== undefined){"
+                        + "    p.scrollTop = 0;"
+                        + "  }"
+                        + "});"
+        );
+
+        // 3️⃣ Финальный контроль — гарантированно вверху viewport
+        Selenide.executeJavaScript("window.scrollTo(0, 0);");
+    }
+
 
 
     protected void waitUntilNotBusy() {
@@ -207,7 +272,7 @@ public class BasePage {
     }
 
 
-    protected void clickElementByTagAndDIMNew(String tag, String dataItemMarker) {
+    public void clickElementByTagAndDIMNew(String tag, String dataItemMarker) {
         SelenideElement element = $x("//" + tag + "[@data-item-marker='" + dataItemMarker + "']")
                 .shouldBe(visible)
                 .scrollIntoView(true);
@@ -290,7 +355,6 @@ public class BasePage {
         $x("//span[.='" + nameButton + "']").click();
         return this;
     }
-
 
 
     //Migration
@@ -501,6 +565,9 @@ public class BasePage {
         el.doubleClick();
         return this;
     }
+
+
+
 
 
 

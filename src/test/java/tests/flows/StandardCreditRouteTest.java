@@ -8,14 +8,14 @@ import core.data.mappers.ContactDataMapper;
 import core.data.mappers.LoginDataMapper;
 import core.data.users.LoginData;
 import flows.common.AuthorizationFlow;
-import flows.common.NavigationFlow;
 import flows.credit.*;
 import assertions.credit.DocumentsAssertions;
+import flows.credit.registration.RegistrationStageFlow;
 import org.testng.annotations.Test;
 
-public class StandardCreditRouteTest extends BaseTest {
+/*public class StandardCreditRouteTest extends BaseTest {
 
-    /*@Test
+    @Test
     public void creditApplicationHappyPath() {
 
         // ============================================================
@@ -26,6 +26,9 @@ public class StandardCreditRouteTest extends BaseTest {
 
         LoginData retailManager =
                 LoginDataMapper.from(data.user("retailManager"));
+        LoginData underwriter =
+                LoginDataMapper.from(data.user("underwriter"));
+
 
         ContactData contact =
                 ContactDataMapper.from(data.defaultContact());
@@ -35,27 +38,28 @@ public class StandardCreditRouteTest extends BaseTest {
         // ============================================================
 
         AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
-        AuthorizationAndClientSearchFlow clientFlow = new AuthorizationAndClientSearchFlow(ctx);
         ProductSelectionFlow productFlow = new ProductSelectionFlow(ctx);
         ApplicationCreationFlow applicationFlow = new ApplicationCreationFlow(ctx);
         RegistrationStageFlow registrationFlow = new RegistrationStageFlow(ctx);
         PreliminaryCheckStageFlow preliminaryCheckFlow = new PreliminaryCheckStageFlow(ctx);
         DocumentsStageFlow documentsStageFlow = new DocumentsStageFlow(ctx);
-
-        DocumentsAssertions documentsAssertions =
-                new DocumentsAssertions(ctx);
+        DocumentsAssertions documentsAssertions = new DocumentsAssertions(ctx);
+        ReviewStageFlow reviewStageFlow = new ReviewStageFlow(ctx);
 
         // ============================================================
         // 3. HAPPY PATH
         // ============================================================
 
-        authFlow.login(BASE_URL_1, retailManager);
+        // Login
+        authFlow.login(retailManager);
 
+        // Start consultation & client search
         clientFlow.startConsultation(
                 "Розничный менеджер",
                 contact
         );
 
+        // Product selection
         productFlow.selectProduct(
                 "Карзхои гуногунмаксад",
                 "Барои эхтиёчоти оилави",
@@ -64,6 +68,7 @@ public class StandardCreditRouteTest extends BaseTest {
                 "Сомони Чумхурии Точикистон"
         );
 
+        // Application creation
         applicationFlow.createApplication(
                 "3",
                 "2",
@@ -71,56 +76,18 @@ public class StandardCreditRouteTest extends BaseTest {
                 "36"
         );
 
+        // Registration stage
         registrationFlow.completeRegistrationStage();
+
+        // Preliminary check stage
         preliminaryCheckFlow.completePreliminaryCheckStage();
 
-        documentsStageFlow.uploadClientDocuments(
-                data.documents()
-        );
+        // Documents stage
+        documentsStageFlow.uploadDocumentsLegacy();
 
-        // ============================================================
-        // 4. ASSERTS (ЯВНО!)
-        // ============================================================
+        reviewStageFlow.completeReviewAsRetailManager();
 
-        documentsAssertions.documentsShouldBeUploaded(
-                "Финансовое досье",
-                data.documents().getFinancialDossier().size()
-        );
-
-        documentsAssertions.documentsShouldBeUploaded(
-                "Досье клиента",
-                data.documents().getClientDossier().size()
-        );
-    }*/
-
-
-    @Test
-    public void debugDocumentsStageOnly() {
-
-        TestData data = TestDataLoader.load();
-        LoginData user = LoginDataMapper.from(data.user("retailManager"));
-
-        AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
-        NavigationFlow navigationFlow = new NavigationFlow(ctx);
-        DocumentsStageFlow documentsFlow = new DocumentsStageFlow(ctx);
-        DocumentsAssertions documentsAssertions = new DocumentsAssertions(ctx);
-
-        authFlow.login(BASE_URL_1, user);
-
-        navigationFlow.open(
-                "http://10.10.202.254/0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/e7939016-d4cf-4c66-8a65-594764e4f141"
-        );
-
-        documentsFlow.uploadFileToDetail(
-                "Финансовое досье",
-                "Registration (Example).xlsx"
-        );
-
-        documentsAssertions.shouldHaveUploadedFiles(
-                "Финансовое досье",
-                1
-        );
+        // ===== Underwriter =====
+        reviewStageFlow.approveReviewAsUnderwriter(underwriter);
     }
-
-
-}
+}*/

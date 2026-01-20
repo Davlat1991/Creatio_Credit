@@ -16,14 +16,9 @@ public class AuthorizationFlow {
         this.ctx = ctx;
     }
 
-    @Step("Открыть приложение и войти под пользователем {1}")
-    public void login(String baseUrl, LoginData user) {
-        ctx.loginPage.openUrl(baseUrl);
-        ctx.loginSteps
-                .enterUsername(user.getLogin())
-                .enterPassword(user.getPassword())
-                .clickLogin()
-                .verifyLogin();
+    @Step("Войти под пользователем {user.login}")
+    public void login(LoginData user) {
+        ctx.loginSteps.loginAs(user);
     }
 
     @Step("Выйти из системы")
@@ -31,9 +26,9 @@ public class AuthorizationFlow {
         ctx.headerPage.logout();
     }
 
-    @Step("Перелогиниться под пользователем {1}")
-    public void relogin(String baseUrl, LoginData user) {
+    @Step("Перелогиниться под пользователем {user.login}")
+    public void relogin(LoginData user) {
         logout();
-        login(baseUrl, user);
+        login(user);
     }
 }

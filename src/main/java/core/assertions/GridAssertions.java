@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class GridAssertions {
 
     @Step("Ожидаем появление значения '{value}' в колонке '{columnName}'")
-    public void waitForCreditDecision(String columnName, String value) {
+    public void waitForCreditDecision3(String columnName, String value) {
 
         System.out.println("➡ Ждём, когда в колонке '" + columnName + "' появится значение '" + value + "'");
 
@@ -53,6 +53,135 @@ public class GridAssertions {
 
         throw new AssertionError("❌ Значение '" + value + "' в колонке '" + columnName + "' так и не появилось!");
     }
+
+
+
+
+    @Step("Ожидаем появление значения '{value}' в колонке '{columnName}'")
+    public void waitForValueInGridColumnNew1(String columnName, String value) {
+
+        System.out.println("➡ Ждём значение '" + value + "' в колонке '" + columnName + "'");
+
+        // Ждём, что заголовки появились
+        $$x("//div[contains(@class,'grid-captions')]//label")
+                .shouldBe(CollectionCondition.sizeGreaterThan(0), Duration.ofSeconds(10));
+
+        // 📌 ДЕЛАЕМ ТОЛЬКО ОДИН СКРОЛЛ ВНИЗ — ПЕРЕД ЦИКЛОМ
+        try {
+            System.out.println("🔽 Выполняем единоразовый скролл вниз к таблице...");
+            SelenideElement gridBottom =
+                    $x("(//div[contains(@class,'grid-listed-row') or contains(@class,'grid-row')])[last()]");
+
+            gridBottom.scrollIntoView(true);
+            System.out.println("✔ Скролл выполнен!");
+
+        } catch (Exception e) {
+            System.out.println("⚠ Не удалось выполнить скролл — продолжаем без него");
+        }
+
+        long timeoutMs = Duration.ofSeconds(60).toMillis();
+        long start = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() - start < timeoutMs) {
+            try {
+                // 1) Заголовки обновляем каждый цикл
+                ElementsCollection headers =
+                        $$x("//div[contains(@class,'grid-captions')]//label");
+
+                int columnIndex = -1;
+
+                for (int i = 0; i < headers.size(); i++) {
+                    String h = headers.get(i).getText().trim();
+                    System.out.println("→ Заголовок найден: '" + h + "' (index " + i + ")");
+                    if (h.equalsIgnoreCase(columnName)) {
+                        columnIndex = i + 1;
+                        break;
+                    }
+                }
+
+                if (columnIndex == -1) {
+                    System.out.println("⚠ Колонка '" + columnName + "' пока не найдена — ждём...");
+                    Thread.sleep(500);
+                    continue;
+                }
+
+                System.out.println("✔ Колонка найдена. Индекс = " + columnIndex);
+
+                // 2) Строки получаем заново каждый цикл
+                ElementsCollection rows =
+                        $$x("//div[contains(@class,'grid-listed-row') or contains(@class,'grid-row')]");
+
+                if (rows.isEmpty()) {
+                    System.out.println("⚠ Строк пока нет — ждём...");
+                    Thread.sleep(500);
+                    continue;
+                }
+
+                // 3) Проверяем строки (БЕЗ скролла!)
+                for (SelenideElement row : rows) {
+                    try {
+                        SelenideElement cell =
+                                row.$x(".//div[contains(@class,'grid-cols-')][" + columnIndex + "]");
+
+                        if (!cell.exists()) {
+                            cell = row.$x(".//div[" + columnIndex + "]//span");
+                        }
+
+                        if (cell.exists() && cell.isDisplayed()) {
+                            String cellText = cell.getText().trim();
+                            System.out.println("→ Проверяем ячейку: '" + cellText + "'");
+
+                            if (cellText.equalsIgnoreCase(value)) {
+                                System.out.println("✔ Значение найдено: " + value);
+                                return;
+                            }
+                        }
+
+                    } catch (org.openqa.selenium.StaleElementReferenceException ser) {
+                        System.out.println("♻ Stale элемент — строка перерисована, пропускаем");
+                    }
+                }
+
+                System.out.println("⚠ Значение '" + value + "' пока не найдено — повторяем...");
+                Thread.sleep(500);
+
+            } catch (Throwable t) {
+                System.out.println("❗ Ошибка в цикле: " + t.getMessage());
+            }
+        }
+
+        throw new AssertionError("❌ Значение '" + value + "' в колонке '" + columnName +
+                "' не появилось за отведённое время!");
+    }
+
+
+//18.01.2026
+    @Step("Ожидаем решение по кредиту: {expectedValue}")
+    public void waitForCreditDecision2(String expectedValue) {
+
+        SelenideElement scoringContainer =
+                $x("//*[@data-item-marker='BnzScoringDetailDetailContainer']")
+                        .shouldBe(Condition.visible, Duration.ofSeconds(20));
+
+        scoringContainer
+                .$x(".//span[@grid-data-type='text' and normalize-space()='" + expectedValue + "']")
+                .shouldBe(Condition.visible, Duration.ofSeconds(60));
+    }
+
+
+    @Step("Ожидаем решение по кредиту: {expectedValue}")
+    public void waitForCreditDecision(String expectedValue) {
+
+        SelenideElement scoringContainer =
+                $x("//*[@data-item-marker='BnzScoringDetailDetailContainer']")
+                        .should(Condition.exist, Duration.ofSeconds(20));
+
+        scoringContainer
+                .$x(".//span[@grid-data-type='text' and normalize-space()='" + expectedValue + "']")
+                .should(Condition.exist, Duration.ofSeconds(60));
+    }
+
+
 
 
     @Step("Ожидаем появление значения '{value}' в колонке '{columnName}'")

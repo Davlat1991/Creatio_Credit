@@ -7,6 +7,8 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.*;
 
 /**
@@ -44,7 +46,7 @@ public class FiltersComponent extends Components {
 
     //Закрыть фильтр по тегу  06.12.2025
     @Step("Удалить фильтр если он есть")
-    public boolean removeFilterIfExists() {
+    public boolean removeFilterIfExists1() {
 
         // 1) Контейнер быстрых фильтров
         SelenideElement filterContainer =
@@ -80,5 +82,91 @@ public class FiltersComponent extends Components {
         System.out.println("✔ Фильтр удалён");
         return true;
     }
+
+    //18.01.2026
+    @Step("Удалить фильтр если он есть")
+    public boolean removeFilterIfExists() {
+
+        // 1️⃣ Ждём, что секция стабилизировалась
+        SelenideElement filterContainer =
+                $x("//*[contains(@id,'QuickFilterModuleV2')]")
+                        .shouldBe(Condition.visible, Duration.ofSeconds(10));
+
+        // 2️⃣ ЖДЁМ появления ❌ ИЛИ истечения таймаута
+        ElementsCollection xButtons =
+                filterContainer.$$x(".//*[contains(@class,'filter-remove-button')]");
+
+        long timeoutMs = Duration.ofSeconds(25).toMillis();
+        long start = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() - start < timeoutMs) {
+
+            if (!xButtons.isEmpty()) {
+                break;
+            }
+
+            Selenide.sleep(5000);
+        }
+
+        // 3️⃣ Если реально нет фильтра — это уже факт
+        if (xButtons.isEmpty()) {
+            System.out.println("ℹ Фильтр действительно отсутствует");
+            return false;
+        }
+
+        // 4️⃣ Безопасный клик по ❌
+        SelenideElement xBtn = xButtons.first()
+                .shouldBe(Condition.visible)
+                .shouldBe(Condition.enabled);
+
+        try {
+            xBtn.click();
+        } catch (Exception e) {
+            Selenide.executeJavaScript("arguments[0].click();", xBtn);
+        }
+
+        // 5️⃣ Проверяем, что фильтр исчез
+        xBtn.should(Condition.disappear, Duration.ofSeconds(5));
+
+        System.out.println("✔ Фильтр удалён");
+        return true;
+    }
+
+
+    // Закрыть фильтр по тегу (устойчиво)
+    @Step("Удалить фильтр если он есть")
+    public boolean removeFilterIfExistsNew() {
+
+        // 🔍 Ищем кнопку X (глобально, QuickFilter может рендериться по-разному)
+        ElementsCollection removeButtons = $$x(
+                "//span[contains(@class,'custom-filter-remove-button') or contains(@class,'filter-remove-button')]"
+        );
+
+        if (removeButtons.isEmpty()) {
+            System.out.println("ℹ Фильтр отсутствует — удалять нечего");
+            return false;
+        }
+
+        SelenideElement removeBtn = removeButtons.first();
+
+        // 🕒 Ждём, что элемент станет кликабельным
+        removeBtn.shouldBe(Condition.visible, Condition.enabled);
+
+        // 🖱 Hover — ОБЯЗАТЕЛЬНО для Creatio
+        removeBtn.hover();
+
+        // 🔥 Клик через JS (самый стабильный вариант)
+        Selenide.executeJavaScript("arguments[0].click();", removeBtn);
+
+        // ⏳ Ждём, что кнопка исчезнет (фильтр реально удалён)
+        removeBtn.should(Condition.disappear, Duration.ofSeconds(10));
+
+        // 🛡 Доп. защита: ждём стабилизации грида
+        Selenide.sleep(300);
+
+        System.out.println("✔ Фильтр успешно удалён");
+        return true;
+    }
+
 
 }

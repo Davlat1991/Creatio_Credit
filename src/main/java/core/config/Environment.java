@@ -3,33 +3,59 @@ package core.config;
 import core.data.users.LoginData;
 import core.data.DbConnectionData;
 
-public class Environment {
+public final class Environment {
 
-    // -------------------------------
-    // URLs
-    // -------------------------------
+    private Environment() {
+        // prevent instantiation
+    }
+
+    // ===============================
+    // 🌐 ENV INFO
+    // ===============================
+
+    public static final String ENV_NAME =
+            ConfigProperties.getEnvironmentName();
+
+    // ===============================
+    // 🌐 BASE URL (SSOT)
+    // ===============================
+
     public static final String BASE_URL =
-            ConfigProperties.get("base.url", "http://localhost");
+            ConfigProperties.require("base.url");
 
-    // -------------------------------
-    // Default test users
-    // -------------------------------
+    // ===============================
+    // 👤 USERS
+    // ===============================
+
     public static final LoginData USER_DAVLAT = new LoginData(
-            ConfigProperties.get("user.davlat.login", "Davlat"),
-            ConfigProperties.get("user.davlat.password", "")
+            ConfigProperties.get("user.davlat.login"),
+            ConfigProperties.get("user.davlat.password")
     );
 
     public static final LoginData USER_ADMIN = new LoginData(
-            ConfigProperties.get("user.admin.login", "Supervisor"),
-            ConfigProperties.get("user.admin.password", "Supervisor")
+            ConfigProperties.get("user.admin.login"),
+            ConfigProperties.get("user.admin.password")
     );
 
-    // -------------------------------
-    // DB connection
-    // -------------------------------
+    // ===============================
+    // 💾 DB (optional)
+    // ===============================
+
     public static final DbConnectionData DB = new DbConnectionData(
             ConfigProperties.get("db.url", ""),
             ConfigProperties.get("db.user", ""),
             ConfigProperties.get("db.password", "")
     );
+
+    // ===============================
+    // 🧾 DEBUG PRINT
+    // ===============================
+
+    public static void print() {
+        System.out.println("====================================");
+        System.out.println("ENVIRONMENT : " + ENV_NAME);
+        System.out.println("BASE URL    : " + BASE_URL);
+        System.out.println("USER_DAVLAT : " + USER_DAVLAT.getLogin());
+        System.out.println("====================================");
+    }
 }

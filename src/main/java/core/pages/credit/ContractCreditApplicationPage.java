@@ -6,6 +6,7 @@ import core.base.BasePage;
 import core.base.common.components.*;
 
 import core.base.common.utils.FieldUtils;
+import core.base.common.utils.TestState;
 import core.base.common.waiters.UiWaiter;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
@@ -40,6 +41,11 @@ public class ContractCreditApplicationPage extends BasePage {
 
     public static final String CONTRACT_PAGE_MARKER = "BnzContractCreditPageContainer";
 
+    private final FileUploadLegacyComponent legacyFiles =
+            new FileUploadLegacyComponent();
+    public FileUploadLegacyComponent legacyFiles() {
+        return legacyFiles;
+    }
 
 
     // Локальные компоненты страницы
@@ -189,6 +195,28 @@ public class ContractCreditApplicationPage extends BasePage {
     public ContractCreditApplicationPage saveValueByMarker(String number) {
         this.savedValue = FieldUtils.getValueByMarker(number);
         System.out.println("✔ Saved [" + number + "] = " + this.savedValue);
+        return this;
+    }
+
+
+    @Step("Сохранить значение поля по marker '{marker}'")
+    public ContractCreditApplicationPage saveValueByMarkerNEW(String number) {
+
+        // 1️⃣ Читаем значение из UI (через уже проверенный метод)
+        String value = FieldUtils.getValueByMarker(number);
+
+        // 2️⃣ Дополнительная защита (на всякий случай)
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException(
+                    "❌ Не удалось сохранить значение: поле '" + number + "' пустое"
+            );
+        }
+
+        // 3️⃣ 🔐 Сохраняем в TestState (переживёт refresh и навигацию)
+        TestState.put("DEPOSIT_ACCOUNT", value);
+
+        System.out.println("✔ Saved [" + number + "] = " + value);
+
         return this;
     }
 
@@ -491,6 +519,10 @@ public class ContractCreditApplicationPage extends BasePage {
         // Проверяем открытие модалки
         $x("//*[@data-item-marker='Выдача кредита']")
                 .shouldBe(Condition.visible);
+    }
+
+    public void scrollTabsRight() {
+        safeClick($("#FinApplicationPageTabsTabPanel-scroll-right"));
     }
 
 

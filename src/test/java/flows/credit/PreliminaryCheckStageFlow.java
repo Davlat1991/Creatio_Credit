@@ -11,74 +11,82 @@ public class PreliminaryCheckStageFlow {
         this.ctx = ctx;
     }
 
-    @Step("Стадия: Предварительная проверка")
+    // =====================================================
+    // 🔍 PRELIMINARY CHECK STAGE
+    // =====================================================
+
+    @Step("Preliminary Check: выполнение всех проверок")
     public void completePreliminaryCheckStage() {
 
-        completeParticipantsQuestionnaireTask();
-        completeClientCheckTask();
+        completeParticipantsQuestionnaire();
+        completeClientCheck();
     }
 
-    // ----------------------------------------------------------------
-    // 1. Добавьте и заполните анкеты участников заявки
-    // ----------------------------------------------------------------
+    // =====================================================
+    // TASK 1: QUESTIONNAIRES
+    // =====================================================
 
-    private void completeParticipantsQuestionnaireTask() {
+    private void completeParticipantsQuestionnaire() {
 
-        ctx.dashboardComponent
-                .clickElementDashboardCheck(
-                        "Добавьте и заполните анкеты участников заявки",
-                        "Execute",
-                        "//*[@data-item-marker='MiniPage']"
-                );
-
-        ctx.contractPage
-                .setfieldScheduleDetailByDIM("Result", "Выполнена");
-
-        ctx.menuComponent
-                .clickButtonByLiName("Выполнена");
-
-        ctx.basePage
-                .clickButtonByDataItemMakerCheck("SaveEditButton");
-
-        ctx.messageBoxComponent
-                .shouldSeeModalWithText("Нет задолженности!");
-
-        ctx.basePage
-                .clickButtonByDataItemMaker("ОК");
-
-        ctx.messageBoxComponent
-                .shouldSeeModalWithText("У клиента нет просроченных дней");
-
-        ctx.basePage
-                .clickButtonByDataItemMaker("ОК");
+        openParticipantsQuestionnaireTask();
+        markTaskAsCompleted();
+        confirmNoDebtMessages();
     }
 
-    // ----------------------------------------------------------------
-    // 2. Проверка клиента
-    // ----------------------------------------------------------------
+    private void openParticipantsQuestionnaireTask() {
+        ctx.dashboardComponent.clickElementDashboardCheck(
+                "Добавьте и заполните анкеты участников заявки",
+                "Execute",
+                "//*[@data-item-marker='MiniPage']"
+        );
+    }
 
-    private void completeClientCheckTask() {
+    private void markTaskAsCompleted() {
+        ctx.contractPage.setfieldScheduleDetailByDIM("Result", "Выполнена");
+        ctx.menuComponent.clickButtonByLiName("Выполнена");
+        ctx.basePage.clickButtonByDataItemMakerCheck("SaveEditButton");
+    }
 
-        ctx.dashboardComponent
-                .clickElementDashboardWait("Проверка клиента", "Approve");
+    private void confirmNoDebtMessages() {
+        ctx.messageBoxComponent.shouldSeeModalWithText("Нет задолженности!");
+        ctx.basePage.clickButtonByDataItemMaker("ОК");
 
-        ctx.basePage
-                .clickButtonByDataItemMaker("SaveEditButton");
+        ctx.messageBoxComponent.shouldSeeModalWithText("У клиента нет просроченных дней");
+        ctx.basePage.clickButtonByDataItemMaker("ОК");
+    }
 
-        ctx.dashboardComponent
-                .clickElementDashboardCheck(
-                        "Заполните данные обеспечения и поручительства",
-                        "Execute",
-                        "//*[@data-item-marker='MiniPage']"
-                );
+    // =====================================================
+    // TASK 2: CLIENT CHECK
+    // =====================================================
 
-        ctx.contractPage
-                .setfieldScheduleDetailByDIM("ProcessResult", "Выполнена");
+    private void completeClientCheck() {
 
-        ctx.menuComponent
-                .clickButtonByLiName("Выполнена");
+        openClientCheckTask();
+        approveClientCheck();
+        completeCollateralAndGuaranteeTask();
+    }
 
-        ctx.basePage
-                .clickButtonByDataItemMaker("SaveEditButton");
+    private void openClientCheckTask() {
+        ctx.dashboardComponent.clickElementDashboardWait(
+                "Проверка клиента",
+                "Approve"
+        );
+    }
+
+    private void approveClientCheck() {
+        ctx.basePage.clickButtonByDataItemMaker("SaveEditButton");
+    }
+
+    private void completeCollateralAndGuaranteeTask() {
+
+        ctx.dashboardComponent.clickElementDashboardCheck(
+                "Заполните данные обеспечения и поручительства",
+                "Execute",
+                "//*[@data-item-marker='MiniPage']"
+        );
+
+        ctx.contractPage.setfieldScheduleDetailByDIM("ProcessResult", "Выполнена");
+        ctx.menuComponent.clickButtonByLiName("Выполнена");
+        ctx.basePage.clickButtonByDataItemMaker("SaveEditButton");
     }
 }

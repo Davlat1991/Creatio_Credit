@@ -1,89 +1,85 @@
 package core.pages.login;
 
 import com.codeborne.selenide.SelenideElement;
+import core.config.Environment;
 import core.data.users.LoginData;
 import io.qameta.allure.Step;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 public class LoginPage {
 
-    // Поле логина
+    // ===============================
+    // Elements
+    // ===============================
+
     private final SelenideElement usernameInput = $("#loginEdit-el");
-
-    // Поле пароля
     private final SelenideElement passwordInput = $("#passwordEdit-el");
+    private final SelenideElement loginButton   = $("[data-item-marker='btnLogin']");
+    private final SelenideElement header        = $("#left-header-container");
+    private final SelenideElement loginError    = $(".base-edit-validation");
 
-    // Кнопка Войти
-    private final SelenideElement loginButton = $("[data-item-marker='btnLogin']");
+    // ===============================
+    // Navigation
+    // ===============================
 
-    // Признак успешного входа — верхнее меню
-    private final SelenideElement headerContainer = $("#left-header-container");
-
-    // Ошибка логина
-    private final SelenideElement loginError = $(".base-edit-validation");
-
-
-    @Step("Открыть страницу логина")
-    public LoginPage openLoginPage() {
-        open("http://10.10.202.254/");
-        usernameInput.shouldBe(visible);
+    @Step("Открыть приложение (base URL)")
+    public LoginPage openBase() {
+        open(Environment.BASE_URL);
+        usernameInput.shouldBe(visible, Duration.ofSeconds(15));
         return this;
     }
 
-    public LoginPage enterUsername(String username) {
-        usernameInput.shouldBe(visible).setValue(username);
+    // ===============================
+    // Actions
+    // ===============================
+
+    @Step("Ввести логин: {login}")
+    public LoginPage enterUsername(String login) {
+        usernameInput.shouldBe(visible).setValue(login);
         return this;
     }
 
-
-
+    @Step("Ввести пароль")
     public LoginPage enterPassword(String password) {
         passwordInput.shouldBe(visible).setValue(password);
         return this;
     }
 
-    public void clickLoginButton() {
+    @Step("Нажать кнопку Войти")
+    public LoginPage clickLogin() {
         loginButton.shouldBe(visible).click();
+        return this;
     }
 
-    public boolean isUserLoggedIn() {
-        return headerContainer.shouldBe(visible, Duration.ofSeconds(15)).exists();
+    // ===============================
+    // Business methods
+    // ===============================
+
+    @Step("Авторизация под пользователем: {user.login}")
+    public LoginPage loginAs(LoginData user) {
+        return openBase()
+                .enterUsername(user.getLogin())
+                .enterPassword(user.getPassword())
+                .clickLogin()
+                .verifyLoginSuccess();
     }
+
+    @Step("Проверить успешную авторизацию")
+    public LoginPage verifyLoginSuccess() {
+        header.shouldBe(visible, Duration.ofSeconds(20));
+        return this;
+    }
+
+    // ===============================
+    // Getters
+    // ===============================
 
     public SelenideElement getLoginError() {
         return loginError;
     }
-
-
-    // ================================
-    // 🔥 Новые методы (вставь эти 3!)
-    // ================================
-
-    @Step("Авторизация: логин = {login}")
-    public LoginPage login(String login, String password) {
-        enterUsername(login);
-        enterPassword(password);
-        clickLoginButton();
-
-        headerContainer.shouldBe(visible, Duration.ofSeconds(15));
-        return this;
-    }
-
-    @Step("Авторизация под пользователем: {user.login}")
-    public LoginPage loginAs(LoginData user) {
-        return login(user.getLogin(), user.getPassword());
-    }
-
-    public LoginPage openUrl(String baseURL){
-        open(baseURL);
-
-        return this;
-    }
-
-
-
 }

@@ -1,8 +1,11 @@
 package core.base;
 
+import core.assertions.FieldAssertions;
+import core.assertions.GridAssertions;
 import core.base.common.HeaderPage;
 import core.base.common.components.*;
 import core.base.common.helpers.DomActions;
+import core.base.common.utils.FieldUtils;
 import core.base.common.utils.FieldValueResolver;
 import core.data.documents.DocumentsTestData;
 import core.pages.contacts.ContactAddressPage;
@@ -10,12 +13,17 @@ import core.pages.credit.ConsultationPanelPage;
 import core.pages.credit.ContractCreditApplicationPage;
 import core.pages.login.LoginPage;
 import core.pages.ui.DetailPage;
+import core.pages.ui.ProjectsPage;
+import flows.common.AuthorizationFlow;
+import flows.common.WorkspaceFlow;
+import steps.credit.CreditApplicationAssertions;
 import steps.login.LoginSteps;
 import steps.workspace.WorkspaceSteps;
 
+
+
 public class TestContext {
 
-    public String baseUrl;
 
     public final LoginPage loginPage;
     public final LoginSteps loginSteps;
@@ -40,8 +48,26 @@ public class TestContext {
     public final DashboardComponent dashboardComponent;
     public final FileUploadComponent fileUploadComponent;
     public final DocumentsTestData documentTestData;
+    public final ProjectsPage projectsPage;
+    public final FiltersComponent filtersComponent;
+    public final AuthorizationFlow authorizationFlow;
+    public final WorkspaceFlow workspaceFlow;
+    public final FieldUtils fieldUtils;
+    public final FieldAssertions fieldAssertions;
+    public final CreditApplicationAssertions creditApplicationAssertions;
+    public final PrintComponent printComponent;
 
 
+
+
+
+
+
+
+
+
+    // Assertions
+    public final GridAssertions gridAssertions;
 
 
 
@@ -69,6 +95,30 @@ public class TestContext {
         this.dashboardComponent = new DashboardComponent();
         this.fileUploadComponent = new FileUploadComponent();
         this.documentTestData = new DocumentsTestData();
+        this.gridAssertions = new GridAssertions();
+        this.filtersComponent = new FiltersComponent();
+        this.projectsPage = new ProjectsPage();
+        this.authorizationFlow = new AuthorizationFlow(this);
+        this.workspaceFlow = new WorkspaceFlow(this);
+        this.fieldUtils = new FieldUtils();
+        this.fieldAssertions = new FieldAssertions();
+        this.printComponent = new PrintComponent();
+        this.creditApplicationAssertions = new CreditApplicationAssertions(contractPage);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

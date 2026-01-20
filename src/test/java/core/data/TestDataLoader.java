@@ -5,18 +5,18 @@ import com.google.gson.Gson;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-public class TestDataLoader {
+public final class TestDataLoader {
 
-    private static TestData testData;
+    private static TestData cached;
 
     private TestDataLoader() {
     }
 
     public static TestData load() {
-        if (testData == null) {
-            testData = read();
+        if (cached == null) {
+            cached = read();
         }
-        return testData;
+        return cached;
     }
 
     private static TestData read() {
@@ -26,7 +26,7 @@ public class TestDataLoader {
                     .getResourceAsStream("testdata.json");
 
             if (stream == null) {
-                throw new RuntimeException("❌ testdata.json not found in resources");
+                throw new IllegalStateException("❌ testdata.json not found in test resources");
             }
 
             return new Gson().fromJson(

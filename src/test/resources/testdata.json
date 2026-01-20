@@ -6,18 +6,18 @@
       "role": "RETAIL_MANAGER"
     },
     "underwriter": {
-      "login": "A.Khamidov",
-      "password": "A.Khamidov",
+      "login": "A_AMINOV_707",
+      "password": "A_AMINOV_707A_AMINOV_707A_AMINOV_707A_AMINOV_707",
       "role": "UNDERWRITER"
     },
     "ikok": {
-      "login": "A.Khamidov",
-      "password": "A.Khamidov",
+      "login": "S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796aaa!@#",
       "role": "IKOK"
     },
     "cashier": {
-      "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796aaa!@#",
+      "login": "M_KURBONOVA",
+      "password": "M_KURBONOVAM_KURBONOVAM_KURBONOVA",
       "role": "CASHIER"
     }
   },
@@ -47,6 +47,34 @@
     "amount": "30000",
     "term": "24",
     "currency": "Сомони Чумхурии Точикистон"
+  },
+
+
+  "registrationIncomeExpenses": {
+    "income": {
+      "type": "Зарплата по основному месту работы",
+      "frequency": "Ежемесячно",
+      "amount": "11000"
+    },
+    "expense": {
+      "type": "Коммунальные платежи",
+      "frequency": "Единоразово",
+      "amount": "600"
+    }
+  },
+
+  "loanIssuance": {
+    "planningType": "Аннуитетный_005",
+    "creditReceiveType": "Получает сегодня",
+    "issueMethod": "Наличными",
+    "incomingOrderAmount": "200,00",
+    "outgoingOrderAmount": "50 000,00"
   }
 
+
 }
+
+
+
+
+

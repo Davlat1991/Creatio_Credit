@@ -4,7 +4,6 @@ import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
 import org.testng.Assert;
 
-// src/test/java/steps/credit
 public class CreditApplicationAssertions {
 
     private final ContractCreditApplicationPage page;

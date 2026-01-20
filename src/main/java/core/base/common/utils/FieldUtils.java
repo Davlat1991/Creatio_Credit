@@ -1,12 +1,17 @@
 package core.base.common.utils;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import core.base.common.components.LookupComponent;
 import core.pages.credit.ContractCreditApplicationPage;
 import io.qameta.allure.Step;
+
+import java.time.Duration;
 import java.util.concurrent.Callable;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class FieldUtils {
@@ -182,7 +187,6 @@ public class FieldUtils {
     }
 
 
-
     //Работает!!!
     // Метод №1 — сохранить значение из поля + проверить, что оно действительно сохранено (с RETRY до 5 раз)
     public FieldUtils saveValueDIMCheckWork(String sourceMarker) {
@@ -236,7 +240,35 @@ public class FieldUtils {
         throw new AssertionError("❌ Не удалось сохранить значение (marker: " + sourceMarker + ") после 3 попыток!");
     }
 
+//19.01.2026
 
+    public FieldUtils saveValueDIMCheckWorkNEW(String sourceMarker) {
+
+        String value = null;
+
+        for (int attempt = 1; attempt <= 3; attempt++) {
+            SelenideElement source = $x("//*[@data-item-marker='" + sourceMarker + "']")
+                    .shouldBe(visible);
+
+            String tag = source.getTagName();
+            value = ("input".equals(tag) || "textarea".equals(tag))
+                    ? source.getValue()
+                    : source.getText();
+
+            if (value == null || value.isBlank()) {
+                Selenide.sleep(500);
+                continue;
+            }
+
+            // 🔥 СОХРАНЯЕМ В TestState
+            TestState.put("DEPOSIT_ACCOUNT", value);
+
+            System.out.println("✅ Счёт сохранён в TestState: " + value);
+            return this;
+        }
+
+        throw new AssertionError("❌ Не удалось сохранить значение счёта");
+    }
 
 
 
