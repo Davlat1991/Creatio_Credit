@@ -50,8 +50,8 @@ public class RegistrationScoringFlow {
                         "Тип владения автомобилем",
                         "Есть автомобиль"
                 );
-
+        // Обязательное согласие на обработку данных БКИ
         ctx.checkboxComponent
-                .ensureCheckboxChecked("IsConsentBKIProcessing");
+                .ensureCheckboxBKI("IsConsentBKIProcessing");
     }
 }

@@ -15,12 +15,61 @@ public class RegistrationParticipantsFlow {
     public void addBorrower() {
 
         ctx.buttonsComponent
-                .clickButtonByContainName("Участники заявки");
+                .clickButtonByContainName("Участники заявки")
+                .doubleclickButtonByName("Заемщик"); //Метод для продолжения заявки
 
-        ctx.basePage
+        /*ctx.basePage
                 .clickButtonById("BnzVwFinApplicationAllParticipantDetailAddTypedRecordButtonButton-imageEl");
 
         ctx.menuComponent
-                .clickButtonByLiName("Заемщик");
+                .clickButtonByLiName("Заемщик");*/
     }
+
+    @Step("Заполнение данных карьеры заемщика")
+    public void fillCareerDetails() {
+        ctx.buttonsComponent
+                .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
+
+        ctx.detailPage.clickAddRecordInDetail("Карьера");
+
+        ctx.lookupComponent
+                .setHandBookFieldByValueCheck(
+                        "Тип занятости",
+                        "Предприниматель"
+                );
+
+        ctx.lookupComponent
+                .setFieldByValueCheck(
+                        "Наименование организации",
+                        "Агропром"
+                )
+                .setHandBookFieldByValueCheck(
+                        "Должность",
+                        "Агроном"
+                );
+
+        //Дата начало
+        ctx.dateFieldComponent
+                .setDateFieldByMarker("StartDate", "01.01.2020");
+
+
+        //LLC "Agroprom Hujand"
+        ctx.lookupComponent
+                .setHandBookFieldByValueCheck(
+                        "Работодатель",
+                        "ЧДММ \"АГРОПРОМ ХУЧАНД\""
+                );
+
+        ctx.lookupComponent
+                .setFieldByValueCheck(
+                        "Полное название должности",
+                        "Агроном"
+                );
+
+        ctx.contractPage
+                .clickButtonByNameCheck("Сохранить");
+    }
+
+
+
 }

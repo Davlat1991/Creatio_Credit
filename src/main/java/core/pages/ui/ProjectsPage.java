@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 public class ProjectsPage {
 
@@ -51,6 +52,10 @@ public class ProjectsPage {
 
     }
 
+
+
+
+
     @Attachment(value = "Screenshot", type = "image/png")
     public byte[] attachScreenshot() {
         return ((TakesScreenshot) WebDriverRunner.getWebDriver())
@@ -66,4 +71,9 @@ public class ProjectsPage {
     public String attachErrorMessage(Throwable t) {
         return t.getMessage();
     }
+
+
+
+
+
 }

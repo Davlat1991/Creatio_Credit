@@ -12,7 +12,6 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <selenide.version>7.2.1</selenide.version>
@@ -20,18 +19,19 @@
         <allure.version>2.27.0</allure.version>
         <aspectj.version>1.9.21</aspectj.version>
 
-        <!-- По умолчанию запускаем testng.xml -->
         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
     </properties>
 
     <dependencies>
 
+        <!-- UI -->
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
             <version>${selenide.version}</version>
         </dependency>
 
+        <!-- Test framework -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -39,6 +39,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- API -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -46,6 +47,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Allure -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
@@ -53,22 +55,36 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
-        </dependency>
-
-
-        <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-selenide</artifactId>
             <version>${allure.version}</version>
         </dependency>
 
+        <!-- JSON -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
+        <!-- AspectJ -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj.version}</version>
+        </dependency>
+
+        <!-- ✅ LOGGING (ОБЯЗАТЕЛЬНО) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.6</version>
         </dependency>
 
     </dependencies>
@@ -76,7 +92,7 @@
     <build>
         <plugins>
 
-            <!-- ✅ ВАЖНО: ЯВНЫЙ COMPILER PLUGIN ДЛЯ JAVA 17 + UI -->
+            <!-- Java 17 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -85,8 +101,6 @@
                     <source>17</source>
                     <target>17</target>
                     <encoding>UTF-8</encoding>
-
-                    <!-- КРИТИЧНО ДЛЯ SELENIDE / SELENIUM -->
                     <compilerArgs>
                         <arg>--add-modules</arg>
                         <arg>java.desktop</arg>
@@ -94,19 +108,17 @@
                 </configuration>
             </plugin>
 
-            <!-- Основной плагин тестирования -->
+            <!-- TestNG -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
-
                 <configuration>
 
                     <suiteXmlFiles>
                         <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
                     </suiteXmlFiles>
 
-                    <!-- Allure results -->
                     <systemPropertyVariables>
                         <allure.results.directory>
                             ${project.build.directory}/allure-results
@@ -120,31 +132,27 @@
                 </configuration>
             </plugin>
 
-            <!-- Плагин генерации отчёта -->
+            <!-- Allure report -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>2.11.2</version>
-
                 <configuration>
                     <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
                     <reportDirectory>${project.build.directory}/site/allure-maven-plugin</reportDirectory>
                 </configuration>
-
             </plugin>
 
         </plugins>
     </build>
 
     <profiles>
-
         <profile>
             <id>single</id>
             <properties>
                 <suiteXmlFile>src/test/resources/testng-single.xml</suiteXmlFile>
             </properties>
         </profile>
-
     </profiles>
 
 </project>

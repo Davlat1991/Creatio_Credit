@@ -1,12 +1,12 @@
 package tests.flows;
 
 import core.base.BaseTest;
-import core.config.Environment;
 import core.data.TestData;
 import core.data.TestDataLoader;
 import core.data.contacts.ContactData;
 import core.data.mappers.ContactDataMapper;
 import core.data.mappers.LoginDataMapper;
+import core.data.registration.EmploymentType;
 import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.users.LoginData;
 import core.enums.Workspace;
@@ -14,13 +14,10 @@ import flows.common.AuthorizationFlow;
 import flows.common.NavigationFlow;
 import flows.common.WorkspaceFlow;
 import flows.credit.*;
-import flows.credit.ReviewStageRetailFlow;
-import flows.credit.ReviewStageUnderwriterFlow;
-import flows.credit.registration.*;
+import flows.credit.registration.RegistrationStageFlow;
 import org.testng.annotations.Test;
-import core.data.registration.EmploymentType;
 
-public class FastTest extends BaseTest {
+public class StandartRiouteCreditTest extends BaseTest {
 
     @Test
     public void creditApplicationHappyPath() {
@@ -74,7 +71,7 @@ public class FastTest extends BaseTest {
         // 4. RETAIL MANAGER
         // ============================================================
 
-        /*authFlow.login(retailManager);
+        authFlow.login(retailManager);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
         clientSearchFlow.searchClient(
@@ -100,20 +97,15 @@ public class FastTest extends BaseTest {
                 "2",
                 "Аннуитетный",
                 "36"
-        );*/
+        );
 
-        authFlow.login(retailManager);
-
-        navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/27f1fa9e-4ec5-42a4-a24b-f3c070afce04");
 
         registrationFlow.completeRegistrationStage(
                 incomeExpensesData,
-                EmploymentType.SELF_EMPLOYED
+                EmploymentType.OTHER_INCOME
         );
 
-        /*preliminaryCheckFlow.completePreliminaryCheckStage();
+        preliminaryCheckFlow.completePreliminaryCheckStage();
         documentsStageFlow.uploadDocumentsLegacy();
 
         reviewRetailFlow.completeReview();
@@ -155,9 +147,8 @@ public class FastTest extends BaseTest {
 
         loanIssuanceFlow.issueLoan();
 
-        authFlow.logout();*/
+        authFlow.logout();
 
 
     }
 }
-

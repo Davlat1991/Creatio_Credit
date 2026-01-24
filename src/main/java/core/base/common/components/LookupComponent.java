@@ -446,6 +446,8 @@ public class LookupComponent extends Components {
         return this;
     }
 
+
+
     public LookupComponent setFieldByValueCheck(String nameField, String value) {
 
         SelenideElement input = $x("//label[.='" + nameField + "']/../..//input");
@@ -591,6 +593,127 @@ public class LookupComponent extends Components {
         return this;
 
     }
+
+
+
+    @Step("Выбрать значение '{value}' в справочнике '{fieldName}'")
+    public LookupComponent setHandBookFieldByValueCheckNew(String fieldName, String value) {
+
+        // 1️⃣ Вводим текст в поле (как у тебя и было)
+        setFieldByValueCheck(fieldName, value);
+
+        // 2️⃣ Находим label этого поля и берём его data-item-marker
+        SelenideElement label = $x("//label[normalize-space(.)='" + fieldName + "']")
+                .shouldBe(Condition.visible);
+
+        String marker = label.getAttribute("data-item-marker");
+
+        // 3️⃣ Находим ВИДИМЫЙ listview с таким же data-item-marker
+        SelenideElement listView = $$x("//div[contains(@class,'listview') and @data-item-marker='" + marker + "']")
+                .find(Condition.visible);
+
+        // 4️⃣ Внутри него ищем нужный пункт по data-item-marker (у тебя в DOM они совпадают с текстом)
+        SelenideElement item = listView
+                .$x(".//li[@data-item-marker='" + value + "']")
+                .shouldBe(Condition.visible, Condition.enabled);
+
+        // 5️⃣ Кликаем по пункту через JS, чтобы точно отработало
+        Selenide.executeJavaScript("arguments[0].click();", item);
+
+        // 6️⃣ Ждём, что список закроется (значит выбор закрепился)
+        listView.should(Condition.disappear);
+
+        // 7️⃣ На этом всё. Ни проверок, ни кнопок.
+        return this;
+    }
+
+
+    @Step("Выбрать адресное значение '{value}' в поле '{fieldName}'")
+    public LookupComponent selectAddressLookupTAB(String fieldName, String value) {
+
+        SelenideElement input = $x(
+                "//label[normalize-space(.)='" + fieldName + "']/../..//input"
+        ).shouldBe(Condition.visible, Condition.enabled);
+
+        // 1️⃣ Фокус + очистка
+        input.click();
+        input.sendKeys(Keys.CONTROL + "a");
+        input.sendKeys(Keys.BACK_SPACE);
+
+        // 2️⃣ Ввод
+        input.sendKeys(value);
+
+        // 3️⃣ Ждём listview
+        SelenideElement listView = $$x("//div[contains(@class,'listview')]")
+                .findBy(Condition.visible);
+
+        SelenideElement item = listView
+                .$x(".//li[normalize-space(.)='" + value + "']")
+                .shouldBe(Condition.visible);
+
+        // 4️⃣ КЛЮЧЕВОЙ МОМЕНТ — выбираем
+        item.click();
+
+        // 5️⃣ 🔥 ОБЯЗАТЕЛЬНЫЙ TAB — фиксирует значение в AddressSchema
+        input.sendKeys(Keys.TAB);
+
+        // 6️⃣ Ждём, пока Creatio примет значение
+        input.shouldHave(Condition.exactValue(value));
+
+        // 7️⃣ Ждём завершения асинхронных обновлений
+        Selenide.sleep(300);
+
+        return this;
+    }
+
+
+
+    @Step("Выбрать адресное значение '{value}' в поле '{fieldName}'")
+    public LookupComponent selectAddressLookup(String fieldName, String value) {
+
+        // 🔥 fieldName = "Region", "Country", "District", etc (НЕ локализованный текст)
+        SelenideElement input = $x(
+                "//div[@data-item-marker='" + fieldName + "']//input[@type='text']"
+        ).shouldBe(Condition.visible, Condition.enabled);
+
+        input.click();
+        input.clear();
+        input.sendKeys(value);
+
+        // listview
+        SelenideElement listView = $$x("//div[contains(@class,'listview')]")
+                .findBy(Condition.visible);
+
+        SelenideElement item = listView
+                .$x(".//li[normalize-space(.)='" + value + "']")
+                .shouldBe(Condition.visible);
+
+        item.click();
+
+        // soft validation (если есть)
+        SelenideElement confirmBtn = input.closest(".base-edit")
+                .$x(".//div[contains(@id,'soft-validation-confirm')]");
+
+        if (confirmBtn.exists() && confirmBtn.isDisplayed()) {
+            Selenide.executeJavaScript("arguments[0].click();", confirmBtn);
+        }
+
+        input.shouldHave(Condition.exactValue(value));
+
+        // ждём перестройку AddressSchema
+        $$x("//*[contains(@class,'loading') or contains(@class,'mask')]")
+                .shouldBe(CollectionCondition.size(0));
+
+        Selenide.sleep(300);
+
+        return this;
+    }
+
+
+
+
+
+
 
 }
 

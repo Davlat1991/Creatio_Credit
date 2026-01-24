@@ -1,6 +1,7 @@
 package flows.credit.registration;
 
 import core.base.TestContext;
+import core.base.common.activity.ActivityField;
 import core.data.registration.ExpenseData;
 import core.data.registration.IncomeData;
 import core.data.registration.RegistrationIncomeExpensesData;
@@ -60,7 +61,10 @@ public class RegistrationIncomeExpensesFlow {
 
         ctx.contractPage
                 .setfieldScheduleDetailByDIM("TsiAmountBC", income.getAmount());
+        ctx.basePage
+                .clickButtonByDataItemMaker("save");
     }
+
 
     private void addExpense(ExpenseData expense) {
 
@@ -82,5 +86,42 @@ public class RegistrationIncomeExpensesFlow {
                         "BnzAppExpensesDetailTsiAmountBCFloatEdit-wrap",
                         expense.getAmount()
                 );
+        ctx.basePage
+                .clickButtonByDataItemMaker("save");
     }
+
+    @Step("Заполнение деятельности физического лица")
+    public void fillIndividualActivity() {
+        ctx.buttonsComponent
+                .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
+
+        ctx.detailPage.clickAddRecordInDetail("Деятельность физ.лица");
+
+
+        ctx.activityComponent
+                .select(ActivityField.SECTOR, "Самозанятость")
+                .select(ActivityField.SEGMENT, "Агро")
+                .select(ActivityField.SUB_SEGMENT, "Животновод")
+                .select(ActivityField.SALES_TYPE, "Оптовая")
+                .select(ActivityField.MARKET, "Авангард");
+        ctx.checkboxComponent
+                .ensureCheckboxChecked("BnzIsPrimary");
+
+        ctx.contractPage
+                .clickButtonByNameCheck("Сохранить");
+
+    }
+
+
+
 }
+
+
+
+
+
+
+
+
+
+

@@ -3,6 +3,8 @@ package core.base;
 import core.assertions.FieldAssertions;
 import core.assertions.GridAssertions;
 import core.base.common.HeaderPage;
+import core.base.common.activity.ActivityComponent;
+import core.base.common.address.AddressComponent;
 import core.base.common.components.*;
 import core.base.common.helpers.DomActions;
 import core.base.common.utils.FieldUtils;
@@ -11,7 +13,9 @@ import core.data.documents.DocumentsTestData;
 import core.pages.contacts.ContactAddressPage;
 import core.pages.credit.ConsultationPanelPage;
 import core.pages.credit.ContractCreditApplicationPage;
+import core.pages.credit.RegistrationAdditionalInfoPage;
 import core.pages.login.LoginPage;
+import core.pages.ui.ContactCommunicationDetailPage;
 import core.pages.ui.DetailPage;
 import core.pages.ui.ProjectsPage;
 import flows.common.AuthorizationFlow;
@@ -56,6 +60,15 @@ public class TestContext {
     public final FieldAssertions fieldAssertions;
     public final CreditApplicationAssertions creditApplicationAssertions;
     public final PrintComponent printComponent;
+    public final ContactCommunicationDetailPage contactCommunicationDetailPage;
+    public final RegistrationAdditionalInfoPage additionalInfoPage;
+    public final AddressComponent addressComponent;
+    public final ActivityComponent activityComponent;
+
+
+
+
+
 
 
 
@@ -104,19 +117,10 @@ public class TestContext {
         this.fieldAssertions = new FieldAssertions();
         this.printComponent = new PrintComponent();
         this.creditApplicationAssertions = new CreditApplicationAssertions(contractPage);
-
-
-
-
-
-
-
-
-
-
-
-
-
+        this.contactCommunicationDetailPage = new ContactCommunicationDetailPage();
+        this.additionalInfoPage = new RegistrationAdditionalInfoPage();
+        this.addressComponent = new AddressComponent();
+        this.activityComponent = new ActivityComponent();
 
 
 

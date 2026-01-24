@@ -126,6 +126,24 @@ public class DetailPage {
         return this;
     }
 
+    @Step("Нажать '+' (Добавить запись) в detail '{detailName}'")
+    public void clickAddRecordInDetail(String detailName) {
+
+        // 1️⃣ Находим detail по data-item-marker
+        SelenideElement detail = $x(
+                "//div[contains(@class,'detail') and @data-item-marker='" + detailName + "']"
+        ).shouldBe(Condition.visible)
+                .scrollIntoView(true);
+
+        // 2️⃣ Внутри него находим кнопку "+"
+        SelenideElement addButton = detail.$x(
+                ".//span[@data-item-marker='AddRecordButton']"
+        ).shouldBe(Condition.visible, Condition.enabled);
+
+        // 3️⃣ JS click — стандарт для Creatio
+        executeJavaScript("arguments[0].click();", addButton);
+    }
+
 
 
 

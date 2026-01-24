@@ -25,11 +25,14 @@
         </encoder>
     </appender>
 
-    <!-- Log levels for libraries -->
+    <!-- Libraries -->
     <logger name="org.openqa.selenium" level="WARN"/>
     <logger name="com.codeborne.selenide" level="INFO"/>
 
-    <!-- Root logger -->
+    <!-- 🔹 Business logs (твои шаги) -->
+    <logger name="BUSINESS" level="INFO"/>
+
+    <!-- Root -->
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
