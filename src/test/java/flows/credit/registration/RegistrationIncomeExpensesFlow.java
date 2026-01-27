@@ -1,6 +1,6 @@
 package flows.credit.registration;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import core.base.common.activity.ActivityField;
 import core.data.registration.ExpenseData;
 import core.data.registration.IncomeData;
@@ -9,9 +9,9 @@ import io.qameta.allure.Step;
 
 public class RegistrationIncomeExpensesFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public RegistrationIncomeExpensesFlow(TestContext ctx) {
+    public RegistrationIncomeExpensesFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 
@@ -35,13 +35,10 @@ public class RegistrationIncomeExpensesFlow {
 
         ctx.lookupComponent
                 .setHandBookFieldByValueCheck(
-                        "Клиент предоставил подтверждение дохода",
-                        "Да"
-                )
+                        "Клиент предоставил подтверждение дохода","Да")
                 .setHandBookFieldByValueCheck(
                         "Тип документа подтверждения дохода",
-                        "Выписка с банковского счета"
-                );
+                        "Выписка с банковского счета");
     }
 
     private void addIncome(IncomeData income) {
@@ -91,7 +88,7 @@ public class RegistrationIncomeExpensesFlow {
     }
 
     @Step("Заполнение деятельности физического лица")
-    public void fillIndividualActivity() {
+    public void fillIndividualActivitySelfEmployed() {
         ctx.buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
 
@@ -112,6 +109,28 @@ public class RegistrationIncomeExpensesFlow {
 
     }
 
+
+    @Step("Заполнение деятельности физического лица")
+    public void fillIndividualActivityEmployed() {
+        ctx.buttonsComponent
+                .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
+
+        ctx.detailPage.clickAddRecordInDetail("Деятельность физ.лица");
+
+
+        ctx.activityComponent
+                .select(ActivityField.SECTOR, "Работник организации")
+                .select(ActivityField.SEGMENT, "Экономист")
+                .select(ActivityField.SUB_SEGMENT, "Бухгалтер")
+                .select(ActivityField.SALES_TYPE, "Не торгует");
+                //.select(ActivityField.MARKET, "Авангард");
+        ctx.checkboxComponent
+                .ensureCheckboxChecked("BnzIsPrimary");
+
+        ctx.contractPage
+                .clickButtonByNameCheck("Сохранить");
+
+    }
 
 
 }

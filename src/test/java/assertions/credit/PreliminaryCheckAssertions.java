@@ -1,13 +1,13 @@
 package assertions.credit;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 public class PreliminaryCheckAssertions {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public PreliminaryCheckAssertions(TestContext ctx) {
+    public PreliminaryCheckAssertions(UiContext ctx) {
         this.ctx = ctx;
     }
 

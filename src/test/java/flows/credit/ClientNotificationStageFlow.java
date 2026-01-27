@@ -1,15 +1,15 @@
 package flows.credit;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import flows.common.ApplicationSearchFlow;
 import io.qameta.allure.Step;
 
 public class ClientNotificationStageFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
     private final ApplicationSearchFlow applicationSearchFlow;
 
-    public ClientNotificationStageFlow(TestContext ctx) {
+    public ClientNotificationStageFlow(UiContext ctx) {
         this.ctx = ctx;
         this.applicationSearchFlow = new ApplicationSearchFlow(ctx);
     }

@@ -1,29 +1,7 @@
 package tests.routes;
 
 
-import com.codeborne.selenide.Selenide;
-import core.assertions.FieldAssertions;
-import core.assertions.GridAssertions;
-import core.base.BaseTest;
-import core.base.TestContext;
-import core.base.common.HeaderPage;
-import core.base.common.components.*;
-import core.base.common.helpers.DomActions;
-import core.base.common.utils.FieldUtils;
-import core.base.common.utils.FieldValueResolver;
-import core.data.contacts.ContactData;
-import core.pages.contacts.ContactAddressPage;
-import core.pages.login.LoginPage;
-import org.testng.annotations.Test;
-import steps.credit.CreditApplicationAssertions;
-import steps.login.LoginSteps;
-import core.data.users.LoginData;
-
-import java.time.LocalDate;
-
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.refresh;
-import static core.pages.credit.ContractCreditApplicationPage.CONTRACT_PAGE_MARKER;
 
 
 /*public class SimpleRouteTest extends BaseTest {

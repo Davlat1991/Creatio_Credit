@@ -6,22 +6,31 @@ package core.base.common.address;
  */
 public enum AddressField {
 
+    // Страна
     COUNTRY("Country"),
+    //Регион
     REGION("Region"),
+    //Район
     DISTRICT("City"),
+    //Населенный пункт
     CITY("BnzSettlement"),
+    //Тип улицы
     STREET_TYPE("TsiStreetType"),
 
+    //Улица
     STREET("Street"),
+    //Building1
     HOUSE("Building1"),
-
-    //нужно проверить остальные снизу
-    BUILDING("Building"),
-    APARTMENT("Apartment"),
+    //Корпус
+    BUILDING("BnzHousing"),
+    //Квартира/Офис
+    APARTMENT("AptOffice"),
+    //Адрес
     ADDRESS("Address"),
-
-    INDEX("Index"),
-    REG_DATE("RegDate");
+    //Индекс
+    INDEX("Zip"),
+    //Дата регистрации
+    REG_DATE("BnzRegistrationDate");
 
     public final String marker;
 

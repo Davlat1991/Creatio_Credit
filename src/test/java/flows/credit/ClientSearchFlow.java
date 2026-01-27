@@ -1,13 +1,13 @@
 package flows.credit;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 public class ClientSearchFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public ClientSearchFlow(TestContext ctx) {
+    public ClientSearchFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 

@@ -2,22 +2,22 @@
   "users": {
     "retailManager": {
       "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796aaa!@#",
+      "password": "S_RUSTMOVA_796!@#$%qwerty",
       "role": "RETAIL_MANAGER"
     },
     "underwriter": {
       "login": "A_AMINOV_707",
-      "password": "A_AMINOV_707A_AMINOV_707A_AMINOV_707A_AMINOV_707",
+      "password": "A_AMINOV_707!\"№ффф",
       "role": "UNDERWRITER"
     },
     "ikok": {
       "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796aaa!@#",
+      "password": "S_RUSTMOVA_796!@#$%qwerty",
       "role": "IKOK"
     },
     "cashier": {
       "login": "M_KURBONOVA",
-      "password": "M_KURBONOVAM_KURBONOVAM_KURBONOVA",
+      "password": "M_KURBONOVA123!\"№ффф",
       "role": "CASHIER"
     }
   },

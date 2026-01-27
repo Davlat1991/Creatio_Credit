@@ -1,6 +1,6 @@
 package flows.credit.registration;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 /**
@@ -14,9 +14,9 @@ import io.qameta.allure.Step;
  */
 public class RegistrationScoringConfirmationFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public RegistrationScoringConfirmationFlow(TestContext ctx) {
+    public RegistrationScoringConfirmationFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 
@@ -32,14 +32,8 @@ public class RegistrationScoringConfirmationFlow {
 
         // Дополнительные параметры после подтверждения
         ctx.lookupComponent
-                .setHandBookFieldByValueCheck(
-                        "Тип собственности на недвижимость",
-                        "Более 2-ух квартир"
-                )
-                .setHandBookFieldByValueCheck(
-                        "Тип владения автомобилем",
-                        "Есть автомобиль"
-                );
+                .setHandBookFieldByValueCheck("Тип собственности на недвижимость","Более 2-ух квартир")
+                .setHandBookFieldByValueCheck("Тип владения автомобилем","Есть автомобиль");
 
         // Обязательное согласие на обработку данных БКИ
         ctx.checkboxComponent

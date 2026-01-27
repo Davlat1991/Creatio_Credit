@@ -1,8 +1,9 @@
 package flows.credit.registration;
 
-import core.base.TestContext;
-import core.data.registration.EmploymentType;
+import core.base.UiContext;
 import core.data.registration.RegistrationIncomeExpensesData;
+import core.data.registration.scenarios.BaseScoringScenarios;
+import flows.credit.registration.client.BaseClientFlow;
 import io.qameta.allure.Step;
 
 /**
@@ -24,7 +25,10 @@ public class RegistrationStageFlow {
 
 
 
-    public RegistrationStageFlow(TestContext ctx) {
+
+
+
+    public RegistrationStageFlow(UiContext ctx) {
         this.generalInfoFlow = new RegistrationGeneralInfoFlow(ctx);
         this.participantsFlow = new RegistrationParticipantsFlow(ctx);
         this.documentsFlow = new RegistrationDocumentsFlow(ctx);
@@ -43,44 +47,38 @@ public class RegistrationStageFlow {
     @Step("Этап регистрации заявки")
     public void completeRegistrationStage(
             RegistrationIncomeExpensesData incomeExpensesData,
-            EmploymentType employmentType
+            BaseClientFlow clientFlow
     ) {
 
         // 1. Образование и карьера
-        // generalInfoFlow.fillGeneralInfo();
+        generalInfoFlow.fillGeneralInfo();
 
         // 2. Участники
         participantsFlow.addBorrower();
 
         // 3. Документы
-        /*documentsFlow.fillBorrowerDocuments();
+        documentsFlow.fillBorrowerDocuments();
 
         // 4. Адреса (другая страница)
         addressFlow.fillAddresses();
         //Состояние ПЗЛ
-        addressFlow.setPzlRelation(false);*/
+        addressFlow.setPzlRelation(false);
 
         // 5. Доходы и расходы
         incomeExpensesFlow.fillIncomeAndExpenses(incomeExpensesData);
 
-
         // 6. Дополнительная информация
-        // ⚠️ ТОЛЬКО выбор типа занятости (без fill'ов)
-        //additionalInfoDataFlow.fillBaseScoringData();
-        //additionalInfoDataFlow.selectEmploymentType(employmentType);
 
-        //addressFlow.fillWorkAddress();
-        //participantsFlow.fillCareerDetails();
-        incomeExpensesFlow.fillIndividualActivity();
-
-
-
+        additionalInfoDataFlow.fillBaseScoringData(
+                BaseScoringScenarios.STANDARD_EMPLOYED()
+        );
+        clientFlow.fill();
 
         // 8. Подтверждение
         scoringConfirmationFlow.confirmScoring();
 
         // 9. Печать
-        //printFlow.printApplication();
+        printFlow.printApplication();
     }
 
 }

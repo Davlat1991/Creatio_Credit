@@ -1,10 +1,8 @@
 package flows.credit;
 
-import core.base.TestContext;
-import core.base.common.utils.TestState;
+import core.base.UiContext;
 import flows.common.ApplicationSearchFlow;
 import io.qameta.allure.Step;
-import org.testng.annotations.BeforeMethod;
 
 import static com.codeborne.selenide.Selenide.refresh;
 
@@ -13,10 +11,10 @@ public class LoanIssuanceFlow {
     private static final String CONTRACT_PAGE_MARKER =
             "BnzContractCreditPageContainer";
 
-    private final TestContext ctx;
+    private final UiContext ctx;
     private final ApplicationSearchFlow applicationSearchFlow;
 
-    public LoanIssuanceFlow(TestContext ctx) {
+    public LoanIssuanceFlow(UiContext ctx) {
         this.ctx = ctx;
         this.applicationSearchFlow = new ApplicationSearchFlow(ctx);
     }

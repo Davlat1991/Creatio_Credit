@@ -1,18 +1,16 @@
 package flows.credit;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import flows.common.ApplicationSearchFlow;
 import io.qameta.allure.Step;
-
-import static com.codeborne.selenide.Selenide.refresh;
 
 public class ReviewStageUnderwriterFlow {
 
 
-    private final TestContext ctx;
+    private final UiContext ctx;
     private final ApplicationSearchFlow applicationSearchFlow;
 
-    public ReviewStageUnderwriterFlow(TestContext ctx) {
+    public ReviewStageUnderwriterFlow(UiContext ctx) {
         this.ctx = ctx;
 
         this.applicationSearchFlow = new ApplicationSearchFlow(ctx);

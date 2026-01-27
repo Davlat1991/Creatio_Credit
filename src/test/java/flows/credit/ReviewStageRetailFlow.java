@@ -1,16 +1,16 @@
 package flows.credit;
 
 import com.codeborne.selenide.Selenide;
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.refresh;
 
 public class ReviewStageRetailFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public ReviewStageRetailFlow(TestContext ctx) {
+    public ReviewStageRetailFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 

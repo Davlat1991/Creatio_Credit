@@ -1,13 +1,13 @@
 package flows.common;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 public class NavigationFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public NavigationFlow(TestContext ctx) {
+    public NavigationFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 

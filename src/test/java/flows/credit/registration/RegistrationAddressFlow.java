@@ -2,22 +2,20 @@ package flows.credit.registration;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import core.base.TestContext;
-import core.pages.ui.DetailPage;
+import core.base.UiContext;
+import core.base.common.address.AddressField;
 import core.utils.AllureAttachments;
 import core.utils.LogStep;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$;
-import static core.base.common.components.LookupComponent.log;
 
 public class RegistrationAddressFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
 
-    public RegistrationAddressFlow(TestContext ctx) {
+    public RegistrationAddressFlow(UiContext ctx) {
         this.ctx = ctx;
 
 
@@ -124,85 +122,52 @@ public class RegistrationAddressFlow {
     }
 
 
-
     @Step("Заполнение адреса места работы")
-    public void fillWorkAddress() {
+    public void fillWorkAddressSelfEmployed() {
 
         // 0️⃣ Открываем detail и нажимаем "+"
         ctx.detailPage.clickAddRecordInDetail("Адрес места работы");
 
-        //Страна
-        ctx.lookupComponent
-                .selectAddressLookup(
-                        "Country",
-                        "Точикистон"
-                );
+        ctx.addressComponent
+                .selectLookup(AddressField.COUNTRY, "Точикистон")    //Страна
+                .selectLookup(AddressField.REGION, "Вилояти Сугд")   //Регион
+                .selectLookup(AddressField.DISTRICT, "Хучанд")       //Район
+                .selectLookup(AddressField.CITY, "ш. Хучанд")        //Населенный пункт
+                .selectLookup(AddressField.STREET_TYPE, "Проспект")  //Тип улицы
+                .setText(AddressField.STREET, "Исмоили Сомони")      //Улица
+                .setText(AddressField.HOUSE, "19")                   //Дом
+                .setText(AddressField.BUILDING, "2/7")               //Корпус
+                .setText(AddressField.APARTMENT, "48")               //Квартира/Офис
+                .setText(AddressField.INDEX, "735700")               //Индекс
+                .setText(AddressField.REG_DATE, "01.01.2020")        //Дата регистрации
+        ;
 
-        //Регион
-        ctx.lookupComponent
-                .selectAddressLookup(
-                        "Region",
-                        "Вилояти Сугд"
-                );
+        ctx.contractPage
+                .clickButtonByNameCheck("Сохранить");
 
-        //Район
-        ctx.lookupComponent
-                .selectAddressLookup(
-                        "City",
-                        "Хучанд"
-                );
-
-        //Населенный пункт
-        ctx.lookupComponent
-                .selectAddressLookup(
-                        "BnzSettlement",
-                        "ш. Хучанд"
-                );
-
-        //Тип улицы
-        ctx.lookupComponent
-                .selectAddressLookup(
-                        "TsiStreetType",
-                        "Проспект"
-                );
-
-        //Street
-        ctx.lookupComponent
-                .setFieldByValueCheck(
-                        "Улица",
-                        "Исмоили Сомони 330"
-                );
-
-        //Building1
-        ctx.lookupComponent
-                .setFieldByValueCheck(
-                        "Дом",
-                        "19"
-                );
+    }
 
 
-        //BnzHousing
-        ctx.lookupComponent
-                .setFieldByValueCheck(
-                        "Корпус",
-                        "2/7"
-                );
+    @Step("Заполнение адреса места работы")
+    public void fillWorkAddressEmployed() {
 
-        ctx.lookupComponent
-                .setFieldByValueCheck(
-                        "Квартира/Офис",
-                        "48"
-                );
+        // 0️⃣ Открываем detail и нажимаем "+"
+        ctx.detailPage.clickAddRecordInDetail("Адрес места работы");
 
-        ctx.lookupComponent
-                .setFieldByValueCheck(
-                        "Индекс",
-                        "735700"
-                );
+        ctx.addressComponent
+                .selectLookup(AddressField.COUNTRY, "Точикистон")    //Страна
+                .selectLookup(AddressField.REGION, "Вилояти Сугд")   //Регион
+                .selectLookup(AddressField.DISTRICT, "Хучанд")       //Район
+                .selectLookup(AddressField.CITY, "ш. Хучанд")        //Населенный пункт
+                .selectLookup(AddressField.STREET_TYPE, "Проспект")  //Тип улицы
+                .setText(AddressField.STREET, "Исмоили Сомони")      //Улица
+                .setText(AddressField.HOUSE, "19")                   //Дом
+                .setText(AddressField.BUILDING, "2/7")               //Корпус
+                .setText(AddressField.APARTMENT, "48")               //Квартира/Офис
+                .setText(AddressField.INDEX, "735700")               //Индекс
+                .setText(AddressField.REG_DATE, "01.01.2020")        //Дата регистрации
+        ;
 
-        //Дата регистрации
-        ctx.dateFieldComponent
-                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
         ctx.contractPage
                 .clickButtonByNameCheck("Сохранить");
 

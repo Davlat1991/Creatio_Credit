@@ -1,4 +1,4 @@
-package tests.flows;
+package tests.credit.regression.clients.selfemployed;
 
 import core.base.BaseTest;
 import core.data.TestData;
@@ -6,7 +6,6 @@ import core.data.TestDataLoader;
 import core.data.contacts.ContactData;
 import core.data.mappers.ContactDataMapper;
 import core.data.mappers.LoginDataMapper;
-import core.data.registration.EmploymentType;
 import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.users.LoginData;
 import core.enums.Workspace;
@@ -15,15 +14,18 @@ import flows.common.NavigationFlow;
 import flows.common.WorkspaceFlow;
 import flows.credit.*;
 import flows.credit.registration.RegistrationStageFlow;
+import flows.credit.registration.client.BaseClientFlow;
+import flows.credit.registration.client.OtherIncomeClientFlow;
+import flows.credit.registration.client.SelfEmployedClientFlow;
 import org.testng.annotations.Test;
 
-public class StandartRiouteCreditTest extends BaseTest {
+public class SelfEmployedStandardRouteTest extends BaseTest {
 
     @Test
-    public void creditApplicationHappyPath() {
+    public void StandardRouteCredit() {
 
         // ============================================================
-        // 1. TEST DATA (ТОЛЬКО ЗДЕСЬ)
+        // 1. ТЕСТОВЫЕ ДАННЫЕ
         // ============================================================
 
         TestData data = TestDataLoader.load();
@@ -67,13 +69,23 @@ public class StandartRiouteCreditTest extends BaseTest {
         NavigationFlow navigationFlow = new NavigationFlow(ctx);
         LoanIssuanceFlow loanIssuanceFlow = new LoanIssuanceFlow(ctx);
 
-        // ============================================================
-        // 4. RETAIL MANAGER
-        // ============================================================
+        // 🔹 ВАЖНО: выбор типа клиента
+        BaseClientFlow clientFlow = new SelfEmployedClientFlow(ctx);   //Тип клиента самозанятый
 
+
+        // ============================================================
+        // 🔵 4. АВТОРИЗАЦИЯ
+        // ============================================================
         authFlow.login(retailManager);
+
+        // ============================================================
+        // 🔵 5. РАБОЧЕЕ МЕСТО
+        // ============================================================
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
+        // ============================================================
+        // 🔵 6. КОНСУЛЬТАЦИЯ + ПОДБОР ПРОДУКТА + СОЗДАНИЕ ЗАЯВКИ
+        // ============================================================
         clientSearchFlow.searchClient(
                 contact.getLastName(),
                 contact.getFirstName(),
@@ -99,23 +111,38 @@ public class StandartRiouteCreditTest extends BaseTest {
                 "36"
         );
 
+        /*authFlow.login(retailManager);
 
+        navigationFlow.open(
+                Environment.BASE_URL +
+                        "");*/
+
+        // ============================================================
+        // 🔵 7. ЗАПОЛНЕНИЕ АНКЕТЫ ЗАЁМЩИКА
+        // ============================================================
         registrationFlow.completeRegistrationStage(
                 incomeExpensesData,
-                EmploymentType.OTHER_INCOME
-        );
+                clientFlow);
 
+        // ============================================================
+        // 🔵 8. ПРОХОЖДЕНИЕ СТАДИЙ ОБРАБОТКИ
+        // ============================================================
         preliminaryCheckFlow.completePreliminaryCheckStage();
+
+        // ============================================================
+        // 🔵 9. ЗАГРУЗКА ДОКУМЕНТОВ
+        // ============================================================
         documentsStageFlow.uploadDocumentsLegacy();
 
+        // ============================================================
+        // 🔵 10. РАССМОТРЕНИЕ
+        // ============================================================
         reviewRetailFlow.completeReview();
-
         authFlow.logout();
 
         // ============================================================
-        // 5. UNDERWRITER
+        // 🔵 11. ПРОЕКТ РЕШЕНИЯ
         // ============================================================
-
         authFlow.login(underwriter);
         workspaceFlow.select(Workspace.UNDERWRITER);
 
@@ -125,12 +152,10 @@ public class StandartRiouteCreditTest extends BaseTest {
         authFlow.logout();
 
         // ============================================================
-        // 6. CLIENT NOTIFICATION — RETAIL MANAGER
+        // 🔵 12. ИНФОРМИРОВАНИЕ КЛИЕНТА
         // ============================================================
-
         authFlow.login(retailManager);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
-
 
         clientNotificationFlow.completeClientNotification(
                 "Рустамова Саодатчон Валиевна"
@@ -139,7 +164,7 @@ public class StandartRiouteCreditTest extends BaseTest {
         authFlow.logout();
 
         // ============================================================
-        // 7. LOAN ISSUANCE
+        // 🔵 12. ПОДПИСАНИЕ + ВЫДАЧА + СОЗДАНИЕ ОРДЕРОВ
         // ============================================================
 
         authFlow.login(ikok);
@@ -148,6 +173,23 @@ public class StandartRiouteCreditTest extends BaseTest {
         loanIssuanceFlow.issueLoan();
 
         authFlow.logout();
+
+        // ============================================================
+        // 🔵 12. ВЫДАЧА КРЕДИТА
+        // ============================================================
+        authFlow.login(cashier);
+        workspaceFlow.select(Workspace.CASHIER);
+
+        authFlow.logout();
+
+        // ============================================================
+        // 🔵 13. ЗАВЕРШЕНИЕ ЗАЯВКИ
+        // ============================================================
+        authFlow.login(ikok);
+        workspaceFlow.select(Workspace.IKOK);
+
+        authFlow.logout();
+
 
 
     }

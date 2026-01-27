@@ -1,9 +1,15 @@
 package core.pages.login;
 
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import core.config.Environment;
 import core.data.users.LoginData;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
@@ -22,7 +28,7 @@ public class LoginPage {
     private final SelenideElement loginButton   = $("[data-item-marker='btnLogin']");
     private final SelenideElement header        = $("#left-header-container");
     private final SelenideElement loginError    = $(".base-edit-validation");
-
+    private static final Logger log = LoggerFactory.getLogger(LoginPage.class);
     // ===============================
     // Navigation
     // ===============================
@@ -69,10 +75,23 @@ public class LoginPage {
                 .verifyLoginSuccess();
     }
 
-    @Step("Проверить успешную авторизацию")
+
+
+
+    @Step("Главная страница успешно открыта")
     public LoginPage verifyLoginSuccess() {
         header.shouldBe(visible, Duration.ofSeconds(20));
+
+        log.info("Успешная авторизация: главная страница открыта");
+
+        attachScreenshot();
         return this;
+    }
+
+    @Attachment(value = "Главная страница", type = "image/png")
+    public byte[] attachScreenshot() {
+        return ((TakesScreenshot) WebDriverRunner.getWebDriver())
+                .getScreenshotAs(OutputType.BYTES);
     }
 
     // ===============================

@@ -1,13 +1,13 @@
 package flows.credit.registration;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 public class RegistrationScoringFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public RegistrationScoringFlow(TestContext ctx) {
+    public RegistrationScoringFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 
@@ -15,26 +15,11 @@ public class RegistrationScoringFlow {
     public void fillScoringInfo() {
 
         ctx.lookupComponent
-                .setHandBookFieldByValueCheck(
-                        "Семейное положение",
-                        "Мучаррад (мард)"
-                )
-                .setFieldByValueCheck(
-                        "Количество иждивенцев (строка)",
-                        "0"
-                )
-                .setFieldByValueCheck(
-                        "Общий стаж, мес",
-                        "60"
-                )
-                .setHandBookFieldByValueCheck(
-                        "Тип занятости",
-                        "Имеет другой источник дохода"
-                )
-                .setHandBookFieldByValueCheck(
-                        "Причина отсутствия работы",
-                        "Получатель Д/П"
-                );
+                .setHandBookFieldByValueCheck("Семейное положение","Мучаррад (мард)")
+                .setFieldByValueCheck("Количество иждивенцев (строка)","0")
+                .setFieldByValueCheck("Общий стаж, мес","60")
+                .setHandBookFieldByValueCheck("Тип занятости","Имеет другой источник дохода")
+                .setHandBookFieldByValueCheck("Причина отсутствия работы","Получатель Д/П");
 
         ctx.basePage.scrollToTop();
 

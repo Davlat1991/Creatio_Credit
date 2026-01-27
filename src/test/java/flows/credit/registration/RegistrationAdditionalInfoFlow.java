@@ -1,6 +1,8 @@
 package flows.credit.registration;
 
-import core.base.TestContext;
+import core.base.UiContext;
+import core.base.common.educationcareer.EducationCareerField;
+import core.data.registration.BaseScoringData;
 import core.data.registration.EmploymentType;
 import io.qameta.allure.Step;
 
@@ -10,15 +12,15 @@ import io.qameta.allure.Step;
  */
 public class RegistrationAdditionalInfoFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public RegistrationAdditionalInfoFlow(TestContext ctx) {
+    public RegistrationAdditionalInfoFlow(UiContext ctx) {
         this.ctx = ctx;
 
     }
 
 
-    @Step("Заполнение базовых скоринговых данных заемщика")
+    /*@Step("Заполнение базовых скоринговых данных заемщика")
     public void fillBaseScoringData() {
 
 
@@ -30,128 +32,94 @@ public class RegistrationAdditionalInfoFlow {
                 );
 
         ctx.lookupComponent
-                .setFieldByValueCheck(
-                        "Количество иждивенцев (строка)",
-                        "0"
-                )
-                .setFieldByValueCheck(
-                        "Общий стаж",
-                        "36"
-                )
-                .setFieldByValueCheck(
-                        "Общий стаж, лет",
-                        "3"
-                )
-                .setFieldByValueCheck(
-                        "Общий стаж, мес",
-                        "36"
-                )
-                .setFieldByValueCheck(
-                        "Стаж на последнем месте, лет",
-                        "2"
-                )
-                .setFieldByValueCheck(
-                        "Стаж на последнем месте, мес",
-                        "24"
+                .setFieldByValueCheck("Количество иждивенцев (строка)","0")
+                .setFieldByValueCheck("Общий стаж","36")
+                .setFieldByValueCheck("Общий стаж, лет","3")
+                .setFieldByValueCheck("Общий стаж, мес","36")
+                .setFieldByValueCheck("Стаж на последнем месте, лет","2")
+                .setFieldByValueCheck("Стаж на последнем месте, мес","24");
+
+
+    }*/
+
+    @Step("Заполнение базовых скоринговых данных заемщика")
+    public void fillBaseScoringData(BaseScoringData data) {
+
+        ctx.lookupComponent
+                .setHandBookFieldByValueCheck(
+                        "Семейное положение",
+                        data.getMaritalStatus()
                 );
 
-
+        ctx.lookupComponent
+                .setFieldByValueCheck("Количество иждивенцев (строка)", data.getDependentsCount())
+                .setFieldByValueCheck("Общий стаж", data.getTotalExperience())
+                .setFieldByValueCheck("Общий стаж, лет", data.getTotalExperienceYears())
+                .setFieldByValueCheck("Общий стаж, мес", data.getTotalExperienceMonths())
+                .setFieldByValueCheck("Стаж на последнем месте, лет", data.getLastJobExperienceYears())
+                .setFieldByValueCheck("Стаж на последнем месте, мес", data.getLastJobExperienceMonths());
     }
+
 
     @Step("Подготовка поля 'Причина отсутствия работы'")
     public void prepareReasonOfNoWork() {
         ctx.additionalInfoPage.clearReasonOfNoWorkIfPresent();
     }
 
-    @Step("Заполнение данных самозанятого")
-    public void fillSelfEmployedData() {
 
-        prepareReasonOfNoWork();
 
-        ctx.lookupComponent
-                .setHandBookFieldByValueCheck("Должность", "Учитель")
-                .setFieldByValueCheck("Наименование организации", "ВУЗ")
-                .setHandBookFieldByValueCheck("Роль", "Учитель")
-                .setHandBookFieldByValueCheck("Социальный статус",
-                        "Рабочий в частной фирме/организации")
-                .setHandBookFieldByValueCheck("Образование", "2 и более высших")
-                .setFieldByValueCheck("Полное название должности", "Учитель")
-                .setHandBookFieldByValueCheck("Работодатель", "Общий отдел")
-                .setHandBookFieldByValueCheck("Организационно-правовая форма", "ВУЗ")
-                .setHandBookFieldByValueCheck("Деловая репутация",
-                        "Управленческая должность");
+    @Step("Выбор типа занятости: {employmentType}")
+    public void selectEmploymentTypeOtherIncome(EmploymentType employmentType) {
+
+        ctx.educationCareerComponent
+                .setLookup(
+                        EducationCareerField.EMPLOYMENT_TYPE,
+                        employmentType.getUiName()
+                )
+                .setLookup(EducationCareerField.REASON_FOR_NOT_WORKING, "Получатель Д/П");
     }
 
 
     @Step("Выбор типа занятости: {employmentType}")
-    public void selectEmploymentType(EmploymentType employmentType) {
+    public void selectEmploymentTypeSelfEmployed(EmploymentType employmentType) {
 
-        ctx.lookupComponent
-                .setHandBookFieldByValueCheck(
-                        "Тип занятости",
+        ctx.educationCareerComponent
+                .setLookup(
+                        EducationCareerField.EMPLOYMENT_TYPE,
                         employmentType.getUiName()
-                );
-
-        prepareReasonOfNoWork();
-
-        ctx.lookupComponent
-                .setHandBookFieldByValueCheck(
-                        "Должность",
-                        "Агроном"
                 )
-                .setFieldByValueCheck(
-                        "Наименование организации",
-                        "Агропром")
-                .setHandBookFieldByValueCheck(
-                        "Роль",
-                        "Руководитель")
-                .setHandBookFieldByValueCheck(
-                        "Образование",
-                        "2 и более высших")
-                .setFieldByValueCheck(
-                        "Полное название должности",
-                        "Агроном")
-                .setHandBookFieldByValueCheck(
-                        "Организационно-правовая форма",
-                        "Дехканские (фермерские) хозяйства")
-                .setHandBookFieldByValueCheck(
-                        "Деловая репутация",
-                        "Управленческая должность");
-
+                .clearFieldIfPresent(EducationCareerField.REASON_FOR_NOT_WORKING)
+                .setLookup(EducationCareerField.POSITION, "Агроном")
+                .setText(EducationCareerField.ORGANIZATION_NAME, "Агропром")
+                .setLookup(EducationCareerField.ROLE, "Руководитель")
+                .setLookup(EducationCareerField.EDUCATION, "2 и более высших")
+                .setLookup(EducationCareerField.LEGAL_FORM, "Дехканские (фермерские) хозяйства")
+                .setLookup(EducationCareerField.BUSINESS_REPUTATION, "Управленческая должность");
 
     }
 
 
+    @Step("Выбор типа занятости: {employmentType}")
+    public void selectEmploymentTypeEmployed(EmploymentType employmentType) {
 
-    @Step("Заполнение данных работающего в организации")
-    public void fillEmployedData() {
-        prepareReasonOfNoWork();
-
-        ctx.lookupComponent
-                .setHandBookFieldByValueCheck(
-                        "Должность",
-                        "Агроном"
+        ctx.educationCareerComponent
+                .setLookup(
+                        EducationCareerField.EMPLOYMENT_TYPE,
+                        employmentType.getUiName()
                 )
-                .setFieldByValueCheck(
-                        "Наименование организации",
-                        "Агропром")
-                .setHandBookFieldByValueCheck(
-                        "Роль",
-                        "Руководитель")
-                .setHandBookFieldByValueCheck(
-                        "Образование",
-                        "2 и более высших")
-                .setFieldByValueCheck(
-                        "Полное название должности",
-                        "Агроном")
-                .setHandBookFieldByValueCheck(
-                        "Организационно-правовая форма",
-                        "Дехканские (фермерские) хозяйства")
-                .setHandBookFieldByValueCheck(
-                        "Деловая репутация",
-                        "Управленческая должность");
+                .clearFieldIfPresent(EducationCareerField.REASON_FOR_NOT_WORKING)
+                .setLookup(EducationCareerField.POSITION, "Бухгалтер")
+                .setText(EducationCareerField.ORGANIZATION_NAME, "Агро-Холдинг")
+                .setLookup(EducationCareerField.ROLE, "Исполнитель")
+                .setLookup(EducationCareerField.SOCIAL_STATUS, "Рабочий в частной фирме/организации")
+                .setLookup(EducationCareerField.EDUCATION, "2 и более высших")
+                .setText(EducationCareerField.POSITION_FULL_NAME, "Бухгалтер")
+                //.setLookup(EducationCareerField.EMPLOYER, "ЧДММ \"АГРОПРОМ ХУЧАНД\"")
+                .setLookup(EducationCareerField.LEGAL_FORM, "Дехканские (фермерские) хозяйства")
+                .setLookup(EducationCareerField.BUSINESS_REPUTATION, "Рабочий");
 
     }
+
 
 
     @Step("Заполнение данных клиента с иным источником дохода")

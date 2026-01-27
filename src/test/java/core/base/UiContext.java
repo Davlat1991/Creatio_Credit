@@ -5,7 +5,9 @@ import core.assertions.GridAssertions;
 import core.base.common.HeaderPage;
 import core.base.common.activity.ActivityComponent;
 import core.base.common.address.AddressComponent;
+import core.base.common.career.CareerComponent;
 import core.base.common.components.*;
+import core.base.common.educationcareer.EducationCareerComponent;
 import core.base.common.helpers.DomActions;
 import core.base.common.utils.FieldUtils;
 import core.base.common.utils.FieldValueResolver;
@@ -26,7 +28,7 @@ import steps.workspace.WorkspaceSteps;
 
 
 
-public class TestContext {
+public class UiContext {
 
 
     public final LoginPage loginPage;
@@ -64,18 +66,8 @@ public class TestContext {
     public final RegistrationAdditionalInfoPage additionalInfoPage;
     public final AddressComponent addressComponent;
     public final ActivityComponent activityComponent;
-
-
-
-
-
-
-
-
-
-
-
-
+    public final CareerComponent careerComponent;
+    public final EducationCareerComponent educationCareerComponent;
 
 
 
@@ -84,7 +76,7 @@ public class TestContext {
 
 
 
-    public TestContext() {
+    public UiContext() {
         this.loginPage = new LoginPage();
         this.loginSteps = new LoginSteps();
         this.workspaceSteps = new WorkspaceSteps();
@@ -121,10 +113,8 @@ public class TestContext {
         this.additionalInfoPage = new RegistrationAdditionalInfoPage();
         this.addressComponent = new AddressComponent();
         this.activityComponent = new ActivityComponent();
-
-
-
-
+        this.careerComponent = new CareerComponent();
+        this.educationCareerComponent = new EducationCareerComponent();
 
 
 

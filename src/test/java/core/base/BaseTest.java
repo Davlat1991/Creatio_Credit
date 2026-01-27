@@ -6,6 +6,7 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import core.base.common.utils.TestState;
 import core.config.DriverFactory;
 import core.config.Environment;
+import core.context.CreditTestContext;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.qameta.allure.testng.AllureTestNg;
@@ -24,7 +25,8 @@ import java.util.Properties;
 @Listeners({AllureTestNg.class})
 public abstract class BaseTest {
 
-    protected TestContext ctx;
+    protected UiContext ctx;
+    //protected CreditTestContext ctx;
 
     // ==========================
     // BEFORE SUITE
@@ -81,7 +83,7 @@ public abstract class BaseTest {
 
     @BeforeMethod(alwaysRun = true)
     public void initContext() {
-        ctx = new TestContext();
+        ctx = new UiContext();
     }
 
     // ==========================

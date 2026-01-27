@@ -1,6 +1,6 @@
 package flows.common;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import core.enums.Workspace;
 import io.qameta.allure.Step;
 
@@ -10,9 +10,9 @@ import io.qameta.allure.Step;
  */
 public class WorkspaceFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public WorkspaceFlow(TestContext ctx) {
+    public WorkspaceFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 
@@ -27,7 +27,7 @@ public class WorkspaceFlow {
 
     private void switchTo(String workspaceName) {
         ctx.workspaceSteps.selectWorkAccess(workspaceName);
-        ctx.basePage.clickButtonById("view-button-OBSW-imageEl");
+        ctx.basePage.clickButtonByDataItemMaker("OBSW"); //view-button-OBSW-wrapperEl 245  // view-button-OBSW-imageEl 254
         ctx.basePage.waitForPage();
     }
 }

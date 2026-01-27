@@ -1,49 +1,84 @@
 package tests.credit.smoke;
 
 
-/*import core.base.BaseTest;
-import core.pages.login.LoginPage;
-import core.pages.routes.SimpleRoutePage;
-import io.qameta.allure.*;
-import org.testng.annotations.Test;
-import steps.login.LoginSteps;
+import core.base.BaseTest;
+import core.data.TestData;
+import core.data.TestDataLoader;
+import core.data.contacts.ContactData;
+import core.data.mappers.ContactDataMapper;
+import core.data.mappers.LoginDataMapper;
+import core.data.users.LoginData;
+import core.enums.Workspace;
+import flows.common.AuthorizationFlow;
+import flows.common.WorkspaceFlow;
+import flows.credit.*;
 
-@Epic("Creatio Credit")
-@Feature("Упрощённый маршрут")
-@Story("Smoke: создание заявки")
-@Owner("Davlat")
-@Severity(SeverityLevel.CRITICAL)
+import org.testng.annotations.Test;
+
+
 public class SimpleRouteSmokeTest extends BaseTest {
 
-    private final LoginSteps login = new LoginSteps();
-    private final LoginPage openUrl = new LoginPage();
+    @Test
+    public void createApplicationCredit() {
 
-    @Test(
-            groups = {"smoke"},
-            description = "Smoke: создание заявки через упрощённый маршрут. Проверка статуса 'Создано'"
-    )
-    public void simpleRouteSmokeTest() {
+        // ============================================================
+        // 1. TEST DATA (ТОЛЬКО ЗДЕСЬ)
+        // ============================================================
 
-        // 1. Авторизация
-        openUrl
-                .openUrl(BASE_ULR_1).openUrl("http://10.10.202.254/0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/666a922f-d170-4ee8-9d76-3a3a6f1708ca");
-        login
-                .enterUsername(retailManager.getLogin())
-                .enterPassword(retailManager.getPassword())
-                .clickLogin()
-                .verifyLogin();
+        TestData data = TestDataLoader.load();
 
-        // 2. Переход в рабочее место и раздел
-        workspaceSteps.openWorkspaceAndSection("Розничный менеджер", "Заявки");
+        LoginData retailManager =
+                LoginDataMapper.from(data.user("retailManager"));
 
-        // 3. Создание заявки
-        dashboardPage.openCreateMenu();
+        ContactData contact =
+                ContactDataMapper.from(data.defaultContact());
 
-        // 4. Заполнение упрощённой формы
-        new SimpleRoutePage()
-                .waitOpened()
-                .fillRequiredFields("Иванов Иван", "9000000000")
-                .save()
-                .verifyStatus("Создано");
+        // ============================================================
+        // 2. INFRASTRUCTURE FLOWS
+        // ============================================================
+
+        AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
+        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ctx);
+
+        // ============================================================
+        // 3. BUSINESS FLOWS
+        // ============================================================
+
+        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ctx);
+        ConsultationStartFlow consultationStartFlow = new ConsultationStartFlow(ctx);
+        ProductSelectionFlow productFlow = new ProductSelectionFlow(ctx);
+        ApplicationCreationFlow applicationFlow = new ApplicationCreationFlow(ctx);
+
+        // ============================================================
+        // 4. RETAIL MANAGER
+        // ============================================================
+
+        authFlow.login(retailManager);
+        workspaceFlow.select(Workspace.RETAIL_MANAGER);
+
+        clientSearchFlow.searchClient(
+                contact.getLastName(),
+                contact.getFirstName(),
+                contact.getMiddleName()
+        );
+
+        consultationStartFlow.startConsultation(
+                "consultation-theme-7a0f11cc-756d-474a-885f-1dd64eeca5b3"
+        );
+
+        productFlow.selectProduct(
+                "Карзхои гуногунмаксад",
+                "Барои эхтиёчоти оилави",
+                "50000",
+                "36",
+                "Сомони Чумхурии Точикистон"
+        );
+
+        applicationFlow.createApplication(
+                "3",
+                "2",
+                "Аннуитетный",
+                "36"
+        );
     }
-}*/
+}

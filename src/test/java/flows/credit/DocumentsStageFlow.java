@@ -1,13 +1,13 @@
 package flows.credit;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 public class DocumentsStageFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public DocumentsStageFlow(TestContext ctx) {
+    public DocumentsStageFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 
@@ -46,7 +46,7 @@ public class DocumentsStageFlow {
         startUploadIfNeeded();
 
         uploadAndValidate(
-                "Registration (Example).xlsx",
+                "Справка о доходах.pdf",
                 1
         );
     }
@@ -56,7 +56,7 @@ public class DocumentsStageFlow {
         ctx.detailPage.openDetailByName("Досье клиента");
 
         uploadAndValidate(
-                "Registration (Example).xlsx",
+                "Шиносномаи шахрванди ЧТ.pdf",
                 2
         );
     }
@@ -64,7 +64,7 @@ public class DocumentsStageFlow {
     private void uploadAdditionalClientDossier() {
 
         uploadAndValidate(
-                "Registration (Example).xlsx",
+                "ИНН.pdf",
                 3
         );
     }

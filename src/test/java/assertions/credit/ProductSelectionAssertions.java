@@ -1,6 +1,6 @@
 package assertions.credit;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.disappear;
@@ -8,9 +8,9 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class ProductSelectionAssertions {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public ProductSelectionAssertions(TestContext ctx) {
+    public ProductSelectionAssertions(UiContext ctx) {
         this.ctx = ctx;
     }
 

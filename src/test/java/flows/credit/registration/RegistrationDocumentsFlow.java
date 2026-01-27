@@ -1,13 +1,13 @@
 package flows.credit.registration;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 public class RegistrationDocumentsFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public RegistrationDocumentsFlow(TestContext ctx) {
+    public RegistrationDocumentsFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 

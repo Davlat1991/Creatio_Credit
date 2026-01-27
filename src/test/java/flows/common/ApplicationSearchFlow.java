@@ -1,6 +1,6 @@
 package flows.common;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 /**
@@ -9,9 +9,9 @@ import io.qameta.allure.Step;
  */
 public class ApplicationSearchFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public ApplicationSearchFlow(TestContext ctx) {
+    public ApplicationSearchFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 

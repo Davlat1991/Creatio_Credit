@@ -1,13 +1,13 @@
 package flows.credit;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import io.qameta.allure.Step;
 
 public class PreliminaryCheckStageFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public PreliminaryCheckStageFlow(TestContext ctx) {
+    public PreliminaryCheckStageFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 

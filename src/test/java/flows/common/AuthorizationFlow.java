@@ -1,6 +1,6 @@
 package flows.common;
 
-import core.base.TestContext;
+import core.base.UiContext;
 import core.data.users.LoginData;
 import io.qameta.allure.Step;
 
@@ -10,9 +10,9 @@ import io.qameta.allure.Step;
  */
 public class AuthorizationFlow {
 
-    private final TestContext ctx;
+    private final UiContext ctx;
 
-    public AuthorizationFlow(TestContext ctx) {
+    public AuthorizationFlow(UiContext ctx) {
         this.ctx = ctx;
     }
 

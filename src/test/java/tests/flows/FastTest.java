@@ -17,6 +17,10 @@ import flows.credit.*;
 import flows.credit.ReviewStageRetailFlow;
 import flows.credit.ReviewStageUnderwriterFlow;
 import flows.credit.registration.*;
+import flows.credit.registration.client.BaseClientFlow;
+import flows.credit.registration.client.EmployedClientFlow;
+import flows.credit.registration.client.OtherIncomeClientFlow;
+import flows.credit.registration.client.SelfEmployedClientFlow;
 import org.testng.annotations.Test;
 import core.data.registration.EmploymentType;
 
@@ -70,11 +74,17 @@ public class FastTest extends BaseTest {
         NavigationFlow navigationFlow = new NavigationFlow(ctx);
         LoanIssuanceFlow loanIssuanceFlow = new LoanIssuanceFlow(ctx);
 
+        // 🔹 ВАЖНО: выбор типа клиента ТОЛЬКО ЗДЕСЬ
+        BaseClientFlow clientFlow = new SelfEmployedClientFlow(ctx); //Тип клиента самозанятый
+      //BaseClientFlow clientFlow = new EmployedClientFlow(ctx);     //Тип клиента работает в организации
+      //BaseClientFlow clientFlow = new OtherIncomeClientFlow(ctx);  //Тип клиента имеет другой источник дохода
+
+
         // ============================================================
         // 4. RETAIL MANAGER
         // ============================================================
 
-        /*authFlow.login(retailManager);
+        authFlow.login(retailManager);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
         clientSearchFlow.searchClient(
@@ -100,20 +110,21 @@ public class FastTest extends BaseTest {
                 "2",
                 "Аннуитетный",
                 "36"
-        );*/
+        );
 
-        authFlow.login(retailManager);
+        /*authFlow.login(retailManager);
 
         navigationFlow.open(
                 Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/27f1fa9e-4ec5-42a4-a24b-f3c070afce04");
+                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/27f1fa9e-4ec5-42a4-a24b-f3c070afce04");*/
+
 
         registrationFlow.completeRegistrationStage(
                 incomeExpensesData,
-                EmploymentType.SELF_EMPLOYED
-        );
+                clientFlow);
 
-        /*preliminaryCheckFlow.completePreliminaryCheckStage();
+
+        preliminaryCheckFlow.completePreliminaryCheckStage();
         documentsStageFlow.uploadDocumentsLegacy();
 
         reviewRetailFlow.completeReview();
@@ -155,7 +166,7 @@ public class FastTest extends BaseTest {
 
         loanIssuanceFlow.issueLoan();
 
-        authFlow.logout();*/
+        authFlow.logout();
 
 
     }

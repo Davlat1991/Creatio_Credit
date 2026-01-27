@@ -1,12 +1,14 @@
 package steps.login;
 
+import core.base.BaseTest;
 import io.qameta.allure.*;
 import core.pages.login.LoginPage;
 import core.data.users.LoginData;
 
 @Epic("Авторизация")
 @Feature("Логин пользователя")
-public class LoginSteps {
+public class LoginSteps extends BaseTest {
+
 
     private final LoginPage page = new LoginPage();
 
