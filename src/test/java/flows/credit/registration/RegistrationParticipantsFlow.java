@@ -6,64 +6,62 @@ import io.qameta.allure.Step;
 
 public class RegistrationParticipantsFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public RegistrationParticipantsFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public RegistrationParticipantsFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Добавление заемщика")
     public void addBorrower() {
 
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainName("Участники заявки");
                 //.doubleclickButtonByName("Заемщик"); //Метод для продолжения заявки
-        ctx.basePage
+        ui.basePage
                 .clickButtonById("BnzVwFinApplicationAllParticipantDetailAddTypedRecordButtonButton-imageEl");
 
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName("Заемщик");
     }
 
+
     @Step("Заполнение данных карьеры заемщика")
     public void fillCareerDetailsSelfEmployed() {
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
 
-        ctx.detailPage.clickAddRecordInDetail("Карьера");
+        ui.detailPage.clickAddRecordInDetail("Карьера");
 
-        ctx.careerComponent
+        ui.careerComponent
                 .setLookupByMarker(CareerField.EMPLOYMENT_TYPE, "Предприниматель")
                 .setTextByMarker(CareerField.ORGANIZATION_NAME, "Агропром")
                 .setLookupByMarker(CareerField.POSITION, "Агроном")
                 .setTextByMarker(CareerField.START_DATE, "01.01.2020")
                 .setLookupByMarker(CareerField.EMPLOYER, "ЧДММ ММК-Агро");
 
-        ctx.contractPage
+        ui.contractPage
                 .clickButtonByNameCheck("Сохранить");
     }
 
     @Step("Заполнение данных карьеры заемщика")
-    public void fillCareerDetailsEmployed() {
-        ctx.buttonsComponent
+    public void fillCareerDetailsEmployee() {
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
 
-        ctx.detailPage.clickAddRecordInDetail("Карьера");
+        ui.detailPage.clickAddRecordInDetail("Карьера");
 
-        ctx.careerComponent
+        ui.careerComponent
                 .setLookupByMarker(CareerField.EMPLOYMENT_TYPE, "Полная занятость")
                 .setTextByMarker(CareerField.ORGANIZATION_NAME, "Агро-холдинг")
                 .setLookupByMarker(CareerField.POSITION, "Бухгалтер")
                 .setTextByMarker(CareerField.START_DATE, "01.01.2020")
                 .setLookupByMarker(CareerField.EMPLOYER, "ЧДММ \"Раисагрохолдинг\"");
 
-        ctx.contractPage
+        ui.contractPage
                 .clickButtonByNameCheck("Сохранить");
+
+
     }
-
-
-
-
-
 
 }

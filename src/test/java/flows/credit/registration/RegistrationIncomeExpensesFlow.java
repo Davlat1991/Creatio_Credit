@@ -9,10 +9,10 @@ import io.qameta.allure.Step;
 
 public class RegistrationIncomeExpensesFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public RegistrationIncomeExpensesFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public RegistrationIncomeExpensesFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Заполнение доходов и расходов")
@@ -27,13 +27,13 @@ public class RegistrationIncomeExpensesFlow {
 
     private void setRiskAndAdditionalInfo() {
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck("Уровень риска", "Низкий");
 
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck(
                         "Клиент предоставил подтверждение дохода","Да")
                 .setHandBookFieldByValueCheck(
@@ -43,68 +43,68 @@ public class RegistrationIncomeExpensesFlow {
 
     private void addIncome(IncomeData income) {
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonById("BnzAppIncomesDetailAddRecordButtonButton-imageEl");
 
-        ctx.contractPage
+        ui.contractPage
                 .setfieldScheduleDetailByDIM("TsiKind", income.getType());
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName(income.getType());
 
-        ctx.contractPage
+        ui.contractPage
                 .setfieldScheduleDetailByDIM("TsiFrequencyType", income.getFrequency());
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName(income.getFrequency());
 
-        ctx.contractPage
+        ui.contractPage
                 .setfieldScheduleDetailByDIM("TsiAmountBC", income.getAmount());
-        ctx.basePage
+        ui.basePage
                 .clickButtonByDataItemMaker("save");
     }
 
 
     private void addExpense(ExpenseData expense) {
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonById("BnzAppExpensesDetailAddRecordButtonButton-imageEl");
 
-        ctx.checkboxComponent
+        ui.checkboxComponent
                 .CheckBoxValue("BnzAppExpensesDetailTsiKindComboBoxEdit-el");
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName(expense.getType());
 
-        ctx.checkboxComponent
+        ui.checkboxComponent
                 .CheckBoxValue("BnzAppExpensesDetailTsiFrequencyTypeComboBoxEdit-el");
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName(expense.getFrequency());
 
-        ctx.domActions
+        ui.domActions
                 .clickDivbyId(
                         "BnzAppExpensesDetailTsiAmountBCFloatEdit-wrap",
                         expense.getAmount()
                 );
-        ctx.basePage
+        ui.basePage
                 .clickButtonByDataItemMaker("save");
     }
 
     @Step("Заполнение деятельности физического лица")
     public void fillIndividualActivitySelfEmployed() {
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
 
-        ctx.detailPage.clickAddRecordInDetail("Деятельность физ.лица");
+        ui.detailPage.clickAddRecordInDetail("Деятельность физ.лица");
 
 
-        ctx.activityComponent
+        ui.activityComponent
                 .select(ActivityField.SECTOR, "Самозанятость")
                 .select(ActivityField.SEGMENT, "Агро")
                 .select(ActivityField.SUB_SEGMENT, "Животновод")
                 .select(ActivityField.SALES_TYPE, "Оптовая")
                 .select(ActivityField.MARKET, "Авангард");
-        ctx.checkboxComponent
+        ui.checkboxComponent
                 .ensureCheckboxChecked("BnzIsPrimary");
 
-        ctx.contractPage
+        ui.contractPage
                 .clickButtonByNameCheck("Сохранить");
 
     }
@@ -112,22 +112,22 @@ public class RegistrationIncomeExpensesFlow {
 
     @Step("Заполнение деятельности физического лица")
     public void fillIndividualActivityEmployed() {
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
 
-        ctx.detailPage.clickAddRecordInDetail("Деятельность физ.лица");
+        ui.detailPage.clickAddRecordInDetail("Деятельность физ.лица");
 
 
-        ctx.activityComponent
+        ui.activityComponent
                 .select(ActivityField.SECTOR, "Работник организации")
                 .select(ActivityField.SEGMENT, "Экономист")
                 .select(ActivityField.SUB_SEGMENT, "Бухгалтер")
                 .select(ActivityField.SALES_TYPE, "Не торгует");
                 //.select(ActivityField.MARKET, "Авангард");
-        ctx.checkboxComponent
+        ui.checkboxComponent
                 .ensureCheckboxChecked("BnzIsPrimary");
 
-        ctx.contractPage
+        ui.contractPage
                 .clickButtonByNameCheck("Сохранить");
 
     }

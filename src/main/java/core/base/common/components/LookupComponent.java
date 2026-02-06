@@ -243,6 +243,62 @@ public class LookupComponent extends Components {
     }
 
 
+//30.01.2026 Работает после второй попытки всё работает!
+
+    @Step("Выбрать значение '{value}' в выпадающем поле '{marker}' (fast retry)")
+    public LookupComponent selectDropdownValueWithCheckNew(String marker, String value) {
+
+        Duration FAST = Duration.ofMillis(700);
+
+        SelenideElement input = $x(
+                "//*[@data-item-marker='" + marker + "']//input"
+        ).shouldBe(Condition.visible, Condition.enabled);
+
+        for (int attempt = 1; attempt <= 5; attempt++) {
+            try {
+                log.info("▶ Попытка {}: '{}' в '{}'", attempt, value, marker);
+
+                // 1️⃣ Фокус + click
+                Selenide.executeJavaScript("arguments[0].focus();", input);
+                Selenide.executeJavaScript("arguments[0].click();", input);
+
+                // 2️⃣ Быстро ждём listview
+                SelenideElement listView = $$x("//div[contains(@class,'listview')]")
+                        .find(Condition.visible)
+                        .shouldBe(Condition.visible, FAST);
+
+                // 3️⃣ Быстро ищем пункт
+                SelenideElement option = listView.$x(
+                        ".//li[normalize-space(.)='" + value + "']"
+                ).shouldBe(Condition.visible, FAST);
+
+                // 4️⃣ Клик
+                Selenide.executeJavaScript("arguments[0].click();", option);
+
+                // 5️⃣ Быстро ждём закрытия списка
+                listView.shouldBe(Condition.disappear, FAST);
+
+                // 6️⃣ Проверка значения
+                input.shouldHave(Condition.exactValue(value), FAST);
+
+                log.info("✔ '{}' выбрано", value);
+                return this;
+
+            } catch (Throwable t) {
+                log.warn("⚠ Попытка {} неудачна: {}", attempt, t.getMessage());
+
+                if (attempt == 5) {
+                    throw new AssertionError(
+                            "❌ Не удалось выбрать '" + value + "' в '" + marker + "'", t);
+                }
+            }
+        }
+        return this;
+    }
+
+
+
+
     public LookupComponent clickSearchIconID(String lookupID) {
 
         // 1: Находим wrapper (куда нужно наводить мышку, чтобы лупа показалась)
@@ -445,7 +501,6 @@ public class LookupComponent extends Components {
 
         return this;
     }
-
 
 
     public LookupComponent setFieldByValueCheck(String nameField, String value) {

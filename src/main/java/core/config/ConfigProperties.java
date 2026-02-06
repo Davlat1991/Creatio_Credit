@@ -9,7 +9,7 @@ public class ConfigProperties {
     private static final String ENV;
 
     static {
-        ENV = System.getProperty("env", "preprod").toLowerCase();      //test  or preprod
+        ENV = System.getProperty("env", "test").toLowerCase();      //test  or preprod
         String fileName = "env/" + ENV + ".properties";
 
         try (InputStream input = ConfigProperties.class

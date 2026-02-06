@@ -5,28 +5,28 @@ import io.qameta.allure.Step;
 
 public class RegistrationScoringFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public RegistrationScoringFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public RegistrationScoringFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Оценка информации заемщика")
     public void fillScoringInfo() {
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck("Семейное положение","Мучаррад (мард)")
                 .setFieldByValueCheck("Количество иждивенцев (строка)","0")
                 .setFieldByValueCheck("Общий стаж, мес","60")
                 .setHandBookFieldByValueCheck("Тип занятости","Имеет другой источник дохода")
                 .setHandBookFieldByValueCheck("Причина отсутствия работы","Получатель Д/П");
 
-        ctx.basePage.scrollToTop();
+        ui.basePage.scrollToTop();
 
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("ОЦЕНКА ИНФОРМАЦИИ");
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck(
                         "Тип собственности на недвижимость",
                         "Более 2-ух квартир"
@@ -36,7 +36,7 @@ public class RegistrationScoringFlow {
                         "Есть автомобиль"
                 );
         // Обязательное согласие на обработку данных БКИ
-        ctx.checkboxComponent
+        ui.checkboxComponent
                 .ensureCheckboxBKI("IsConsentBKIProcessing");
     }
 }

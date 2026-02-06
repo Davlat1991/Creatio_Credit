@@ -11,12 +11,12 @@ public class LoanIssuanceFlow {
     private static final String CONTRACT_PAGE_MARKER =
             "BnzContractCreditPageContainer";
 
-    private final UiContext ctx;
+    private final UiContext ui;
     private final ApplicationSearchFlow applicationSearchFlow;
 
-    public LoanIssuanceFlow(UiContext ctx) {
-        this.ctx = ctx;
-        this.applicationSearchFlow = new ApplicationSearchFlow(ctx);
+    public LoanIssuanceFlow(UiContext ui) {
+        this.ui = ui;
+        this.applicationSearchFlow = new ApplicationSearchFlow(ui);
     }
 
     // ============================================================
@@ -26,8 +26,10 @@ public class LoanIssuanceFlow {
     @Step("Loan Issuance: полный сценарий выдачи кредита")
     public void issueLoan() {
 
+        ui.basePage.closeConsultationPanelIfOpened();
+
         // 0️⃣ Открываем заявку по сохранённому номеру
-       applicationSearchFlow.openBySavedNumber();
+        applicationSearchFlow.openBySavedNumber();
 
         // 1️⃣–5️⃣ Бизнес-процесс выдачи кредита
         completeKkDecisionCheck();
@@ -43,20 +45,20 @@ public class LoanIssuanceFlow {
 
     private void completeKkDecisionCheck() {
 
-        ctx.dashboardComponent
+        ui.dashboardComponent
                 .clickElementDashboardCheck(
                         "Проверка решения КК",
                         "Execute",
                         "//*[@data-item-marker='MiniPage']"
                 )
         ;
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setfieldScheduleDetailByDIM("Result", "Выполнена")
         ;
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName("Выполнена");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByDataItemMaker("SaveEditButton");
     }
 
@@ -66,57 +68,57 @@ public class LoanIssuanceFlow {
 
     private void createAbsContract() {
 
-        ctx.dashboardComponent
+        ui.dashboardComponent
                 .clickElementDashboardName(
                         "Создание договора в АБС (печать договоров для встречи)");
-        ctx.contractPage
+        ui.contractPage
                 .clickContractAutoWait(CONTRACT_PAGE_MARKER);
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonOnPageByName(CONTRACT_PAGE_MARKER, "Действия");
 
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName("Создание договора");
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck(
                         "Вид планирования",
                         "Аннуитетный_005"
                 );
 
-        ctx.contractPage
+        ui.contractPage
                 .fillLoadCreditTypeSafely("Получает сегодня")
                 .selectLoadCreditTypeNew("Получает сегодня");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByName("Выбрать");
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .shouldSeeModalWithText("Нет задолженности!");
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("ОК");
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .shouldSeeModalWithText("Договор успешно создан");
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("ОК");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonById(
                         "BnzContractCreditPageBnzCreateSavingAcountContractButtonButton-imageEl"
                 );
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .shouldSeeModalWithText(
                         "Депозитный договор успешно создан в АБС"
                 );
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("ОК");
 
-        ctx.fieldUtils
+        ui.fieldUtils
                 .saveValueDIMCheckWorkNEW("BnzDepositBankAccount");
-        ctx.contractPage
+        ui.contractPage
                 .clickButtonByNameCheck("Закрыть");
 
         refresh();
@@ -129,28 +131,28 @@ public class LoanIssuanceFlow {
 
     private void bindAccountsAndSchedule() {
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .clickSearchIconID(
                         "BnzContractCreditPageBnzCreditBankAccountLookupEdit"
                 )
                 .selectValueInLookupWorkNEW("searchEdit");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("Сохранить")
                 .clickButtonByNameCheck("Действия");
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .clickAndCheckModal("Получение графика платежей")
                 .shouldSeeModalWithText("График платежей успешно получен");
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("ОК")
                 .clickButtonByNameCheck("Действия");
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .clickAndCheckModal("Привязка счета к договору")
                 .shouldSeeModalWithText("Счет успешно привязан к кредитному договору");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("ОК");
     }
 
@@ -160,61 +162,61 @@ public class LoanIssuanceFlow {
 
     private void signAndIssueCredit() {
 
-        ctx.dashboardComponent
+        ui.dashboardComponent
                 .clickElementDashboardCheck(
                         "Создание договора в АБС (печать договоров для встречи)",
                         "Execute",
                         "//*[@data-item-marker='MiniPage']"
                 );
-        ctx.contractPage
+        ui.contractPage
                 .setfieldScheduleDetailByDIM("Result", "Выполнена");
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName("Выполнена");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByDataItemMaker("SaveEditButton")
                 .clickButtonByNameCheck("Действия");
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .clickAndCheckModal("Подписание договора")
                 .shouldSeeModalWithText("Резервирование счетов выполнено успешно"
                 );
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("ОК")
                 .clickButtonByNameCheck("Действия");
 
-        ctx.contractPage
+        ui.contractPage
                 .issueCreditUniversal("Наличными");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("Подтвердить");
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .shouldBeModalOpened("Комиссия за выдачу кредита");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("Подтвердить");
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .shouldSeeModalWithText(
                         "Действие успешно выполнено. Необходимо оплатить комиссию за кредит"
                 );
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("ОК");
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .shouldSeeModalWithText(
                         "Кассовый ордер успешно сформирован"
                 );
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("ОК");
 
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .shouldSeeModalWithText(
                         "График платежей успешно получен"
                 );
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("ОК");
     }
 
@@ -224,37 +226,37 @@ public class LoanIssuanceFlow {
 
     private void verifyOrdersAndPrint() {
 
-        ctx.contractPage
+        ui.contractPage
                 .saveValueByMarker("Number");
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("Операции по договору")
                 .doubleclickButtonByName("Приходный")
                 .checkCurrentPage("BnzOrderPageContainer");
 
-        ctx.creditApplicationAssertions
+        ui.creditApplicationAssertions
                 .assertOrderState("Новый");
-        ctx.fieldAssertions
+        ui.fieldAssertions
                 .checkFieldValueNormalized("Сумма документа", "200,00");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("Закрыть");
 
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .doubleclickButtonByName("Расходный")
                 .checkCurrentPage("BnzOrderPageContainer");
 
-        ctx.creditApplicationAssertions
+        ui.creditApplicationAssertions
                 .assertOrderState("Новый");
-        ctx.fieldAssertions
+        ui.fieldAssertions
                 .checkFieldValueNormalized(
                         "Сумма документа",
                         "50 000,00"
                 );
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("Закрыть");
 
-        ctx.printComponent
+        ui.printComponent
                 .selectPrintOption(
                         "Чек лист маълумотнома(оферта)"
                 );

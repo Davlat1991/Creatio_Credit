@@ -6,12 +6,12 @@ import io.qameta.allure.Step;
 
 public class ClientNotificationStageFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
     private final ApplicationSearchFlow applicationSearchFlow;
 
-    public ClientNotificationStageFlow(UiContext ctx) {
-        this.ctx = ctx;
-        this.applicationSearchFlow = new ApplicationSearchFlow(ctx);
+    public ClientNotificationStageFlow(UiContext ui) {
+        this.ui = ui;
+        this.applicationSearchFlow = new ApplicationSearchFlow(ui);
     }
 
     // =====================================================
@@ -20,6 +20,8 @@ public class ClientNotificationStageFlow {
 
     @Step("Client Notification: информирование клиента и подтверждение согласия")
     public void completeClientNotification(String responsiblePerson) {
+
+        ui.basePage.closeConsultationPanelIfOpened();
 
         // 1️⃣ Открываем заявку по сохранённому номеру
         applicationSearchFlow.openBySavedNumber();
@@ -42,7 +44,9 @@ public class ClientNotificationStageFlow {
     // =====================================================
 
     private void openClientNotificationMiniPage() {
-        ctx.dashboardComponent.clickElementDashboardCheck(
+        ui.basePage.closeConsultationPanelIfOpened();
+
+        ui.dashboardComponent.clickElementDashboardCheck(
                 "Информирование клиента",
                 "Execute",
                 "//*[@data-item-marker='MiniPage']"
@@ -50,19 +54,19 @@ public class ClientNotificationStageFlow {
     }
 
     private void setClientAgreement() {
-        ctx.contractPage
+        ui.contractPage
                 .setfieldScheduleDetailByDIM("Result", "Клиент согласен");
 
         // lookup → обязательный li
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName("Клиент согласен");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByDataItemMaker("SaveEditButton");
     }
 
     private void assignResponsibleForSigning(String responsiblePerson) {
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck(
                         "Ответственный за подписание",
                         responsiblePerson
@@ -70,7 +74,7 @@ public class ClientNotificationStageFlow {
     }
 
     private void confirmClientNotification() {
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("Подтвердить");
     }
 }

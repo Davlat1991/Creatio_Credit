@@ -5,10 +5,10 @@ import io.qameta.allure.Step;
 
 public class PreliminaryCheckStageFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public PreliminaryCheckStageFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public PreliminaryCheckStageFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     // =====================================================
@@ -34,7 +34,7 @@ public class PreliminaryCheckStageFlow {
     }
 
     private void openParticipantsQuestionnaireTask() {
-        ctx.dashboardComponent.clickElementDashboardCheck(
+        ui.dashboardComponent.clickElementDashboardCheck(
                 "Добавьте и заполните анкеты участников заявки",
                 "Execute",
                 "//*[@data-item-marker='MiniPage']"
@@ -42,17 +42,17 @@ public class PreliminaryCheckStageFlow {
     }
 
     private void markTaskAsCompleted() {
-        ctx.contractPage.setfieldScheduleDetailByDIM("Result", "Выполнена");
-        ctx.menuComponent.clickButtonByLiName("Выполнена");
-        ctx.basePage.clickButtonByDataItemMakerCheck("SaveEditButton");
+        ui.contractPage.setfieldScheduleDetailByDIM("Result", "Выполнена");
+        ui.menuComponent.clickButtonByLiName("Выполнена");
+        ui.basePage.clickButtonByDataItemMakerCheck("SaveEditButton");
     }
 
     private void confirmNoDebtMessages() {
-        ctx.messageBoxComponent.shouldSeeModalWithText("Нет задолженности!");
-        ctx.basePage.clickButtonByDataItemMaker("ОК");
+        ui.messageBoxComponent.shouldSeeModalWithText("Нет задолженности!");
+        ui.basePage.clickButtonByDataItemMaker("ОК");
 
-        ctx.messageBoxComponent.shouldSeeModalWithText("У клиента нет просроченных дней");
-        ctx.basePage.clickButtonByDataItemMaker("ОК");
+        ui.messageBoxComponent.shouldSeeModalWithText("У клиента нет просроченных дней");
+        ui.basePage.clickButtonByDataItemMaker("ОК");
     }
 
     // =====================================================
@@ -67,26 +67,26 @@ public class PreliminaryCheckStageFlow {
     }
 
     private void openClientCheckTask() {
-        ctx.dashboardComponent.clickElementDashboardWait(
+        ui.dashboardComponent.clickElementDashboardWait(
                 "Проверка клиента",
                 "Approve"
         );
     }
 
     private void approveClientCheck() {
-        ctx.basePage.clickButtonByDataItemMaker("SaveEditButton");
+        ui.basePage.clickButtonByDataItemMaker("SaveEditButton");
     }
 
     private void completeCollateralAndGuaranteeTask() {
 
-        ctx.dashboardComponent.clickElementDashboardCheck(
+        ui.dashboardComponent.clickElementDashboardCheck(
                 "Заполните данные обеспечения и поручительства",
                 "Execute",
                 "//*[@data-item-marker='MiniPage']"
         );
 
-        ctx.contractPage.setfieldScheduleDetailByDIM("ProcessResult", "Выполнена");
-        ctx.menuComponent.clickButtonByLiName("Выполнена");
-        ctx.basePage.clickButtonByDataItemMaker("SaveEditButton");
+        ui.contractPage.setfieldScheduleDetailByDIM("ProcessResult", "Выполнена");
+        ui.menuComponent.clickButtonByLiName("Выполнена");
+        ui.basePage.clickButtonByDataItemMaker("SaveEditButton");
     }
 }

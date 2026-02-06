@@ -1,4 +1,9 @@
 package core.enums;
 
-public class ClientType {
+public enum ClientType {
+
+    SELF_EMPLOYED,
+    EMPLOYEE,
+    OTHER_INCOME;
+
 }

@@ -19,6 +19,26 @@
       "login": "M_KURBONOVA",
       "password": "M_KURBONOVA123!\"№ффф",
       "role": "CASHIER"
+    },
+    "retailManager1": {
+      "login": "S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796S_RUSTMOVA_796S_RUSTMOVA_796S_RUSTMOVA_796",
+      "role": "RETAIL_MANAGER"
+    },
+    "underwriter1": {
+      "login": "A_AMINOV_707",
+      "password": "A_AMINOV_707A_AMINOV_707A_AMINOV_707A_AMINOV_707A_AMINOV_707",
+      "role": "UNDERWRITER"
+    },
+    "ikok1": {
+      "login": "S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796S_RUSTMOVA_796S_RUSTMOVA_796S_RUSTMOVA_796",
+      "role": "IKOK"
+    },
+    "cashier1": {
+      "login": "M_KURBONOVA",
+      "password": "M_KURBONOVAM_KURBONOVAM_KURBONOVAM_KURBONOVA",
+      "role": "CASHIER"
     }
   },
 

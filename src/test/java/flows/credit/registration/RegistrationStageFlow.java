@@ -69,7 +69,7 @@ public class RegistrationStageFlow {
 
         // 6. Дополнительная информация
 
-        additionalInfoDataFlow.fillBaseScoringData(
+       additionalInfoDataFlow.fillBaseScoringData(
                 BaseScoringScenarios.STANDARD_EMPLOYED()
         );
         clientFlow.fill();

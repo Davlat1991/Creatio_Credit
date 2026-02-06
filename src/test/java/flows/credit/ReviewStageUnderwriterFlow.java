@@ -1,5 +1,6 @@
 package flows.credit;
 
+import com.codeborne.selenide.Selenide;
 import core.base.UiContext;
 import flows.common.ApplicationSearchFlow;
 import io.qameta.allure.Step;
@@ -7,13 +8,13 @@ import io.qameta.allure.Step;
 public class ReviewStageUnderwriterFlow {
 
 
-    private final UiContext ctx;
+    private final UiContext ui;
     private final ApplicationSearchFlow applicationSearchFlow;
 
-    public ReviewStageUnderwriterFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public ReviewStageUnderwriterFlow(UiContext ui) {
+        this.ui = ui;
 
-        this.applicationSearchFlow = new ApplicationSearchFlow(ctx);
+        this.applicationSearchFlow = new ApplicationSearchFlow(ui);
     }
 
     // =====================================================
@@ -23,16 +24,21 @@ public class ReviewStageUnderwriterFlow {
     @Step("Review: Underwriter утверждает решение по заявке")
     public void approveReview(String decisionProjectName) {
 
-        // 1️⃣ Открываем заявку по сохранённому номеру
+        ui.basePage.closeConsultationPanelIfOpened();
+
+        // 1️. Открываем заявку по сохранённому номеру
         applicationSearchFlow.openBySavedNumber();
 
-        // 2️⃣ Переходим во вкладку «Решение по заявке»
+        // 2️. Переходим во вкладку «Решение по заявке»
         openDecisionTab();
 
-        // 3️⃣ Открываем проект решения
+        // 3️. Открываем проект решения
         openDecisionProject(decisionProjectName);
 
-        // 4️⃣ Утверждаем решение
+        // 4. Взять в работу
+        TakeToWork();
+
+        // 5. Утверждаем решение
         approveDecision();
     }
 
@@ -41,23 +47,35 @@ public class ReviewStageUnderwriterFlow {
     // =====================================================
 
     private void openDecisionTab() {
-        ctx.contractPage
+        ui.contractPage
                 .scrollTabsRight();
 
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("Решение по заявке");
     }
 
     private void openDecisionProject(String decisionProjectName) {
-        ctx.projectsPage
+        ui.projectsPage
                 .openProjectByName(decisionProjectName);
     }
 
-    private void approveDecision() {
-        ctx.basePage
+    private void TakeToWork() {
+        ui.basePage
                 .waitAndClickByDIM("TakeToWorkButton");
 
-        ctx.basePage
+        Selenide.sleep (3000);
+
+        ui.buttonsComponent
+                .clickButtonByContainNameCheck("Решение");
+        ui.lookupComponent
+                .setHandBookFieldByValueCheck("Вид кредита для Проекта решения", "Кредит");
+
+    }
+
+
+    private void approveDecision() {
+
+        ui.basePage
                 .waitAndClickByMarkerNew("ApproveButton");
     }
 }

@@ -12,6 +12,8 @@ import io.qameta.allure.Step;
 import java.time.Duration;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static core.base.common.components.LookupComponent.log;
+
 
 /**
  * BasePage — легкий фундамент для компонентов и PageObjects.
@@ -233,7 +235,7 @@ public class BasePage {
 
     protected void waitForLoader() {
         $x("//div[contains(@class,'ts-loader-mask')]")
-                .should(disappear, Duration.ofSeconds(15));
+                .should(disappear, Duration.ofSeconds(10));
     }
 
 
@@ -263,6 +265,115 @@ public class BasePage {
 
         return this;
     }
+
+
+    @Step("Открыть консультационную панель, если она закрыта")
+    public BasePage openConsultationPanelIfClosed() {
+
+        SelenideElement panel =
+                $x("//div[contains(@class,'communication-panel')]");
+
+        // ✅ 1. Если панель УЖЕ открыта — просто выходим
+        if (panel.exists() && panel.is(Condition.visible)) {
+            log.info("ℹ Консультационная панель уже открыта — пропускаем клик");
+            return this;
+        }
+
+        SelenideElement button =
+                $x("//span[@id='view-button-OBSW-imageEl']")
+                        .shouldBe(Condition.visible, Condition.enabled);
+
+        for (int attempt = 1; attempt <= 3; attempt++) {
+            try {
+                log.info("▶ Попытка {} открыть консультационную панель", attempt);
+
+                // 🔑 JS-клик (ExtJS-safe)
+                Selenide.executeJavaScript("arguments[0].focus();", button);
+                Selenide.executeJavaScript("arguments[0].click();", button);
+
+                // ✅ Ждём ФАКТИЧЕСКОГО открытия панели
+                panel.shouldBe(Condition.visible, Duration.ofMillis(700));
+
+                log.info("✔ Консультационная панель успешно открыта");
+                return this;
+
+            } catch (Throwable t) {
+                log.warn("⚠ Панель не открылась на попытке {}", attempt);
+
+                if (attempt == 3) {
+                    throw new AssertionError(
+                            "❌ Не удалось открыть консультационную панель", t
+                    );
+                }
+            }
+        }
+
+        return this;
+    }
+
+
+    @Step("Гарантировать, что консультационная панель открыта")
+    public BasePage ensureConsultationPanelOpened() {
+
+        SelenideElement rightPanel = $x("//div[@id='rightPanel']");
+        SelenideElement button = $x("//span[@id='view-button-OBSW-imageEl']")
+                .shouldBe(Condition.visible, Condition.enabled);
+
+        // 1️⃣ Если уже открыта — ничего не делаем
+        if (rightPanel.is(Condition.visible)) {
+            log.info("ℹ Консультационная панель уже открыта");
+            return this;
+        }
+
+        log.info("▶ Консультационная панель закрыта — открываем");
+
+        // 2️⃣ ОДИН клик
+        button.click();
+
+        // 3️⃣ Ждём, что она ОТКРОЕТСЯ (без ожидания стабильности)
+        rightPanel.shouldBe(Condition.visible, Duration.ofSeconds(5));
+        rightPanel.shouldNotBe(Condition.hidden, Duration.ofSeconds(2));
+
+        log.info("✔ Консультационная панель открыта");
+
+        return this;
+    }
+
+
+    @Step("Закрыть консультационную панель, если она открыта")
+    public BasePage closeConsultationPanelIfOpened() {
+
+        SelenideElement rightPanel =
+                $x("//div[@id='rightPanel']");
+
+        SelenideElement button =
+                $x("//span[@id='view-button-OBSW-imageEl']")
+                        .shouldBe(Condition.visible, Condition.enabled);
+
+        // 🔹 1. Если панель УЖЕ закрыта — просто выходим
+        if (!rightPanel.is(Condition.visible)) {
+            log.info("ℹ Консультационная панель уже закрыта — ничего не делаем");
+            return this;
+        }
+
+        log.info("▶ Консультационная панель открыта — закрываем");
+
+        // 🔹 2. ОДИН клик (toggle)
+        button.click();
+
+        // 🔹 3. Ждём, что панель ЗАКРОЕТСЯ
+        rightPanel.shouldBe(Condition.hidden, Duration.ofSeconds(5));
+
+        log.info("✔ Консультационная панель закрыта");
+
+        return this;
+    }
+
+
+
+
+
+
 
 
     //Добавлен вручную 18.12.2025

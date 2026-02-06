@@ -17,7 +17,7 @@ import flows.credit.ReviewStageRetailFlow;
 import flows.credit.ReviewStageUnderwriterFlow;
 import flows.credit.registration.*;
 import flows.credit.registration.client.BaseClientFlow;
-import flows.credit.registration.client.EmployedClientFlow;
+import flows.credit.registration.client.EmployeeClientFlow;
 import flows.credit.registration.client.OtherIncomeClientFlow;
 import flows.credit.registration.client.SelfEmployedClientFlow;
 import org.testng.annotations.Test;
@@ -52,30 +52,30 @@ public class StandardRoutePositiveTest extends BaseTest {
         // 2. INFRASTRUCTURE FLOWS
         // ============================================================
 
-        AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
-        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ctx);
+        AuthorizationFlow authFlow = new AuthorizationFlow(ui);
+        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ui);
 
         // ============================================================
         // 3. BUSINESS FLOWS
         // ============================================================
 
-        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ctx);
-        ConsultationStartFlow consultationStartFlow = new ConsultationStartFlow(ctx);
-        ProductSelectionFlow productFlow = new ProductSelectionFlow(ctx);
-        ApplicationCreationFlow applicationFlow = new ApplicationCreationFlow(ctx);
-        RegistrationStageFlow registrationFlow = new RegistrationStageFlow(ctx);
-        PreliminaryCheckStageFlow preliminaryCheckFlow = new PreliminaryCheckStageFlow(ctx);
-        DocumentsStageFlow documentsStageFlow = new DocumentsStageFlow(ctx);
-        ReviewStageRetailFlow reviewRetailFlow = new ReviewStageRetailFlow(ctx);
-        ReviewStageUnderwriterFlow reviewUnderwriterFlow = new ReviewStageUnderwriterFlow(ctx);
-        ClientNotificationStageFlow clientNotificationFlow = new ClientNotificationStageFlow(ctx);
-        NavigationFlow navigationFlow = new NavigationFlow(ctx);
-        LoanIssuanceFlow loanIssuanceFlow = new LoanIssuanceFlow(ctx);
+        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ui);
+        ConsultationStartFlow consultationStartFlow = new ConsultationStartFlow(ui);
+        ProductSelectionFlow productFlow = new ProductSelectionFlow(ui);
+        ApplicationCreationFlow applicationFlow = new ApplicationCreationFlow(ui);
+        RegistrationStageFlow registrationFlow = new RegistrationStageFlow(ui);
+        PreliminaryCheckStageFlow preliminaryCheckFlow = new PreliminaryCheckStageFlow(ui);
+        DocumentsStageFlow documentsStageFlow = new DocumentsStageFlow(ui);
+        ReviewStageRetailFlow reviewRetailFlow = new ReviewStageRetailFlow(ui);
+        ReviewStageUnderwriterFlow reviewUnderwriterFlow = new ReviewStageUnderwriterFlow(ui);
+        ClientNotificationStageFlow clientNotificationFlow = new ClientNotificationStageFlow(ui);
+        NavigationFlow navigationFlow = new NavigationFlow(ui);
+        LoanIssuanceFlow loanIssuanceFlow = new LoanIssuanceFlow(ui);
 
         // 🔹 ВАЖНО: выбор типа клиента
-        //BaseClientFlow clientFlow = new SelfEmployedClientFlow(ctx); //Тип клиента самозанятый
-        //BaseClientFlow clientFlow = new EmployedClientFlow(ctx);     //Тип клиента работает в организации
-        BaseClientFlow clientFlow = new OtherIncomeClientFlow(ctx);    //Тип клиента имеет другой источник дохода
+        //BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
+        //BaseClientFlow clientFlow = new EmployedClientFlow(ui);     //Тип клиента работает в организации
+        BaseClientFlow clientFlow = new OtherIncomeClientFlow(ui);    //Тип клиента имеет другой источник дохода
 
 
         // ============================================================
@@ -116,11 +116,6 @@ public class StandardRoutePositiveTest extends BaseTest {
                 "36"
         );
 
-        /*authFlow.login(retailManager);
-
-        navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/27f1fa9e-4ec5-42a4-a24b-f3c070afce04");*/
 
         // ============================================================
         // 🔵 7. ЗАПОЛНЕНИЕ АНКЕТЫ ЗАЁМЩИКА
@@ -180,7 +175,7 @@ public class StandardRoutePositiveTest extends BaseTest {
         authFlow.logout();
 
         // ============================================================
-        // 🔵 12. ВЫДАЧА КРЕДИТА
+        // 🔵 13. ВЫДАЧА КРЕДИТА
         // ============================================================
         authFlow.login(cashier);
         workspaceFlow.select(Workspace.CASHIER);
@@ -188,7 +183,7 @@ public class StandardRoutePositiveTest extends BaseTest {
         authFlow.logout();
 
         // ============================================================
-        // 🔵 13. ЗАВЕРШЕНИЕ ЗАЯВКИ
+        // 🔵 14. ЗАВЕРШЕНИЕ ЗАЯВКИ
         // ============================================================
         authFlow.login(ikok);
         workspaceFlow.select(Workspace.IKOK);

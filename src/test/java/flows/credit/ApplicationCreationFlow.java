@@ -5,10 +5,10 @@ import io.qameta.allure.Step;
 
 public class ApplicationCreationFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public ApplicationCreationFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public ApplicationCreationFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Создание кредитной заявки")
@@ -29,12 +29,12 @@ public class ApplicationCreationFlow {
     // ---------------- PRIVATE STEPS ----------------
 
     private void setRepaymentDate(String day) {
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setFieldByValueCheck("Запрашиваемая дата погашения", day);
     }
 
     private void addScheduleRow() {
-        ctx.basePage.clickButtonById(
+        ui.basePage.clickButtonById(
                 "KzParameterScheduleDetailAddRecordButtonButton-imageEl"
         );
     }
@@ -44,24 +44,24 @@ public class ApplicationCreationFlow {
             String type,
             String term
     ) {
-        ctx.contractPage
+        ui.contractPage
                 .setfieldScheduleDetailByDIM("KzNumber", number)
                 .setHandBookFieldByValue("KzTypeScheduler", type)
                 .setfieldScheduleDetailByDIM("KzTermMonth", term);
-        ctx.basePage
+        ui.basePage
                 .clickButtonByDataItemMaker("save");
     }
 
     private void calculateAndCreateApplication() {
-        ctx.basePage
-                .clickButtonByNameCheck("Рассчитать")
-                .clickButtonByNameCheck("Создать заявку");
+        ui.basePage
+                .clickButtonByName("Рассчитать")
+                .clickButtonByName("Создать заявку");
     }
 
     private void verifyNoDebtMessage() {
-        ctx.messageBoxComponent
+        ui.messageBoxComponent
                 .shouldSeeModalWithText("Нет задолженности!");
 
-        ctx.basePage.clickButtonByDataItemMaker("ОК");
+        ui.basePage.clickButtonByDataItemMaker("ОК");
     }
 }

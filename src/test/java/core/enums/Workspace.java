@@ -5,7 +5,7 @@ public enum Workspace {
     RETAIL_MANAGER("Розничный менеджер"),
     UNDERWRITER("Верификатор"),
     IKOK("ИКОК"),
-    CASHIER("Кассир");
+    CASHIER("Касса");
 
     private final String uiName;
 

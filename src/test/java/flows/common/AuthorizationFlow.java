@@ -10,20 +10,20 @@ import io.qameta.allure.Step;
  */
 public class AuthorizationFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
     public AuthorizationFlow(UiContext ctx) {
-        this.ctx = ctx;
+        this.ui = ctx;
     }
 
     @Step("Войти под пользователем {user.login}")
     public void login(LoginData user) {
-        ctx.loginSteps.loginAs(user);
+        ui.loginSteps.loginAs(user);
     }
 
     @Step("Выйти из системы")
     public void logout() {
-        ctx.headerPage.logout();
+        ui.headerPage.logout();
     }
 
     @Step("Перелогиниться под пользователем {user.login}")

@@ -14,29 +14,29 @@ import io.qameta.allure.Step;
  */
 public class RegistrationScoringConfirmationFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public RegistrationScoringConfirmationFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public RegistrationScoringConfirmationFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Подтверждение этапа оценки информации заемщика")
     public void confirmScoring() {
 
         // Возврат в начало страницы перед подтверждением этапа
-        ctx.basePage.scrollToTop();
+        ui.basePage.scrollToTop();
 
         // Подтверждение этапа скоринга
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("ОЦЕНКА ИНФОРМАЦИИ");
 
         // Дополнительные параметры после подтверждения
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck("Тип собственности на недвижимость","Более 2-ух квартир")
                 .setHandBookFieldByValueCheck("Тип владения автомобилем","Есть автомобиль");
 
         // Обязательное согласие на обработку данных БКИ
-        ctx.checkboxComponent
+        ui.checkboxComponent
                 .ensureCheckboxBKI("IsConsentBKIProcessing");
     }
 }

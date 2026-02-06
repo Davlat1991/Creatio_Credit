@@ -5,36 +5,36 @@ import io.qameta.allure.Step;
 
 public class RegistrationDocumentsFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public RegistrationDocumentsFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public RegistrationDocumentsFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Заполнение документов заемщика")
     public void fillBorrowerDocuments() {
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck("Страна рождения", "Точикистон")
                 .setFieldByValueCheck("Дата выдачи", "01.01.2020");
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setFieldByValueCheck("Действителен до", "01.01.2030");
 
-        ctx.gridComponent
+        ui.gridComponent
                 .DoubleclickByDIM("Шиносномаи ЧТ");
 
-        ctx.basePage
+        ui.basePage
                 .checkCurrentPage("RegDocumentPageV2Container");
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setFieldByValueCheck("Дата выдачи", "01.01.2020")
                 .setFieldByValueCheck("Действует до", "01.01.2030");
 
-        ctx.contractPage
+        ui.contractPage
                 .clickButtonByNameCheck("Сохранить");
 
-        ctx.basePage
+        ui.basePage
                 .checkCurrentPage("EntityLoaded");
     }
 }

@@ -12,13 +12,11 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class RegistrationAddressFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
 
-    public RegistrationAddressFlow(UiContext ctx) {
-        this.ctx = ctx;
-
-
+    public RegistrationAddressFlow(UiContext ui) {
+        this.ui = ui;
 
     }
 
@@ -27,45 +25,48 @@ public class RegistrationAddressFlow {
 
         // Регистрация
 
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .doubleclickButtonByName("Регистрация");
-        ctx.contactAddressPage
+        ui.contactAddressPage
                 .waitForAddressPageLoaded();
 
-        ctx.dateFieldComponent
+        ui.dateFieldComponent
                 .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
-        ctx.contractPage
+        ui.contractPage
                 .clickButtonByNameCheck("Сохранить");
 
-        ctx.basePage
+        ui.basePage
                 .waitForPage();
 
+        // Фактический
+        ui.lookupComponent
+                .setHandBookFieldByValueCheck("Тип клиента", "Такрори");
+
+        ui.buttonsComponent
+                .doubleclickButtonByName("Фактический");
+        ui.contactAddressPage
+                .waitForAddressPageLoaded();
+        ui.dateFieldComponent
+                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
+        ui.contractPage
+                .clickButtonByNameCheck("Сохранить");
+        ui.basePage
+                .waitForPage();
         //Средства связи
-        ctx.lookupComponent
-                .selectDropdownValueWithCheck("BnzAffiliation", "Мобильный");
+        ui.lookupComponent
+                .selectDropdownValueWithCheckNew("BnzAffiliation", "Мобильный");
 
         //ctx.contactCommunicationDetailPage.removeAllCommunications(); //Удаление всех записей детали "Средства связи"
 
 
 
-        /*ctx.contactCommunicationDetailPage.addSingleMobilePhone(
+        /*ui.contactCommunicationDetailPage.addSingleMobilePhone(
                 "+992",
                 "92",
                 "9292929"
         );*/ //Добавление новыз записей в детали "Средства связи" - нужно доработать метод!!!
 
-        // Фактический
-        ctx.lookupComponent
-                .setHandBookFieldByValueCheck("Тип клиента", "Такрори");
-        ctx.buttonsComponent
-                .doubleclickButtonByName("Фактический");
-        ctx.contactAddressPage
-                .waitForAddressPageLoaded();
 
-        ctx.dateFieldComponent
-                .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
-        ctx.contractPage
-                .clickButtonByNameCheck("Сохранить");
     }
 
     // Связь с ПЗЛ
@@ -126,9 +127,9 @@ public class RegistrationAddressFlow {
     public void fillWorkAddressSelfEmployed() {
 
         // 0️⃣ Открываем detail и нажимаем "+"
-        ctx.detailPage.clickAddRecordInDetail("Адрес места работы");
+        ui.detailPage.clickAddRecordInDetail("Адрес места работы");
 
-        ctx.addressComponent
+        ui.addressComponent
                 .selectLookup(AddressField.COUNTRY, "Точикистон")    //Страна
                 .selectLookup(AddressField.REGION, "Вилояти Сугд")   //Регион
                 .selectLookup(AddressField.DISTRICT, "Хучанд")       //Район
@@ -142,19 +143,19 @@ public class RegistrationAddressFlow {
                 .setText(AddressField.REG_DATE, "01.01.2020")        //Дата регистрации
         ;
 
-        ctx.contractPage
+        ui.contractPage
                 .clickButtonByNameCheck("Сохранить");
 
     }
 
 
     @Step("Заполнение адреса места работы")
-    public void fillWorkAddressEmployed() {
+    public void fillWorkAddressEmployee() {
 
         // 0️⃣ Открываем detail и нажимаем "+"
-        ctx.detailPage.clickAddRecordInDetail("Адрес места работы");
+        ui.detailPage.clickAddRecordInDetail("Адрес места работы");
 
-        ctx.addressComponent
+        ui.addressComponent
                 .selectLookup(AddressField.COUNTRY, "Точикистон")    //Страна
                 .selectLookup(AddressField.REGION, "Вилояти Сугд")   //Регион
                 .selectLookup(AddressField.DISTRICT, "Хучанд")       //Район
@@ -168,7 +169,7 @@ public class RegistrationAddressFlow {
                 .setText(AddressField.REG_DATE, "01.01.2020")        //Дата регистрации
         ;
 
-        ctx.contractPage
+        ui.contractPage
                 .clickButtonByNameCheck("Сохранить");
 
     }

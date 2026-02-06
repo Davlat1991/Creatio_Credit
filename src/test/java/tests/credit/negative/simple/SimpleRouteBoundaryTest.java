@@ -47,15 +47,13 @@ public class SimpleRouteBoundaryTest extends BaseTest {
         // ============================================================
         // 2. INFRASTRUCTURE FLOWS
         // ============================================================
-
-        AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
-        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ctx);
+        AuthorizationFlow authFlow = new AuthorizationFlow(ui);
+        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ui);
 
         // ============================================================
         // 3. BUSINESS FLOWS
         // ============================================================
-
-        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ctx);
+        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ui);
 
         // ============================================================
         // 🔵 4. АВТОРИЗАЦИЯ
@@ -105,14 +103,14 @@ public class SimpleRouteBoundaryTest extends BaseTest {
         // ============================================================
         // 2. INFRASTRUCTURE FLOWS
         // ============================================================
-        AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
-        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ctx);
+        AuthorizationFlow authFlow = new AuthorizationFlow(ui);
+        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ui);
 
         // ============================================================
         // 3. BUSINESS FLOWS
         // ============================================================
 
-        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ctx);
+        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ui);
 
         // ============================================================
         // 🔵 4. АВТОРИЗАЦИЯ

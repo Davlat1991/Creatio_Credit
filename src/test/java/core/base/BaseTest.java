@@ -25,8 +25,8 @@ import java.util.Properties;
 @Listeners({AllureTestNg.class})
 public abstract class BaseTest {
 
-    protected UiContext ctx;
-    //protected CreditTestContext ctx;
+    protected UiContext ui;
+    protected CreditTestContext ctx;
 
     // ==========================
     // BEFORE SUITE
@@ -59,6 +59,12 @@ public abstract class BaseTest {
         }
     }
 
+    @BeforeMethod(alwaysRun = true)
+    public void initContexts() {
+        ui = new UiContext();
+        ctx = new CreditTestContext();
+    }
+
     // ==========================
     // BEFORE METHOD
     // ==========================
@@ -79,11 +85,6 @@ public abstract class BaseTest {
                         .savePageSource(false)
                         .includeSelenideSteps(false)
         );
-    }
-
-    @BeforeMethod(alwaysRun = true)
-    public void initContext() {
-        ctx = new UiContext();
     }
 
     // ==========================

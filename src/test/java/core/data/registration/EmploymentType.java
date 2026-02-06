@@ -8,7 +8,7 @@ package core.data.registration;
 public enum EmploymentType {
 
     SELF_EMPLOYED("Самозанятый"),
-    EMPLOYED("Работает в организации"),
+    EMPLOYEE("Работает в организации"),
     OTHER_INCOME("Имеет другой источник дохода");
 
     private final String uiName;

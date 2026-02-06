@@ -29,7 +29,7 @@ public class LoginSmokeTest extends BaseTest {
         // 2. AUTHORIZATION
         // ============================================================
 
-        AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
+        AuthorizationFlow authFlow = new AuthorizationFlow(ui);
 
         // ============================================================
 

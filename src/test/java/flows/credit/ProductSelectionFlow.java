@@ -5,10 +5,10 @@ import io.qameta.allure.Step;
 
 public class ProductSelectionFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public ProductSelectionFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public ProductSelectionFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Подбор и выбор кредитного продукта")
@@ -42,7 +42,7 @@ public class ProductSelectionFlow {
             String currency
     ) {
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck("Вид продукта", productType)
                 .setHandBookFieldByValueCheck("Цель кредитования", creditPurpose)
                 .setFieldByValueCheck("Сумма", amount)
@@ -51,15 +51,15 @@ public class ProductSelectionFlow {
     }
 
     private void findProducts() {
-        ctx.contractPage.clickButtonByNameCheck("Подобрать");
+        ui.contractPage.clickButtonByNameCheck("Подобрать");
     }
 
     private void chooseFirstProduct() {
-        ctx.contractPage.clickFirstRowInGridAndWaitButton(
+        ui.contractPage.clickFirstRowInGridAndWaitButton(
                 "grid-TsiOpportunityConditionSelectionDetailDataGridGrid-wrap",
                 "Выбрать"
         );
 
-        ctx.basePage.clickButtonByDataItemMakerCheck("Выбрать");
+        ui.basePage.clickButtonByDataItemMakerCheck("Выбрать");
     }
 }

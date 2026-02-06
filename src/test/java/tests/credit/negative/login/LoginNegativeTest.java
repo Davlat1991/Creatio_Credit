@@ -36,7 +36,7 @@ public class LoginNegativeTest extends BaseTest {
         // ============================================================
         // 2. INFRASTRUCTURE FLOWS
         // ============================================================
-        AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
+        AuthorizationFlow authFlow = new AuthorizationFlow(ui);
 
         // ============================================================
         // 🔵 3. АВТОРИЗАЦИЯ

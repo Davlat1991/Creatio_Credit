@@ -5,29 +5,29 @@ import io.qameta.allure.Step;
 
 public class RegistrationPrintFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public RegistrationPrintFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public RegistrationPrintFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Сохранение и печать анкеты-заявки")
     public void printApplication() {
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("Сохранить")
                 .clickButtonByNameCheck("Закрыть");
 
-        ctx.buttonsComponent
+        ui.buttonsComponent
                 .clickButtonByContainName("Участники заявки");
 
-        ctx.basePage
+        ui.basePage
                 .clickButtonByNameCheck("Заемщик");
 
-        ctx.detailComponent
+        ui.detailComponent
                 .openDetailMenu("Участники заявки");
 
-        ctx.menuComponent
+        ui.menuComponent
                 .clickButtonByLiName("Печать Анкеты-заявки");
     }
 }

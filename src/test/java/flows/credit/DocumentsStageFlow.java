@@ -5,10 +5,10 @@ import io.qameta.allure.Step;
 
 public class DocumentsStageFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public DocumentsStageFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public DocumentsStageFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     // =====================================================
@@ -23,6 +23,7 @@ public class DocumentsStageFlow {
         uploadFinancialDossier();
         uploadClientDossier();
         uploadAdditionalClientDossier();
+        completeDocumentsActivity();
     }
 
     // =====================================================
@@ -30,7 +31,7 @@ public class DocumentsStageFlow {
     // =====================================================
 
     private void openDocumentsTab() {
-        ctx.contractPage
+        ui.contractPage
                 .legacyFiles()
                 .clickButtonByContainName("Документы");
     }
@@ -41,7 +42,7 @@ public class DocumentsStageFlow {
 
     private void uploadFinancialDossier() {
 
-        ctx.detailPage.openDetailByName("Финансовое досье");
+        ui.detailPage.openDetailByName("Финансовое досье");
 
         startUploadIfNeeded();
 
@@ -53,7 +54,7 @@ public class DocumentsStageFlow {
 
     private void uploadClientDossier() {
 
-        ctx.detailPage.openDetailByName("Досье клиента");
+        ui.detailPage.openDetailByName("Досье клиента");
 
         uploadAndValidate(
                 "Шиносномаи шахрванди ЧТ.pdf",
@@ -74,23 +75,46 @@ public class DocumentsStageFlow {
     // =====================================================
 
     private void startUploadIfNeeded() {
-        ctx.contractPage
+        ui.contractPage
                 .legacyFiles()
                 .startUpload();
     }
 
     private void uploadAndValidate(String fileName, int slotIndex) {
 
-        ctx.contractPage
+        ui.contractPage
                 .legacyFiles()
                 .uploadFile(fileName, slotIndex);
 
-        ctx.contractPage
+        ui.contractPage
                 .legacyFiles()
                 .clickButtonByNameContains("Файлы", slotIndex);
 
-        ctx.contractPage
+        ui.contractPage
                 .legacyFiles()
                 .validateUploadFile(fileName);
     }
+
+    // =====================================================
+    // COMPLETE DOCUMENTS ACTIVITY
+    // =====================================================
+
+    private void completeDocumentsActivity() {
+
+        ui.dashboardComponent.clickElementDashboardCheck(
+                "Вложить документы и отправить на рассмотрение",
+                "Execute",
+                "//*[@data-item-marker='MiniPage']"
+        );
+
+        ui.contractPage
+                .setfieldScheduleDetailByDIM("Result", "Выполнена");
+
+        ui.menuComponent
+                .clickButtonByLiName("Выполнена");
+
+        ui.basePage
+                .clickButtonByDataItemMaker("SaveEditButton");
+    }
+
 }

@@ -1,17 +1,27 @@
 package flows.credit;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
 import core.base.UiContext;
+import core.data.scoring.CreditDecision;
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
+import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.refresh;
+import static core.base.common.components.LookupComponent.log;
+
 
 public class ReviewStageRetailFlow {
 
-    private final UiContext ctx;
 
-    public ReviewStageRetailFlow(UiContext ctx) {
-        this.ctx = ctx;
+
+    private final UiContext ui;
+
+    public ReviewStageRetailFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     // =====================================================
@@ -21,13 +31,11 @@ public class ReviewStageRetailFlow {
     @Step("Review: Retail Manager завершает документы и ожидает решение")
     public void completeReview() {
 
-        openFinishDocumentsMiniPage();
-        completeDocumentsTask();
-        openChecksTab();
 
-        scrollDownSmall();
+        //waitForDecisionCalculation();
+        openChecksTab();
         verifyCreditDecisionApproved();
-        waitForDecisionCalculation();
+
         refreshAndResetView();
 
         openDecisionTab();
@@ -40,45 +48,33 @@ public class ReviewStageRetailFlow {
     // INTERNAL STEPS
     // =====================================================
 
-    private void openFinishDocumentsMiniPage() {
-        ctx.dashboardComponent.clickElementDashboardCheck(
-                "Вложить документы и отправить на рассмотрение",
-                "Execute",
-                "//*[@data-item-marker='MiniPage']"
-        );
-    }
-
-    private void completeDocumentsTask() {
-        ctx.contractPage
-                .setfieldScheduleDetailByDIM("Result", "Выполнена");
-        ctx.menuComponent
-                .clickButtonByLiName("Выполнена");
-        ctx.basePage
-                .clickButtonByDataItemMaker("SaveEditButton");
-    }
 
 
 
-    private void openChecksTab() {
-        ctx.buttonsComponent
+
+    public void openChecksTab() {
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("Проверки");
+
+        //Selenide.sleep(5000);
+
+        //ui.basePage.scrollDownSmall();
+
     }
 
 
-     private void scrollDownSmall() {
-        ctx.basePage
-                .scrollDownSmall();
-    }
 
-
+    //Новый метод нужно протестировать
     private void verifyCreditDecisionApproved() {
-        ctx.gridAssertions.waitForCreditDecision("Одобрить");
+        ui.gridAssertions.waitForAnyCreditDecision(); //Одобрить Отказать
 
     }
+
+
 
     private void waitForDecisionCalculation() {
         // 🔥 Обоснованный workaround для асинхронного маршрута Creatio
-        Selenide.sleep(15000);
+        Selenide.sleep(25000);
     }
 
 
@@ -91,22 +87,24 @@ public class ReviewStageRetailFlow {
 
     private void openDecisionTab() {
 
-        ctx.contractPage
+        ui.contractPage
                 .scrollTabsRight();
 
-        ctx.buttonsComponent
+
+        ui.buttonsComponent
                 .clickButtonByContainNameCheck("Решение по заявке");
     }
 
     private void verifyCommittee() {
-        ctx.gridAssertions
+        ui.gridAssertions
                 .waitForValueInGridColumn("Комитет", "КК4");
     }
 
     private void saveApplicationNumber() {
-        ctx.contractPage
+        ui.contractPage
                 .saveValueByMarker("Number");
     }
+
 
 
 

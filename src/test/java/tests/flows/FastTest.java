@@ -8,6 +8,7 @@ import core.data.contacts.ContactData;
 import core.data.mappers.ContactDataMapper;
 import core.data.mappers.LoginDataMapper;
 import core.data.registration.RegistrationIncomeExpensesData;
+import core.data.scoring.CreditDecision;
 import core.data.users.LoginData;
 import core.enums.Workspace;
 import flows.common.AuthorizationFlow;
@@ -18,7 +19,7 @@ import flows.credit.ReviewStageRetailFlow;
 import flows.credit.ReviewStageUnderwriterFlow;
 import flows.credit.registration.*;
 import flows.credit.registration.client.BaseClientFlow;
-import flows.credit.registration.client.EmployedClientFlow;
+import flows.credit.registration.client.EmployeeClientFlow;
 import flows.credit.registration.client.OtherIncomeClientFlow;
 import flows.credit.registration.client.SelfEmployedClientFlow;
 import org.testng.annotations.Test;
@@ -35,14 +36,14 @@ public class FastTest extends BaseTest {
 
         TestData data = TestDataLoader.load();
 
-        LoginData retailManager =
-                LoginDataMapper.from(data.user("retailManager"));
-        LoginData underwriter =
-                LoginDataMapper.from(data.user("underwriter"));
-        LoginData ikok =
-                LoginDataMapper.from(data.user("ikok"));
-        LoginData cashier =
-                LoginDataMapper.from(data.user("cashier"));
+        LoginData retailManager1 =
+                LoginDataMapper.from(data.user("retailManager1"));
+        LoginData underwriter1 =
+                LoginDataMapper.from(data.user("underwriter1"));
+        LoginData ikok1 =
+                LoginDataMapper.from(data.user("ikok1"));
+        LoginData cashier1 =
+                LoginDataMapper.from(data.user("cashier1"));
 
         ContactData contact =
                 ContactDataMapper.from(data.defaultContact());
@@ -50,42 +51,51 @@ public class FastTest extends BaseTest {
         RegistrationIncomeExpensesData incomeExpensesData =
                 data.registrationIncomeExpenses();
 
+
+
         // ============================================================
         // 2. INFRASTRUCTURE FLOWS
         // ============================================================
 
-        AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
-        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ctx);
+        AuthorizationFlow authFlow = new AuthorizationFlow(ui);
+        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ui);
 
         // ============================================================
         // 3. BUSINESS FLOWS
         // ============================================================
 
-        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ctx);
-        ConsultationStartFlow consultationStartFlow = new ConsultationStartFlow(ctx);
-        ProductSelectionFlow productFlow = new ProductSelectionFlow(ctx);
-        ApplicationCreationFlow applicationFlow = new ApplicationCreationFlow(ctx);
-        RegistrationStageFlow registrationFlow = new RegistrationStageFlow(ctx);
-        PreliminaryCheckStageFlow preliminaryCheckFlow = new PreliminaryCheckStageFlow(ctx);
-        DocumentsStageFlow documentsStageFlow = new DocumentsStageFlow(ctx);
-        ReviewStageRetailFlow reviewRetailFlow = new ReviewStageRetailFlow(ctx);
-        ReviewStageUnderwriterFlow reviewUnderwriterFlow = new ReviewStageUnderwriterFlow(ctx);
-        ClientNotificationStageFlow clientNotificationFlow = new ClientNotificationStageFlow(ctx);
-        NavigationFlow navigationFlow = new NavigationFlow(ctx);
-        LoanIssuanceFlow loanIssuanceFlow = new LoanIssuanceFlow(ctx);
+        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ui);
+        ConsultationStartFlow consultationStartFlow = new ConsultationStartFlow(ui);
+        ProductSelectionFlow productFlow = new ProductSelectionFlow(ui);
+        ApplicationCreationFlow applicationFlow = new ApplicationCreationFlow(ui);
+        RegistrationStageFlow registrationFlow = new RegistrationStageFlow(ui);
+        PreliminaryCheckStageFlow preliminaryCheckFlow = new PreliminaryCheckStageFlow(ui);
+        DocumentsStageFlow documentsStageFlow = new DocumentsStageFlow(ui);
+        ReviewStageRetailFlow reviewRetailFlow = new ReviewStageRetailFlow(ui);
+        ReviewStageUnderwriterFlow reviewUnderwriterFlow = new ReviewStageUnderwriterFlow(ui);
+        ClientNotificationStageFlow clientNotificationFlow = new ClientNotificationStageFlow(ui);
+        NavigationFlow navigationFlow = new NavigationFlow(ui);
+        LoanIssuanceFlow loanIssuanceFlow = new LoanIssuanceFlow(ui);
+        SigningStageFlow signingStageFlow = new SigningStageFlow(ui);
+        ApplicationFinishFlow applicationFinishFlow = new ApplicationFinishFlow(ui);
+
 
         // 🔹 ВАЖНО: выбор типа клиента ТОЛЬКО ЗДЕСЬ
-        BaseClientFlow clientFlow = new SelfEmployedClientFlow(ctx); //Тип клиента самозанятый
-      //BaseClientFlow clientFlow = new EmployedClientFlow(ctx);     //Тип клиента работает в организации
-      //BaseClientFlow clientFlow = new OtherIncomeClientFlow(ctx);  //Тип клиента имеет другой источник дохода
+      // BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
+      //BaseClientFlow clientFlow = new EmployeeClientFlow(ui);     //Тип клиента работает в организации
+       BaseClientFlow clientFlow = new OtherIncomeClientFlow(ui);  //Тип клиента имеет другой источник дохода
 
 
         // ============================================================
         // 4. RETAIL MANAGER
         // ============================================================
 
-        authFlow.login(retailManager);
+        authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
+
+        /*navigationFlow.open(
+                Environment.BASE_URL +
+                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/fbebdabf-8685-400d-8666-30b219419fee");*/
 
         clientSearchFlow.searchClient(
                 contact.getLastName(),
@@ -112,17 +122,9 @@ public class FastTest extends BaseTest {
                 "36"
         );
 
-        /*authFlow.login(retailManager);
-
-        navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/27f1fa9e-4ec5-42a4-a24b-f3c070afce04");*/
-
-
         registrationFlow.completeRegistrationStage(
                 incomeExpensesData,
                 clientFlow);
-
 
         preliminaryCheckFlow.completePreliminaryCheckStage();
         documentsStageFlow.uploadDocumentsLegacy();
@@ -135,7 +137,7 @@ public class FastTest extends BaseTest {
         // 5. UNDERWRITER
         // ============================================================
 
-        authFlow.login(underwriter);
+        authFlow.login(underwriter1);
         workspaceFlow.select(Workspace.UNDERWRITER);
 
         reviewUnderwriterFlow.approveReview("КК4 по заявке"
@@ -147,7 +149,7 @@ public class FastTest extends BaseTest {
         // 6. CLIENT NOTIFICATION — RETAIL MANAGER
         // ============================================================
 
-        authFlow.login(retailManager);
+        authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
 
@@ -161,10 +163,31 @@ public class FastTest extends BaseTest {
         // 7. LOAN ISSUANCE
         // ============================================================
 
-        authFlow.login(ikok);
+        authFlow.login(ikok1);
         workspaceFlow.select(Workspace.IKOK);
 
         loanIssuanceFlow.issueLoan();
+
+        authFlow.logout();
+
+        // ============================================================
+        // 🔵 13. ВЫДАЧА КРЕДИТА
+        // ============================================================
+        authFlow.login(cashier1);
+        workspaceFlow.select(Workspace.CASHIER);
+
+        signingStageFlow.completeSigningStage();
+
+        authFlow.logout();
+
+        // ============================================================
+        // 🔵 14. ЗАВЕРШЕНИЕ ЗАЯВКИ
+        // ============================================================
+        authFlow.login(ikok1);
+        workspaceFlow.select(Workspace.IKOK);
+
+        applicationFinishFlow.completeApplicationFinish();
+
 
         authFlow.logout();
 

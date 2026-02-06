@@ -1,4 +1,7 @@
 package core.enums;
 
-public class RouteType {
+public enum RouteType {
+
+    SIMPLE,     // Упрощённый маршрут
+    STANDARD    // Стандартный маршрут
 }

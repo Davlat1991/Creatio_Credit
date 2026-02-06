@@ -18,8 +18,5 @@ public class OtherIncomeClientFlow extends BaseClientFlow {
         new RegistrationAdditionalInfoFlow(ctx)
                 .selectEmploymentTypeOtherIncome(EmploymentType.OTHER_INCOME);
 
-        new RegistrationAddressFlow(ctx)
-                .fillWorkAddressEmployed();
-
     }
 }

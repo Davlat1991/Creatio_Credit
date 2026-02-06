@@ -1,5 +1,6 @@
 package flows.common;
 
+import com.codeborne.selenide.Selenide;
 import core.base.UiContext;
 import core.enums.Workspace;
 import io.qameta.allure.Step;
@@ -10,10 +11,10 @@ import io.qameta.allure.Step;
  */
 public class WorkspaceFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public WorkspaceFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public WorkspaceFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     // ================= PUBLIC API =================
@@ -26,8 +27,12 @@ public class WorkspaceFlow {
     // ================= INTERNAL =================
 
     private void switchTo(String workspaceName) {
-        ctx.workspaceSteps.selectWorkAccess(workspaceName);
-        ctx.basePage.clickButtonByDataItemMaker("OBSW"); //view-button-OBSW-wrapperEl 245  // view-button-OBSW-imageEl 254
-        ctx.basePage.waitForPage();
+        ui.workspaceSteps.selectWorkAccess(workspaceName);
+        ui.basePage.waitForPage();
+        ui.basePage.ensureConsultationPanelOpened();
+
+
+        //ui.basePage.clickButtonById("view-button-OBSW-imageEl"); // 245  // view-button-OBSW-imageEl 254
+
     }
 }

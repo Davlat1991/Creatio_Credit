@@ -4,9 +4,9 @@ import core.base.UiContext;
 import core.data.registration.EmploymentType;
 import flows.credit.registration.*;
 
-public class EmployedClientFlow extends BaseClientFlow {
+public class EmployeeClientFlow extends BaseClientFlow {
 
-    public EmployedClientFlow(UiContext ctx) {
+    public EmployeeClientFlow(UiContext ctx) {
         super(ctx);
     }
 
@@ -14,13 +14,13 @@ public class EmployedClientFlow extends BaseClientFlow {
     public void fill() {
 
         new RegistrationAdditionalInfoFlow(ctx)
-                .selectEmploymentTypeEmployed(EmploymentType.EMPLOYED);
+                .selectEmploymentTypeEmployee(EmploymentType.EMPLOYEE);
 
         new RegistrationAddressFlow(ctx)
-                .fillWorkAddressEmployed();
+                .fillWorkAddressEmployee();
 
         new RegistrationParticipantsFlow(ctx)
-                .fillCareerDetailsEmployed();
+                .fillCareerDetailsEmployee();
 
         new RegistrationIncomeExpensesFlow(ctx)
                 .fillIndividualActivityEmployed();

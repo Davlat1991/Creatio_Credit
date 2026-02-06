@@ -5,10 +5,10 @@ import io.qameta.allure.Step;
 
 public class ClientSearchFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public ClientSearchFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public ClientSearchFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Поиск клиента по ФИО")
@@ -17,11 +17,11 @@ public class ClientSearchFlow {
             String firstName,
             String middleName
     ) {
-        ctx.fieldPage
+        ui.fieldPage
                 .setFieldByValue("Фамилия", lastName, true, false)
                 .setFieldByValue("Имя", firstName, true, false)
                 .setFieldByValue("Отчество", middleName, true, false);
 
-        ctx.contractPage.clickButtonByNameCheck("Поиск");
+        ui.contractPage.clickButtonByNameCheck("Поиск");
     }
 }

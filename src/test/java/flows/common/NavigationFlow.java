@@ -5,15 +5,15 @@ import io.qameta.allure.Step;
 
 public class NavigationFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public NavigationFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public NavigationFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Открыть страницу по прямой ссылке")
     public void open(String fullUrl) {
-        ctx.basePage.openUrl(fullUrl);
-        ctx.basePage.waitForPage();
+        ui.basePage.openUrl(fullUrl);
+        ui.basePage.waitForPage();
     }
 }

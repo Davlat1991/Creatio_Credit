@@ -37,17 +37,17 @@ public class SimpleRouteSmokeTest extends BaseTest {
         // 2. INFRASTRUCTURE FLOWS
         // ============================================================
 
-        AuthorizationFlow authFlow = new AuthorizationFlow(ctx);
-        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ctx);
+        AuthorizationFlow authFlow = new AuthorizationFlow(ui);
+        WorkspaceFlow workspaceFlow = new WorkspaceFlow(ui);
 
         // ============================================================
         // 3. BUSINESS FLOWS
         // ============================================================
 
-        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ctx);
-        ConsultationStartFlow consultationStartFlow = new ConsultationStartFlow(ctx);
-        ProductSelectionFlow productFlow = new ProductSelectionFlow(ctx);
-        ApplicationCreationFlow applicationFlow = new ApplicationCreationFlow(ctx);
+        ClientSearchFlow clientSearchFlow = new ClientSearchFlow(ui);
+        ConsultationStartFlow consultationStartFlow = new ConsultationStartFlow(ui);
+        ProductSelectionFlow productFlow = new ProductSelectionFlow(ui);
+        ApplicationCreationFlow applicationFlow = new ApplicationCreationFlow(ui);
 
         // ============================================================
         // 4. RETAIL MANAGER

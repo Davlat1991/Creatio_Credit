@@ -1,6 +1,8 @@
 package core.assertions;
 
 import com.codeborne.selenide.*;
+import com.codeborne.selenide.conditions.Value;
+import core.base.common.components.ButtonsComponent;
 import core.base.common.components.GridComponent;
 import io.qameta.allure.Step;
 
@@ -11,8 +13,17 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 
+import org.openqa.selenium.By;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
 
 public class GridAssertions {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(GridAssertions.class);
 
     @Step("Ожидаем появление значения '{value}' в колонке '{columnName}'")
     public void waitForCreditDecision3(String columnName, String value) {
@@ -44,7 +55,8 @@ public class GridAssertions {
                         return;
                     }
 
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
 
             System.out.println("⏳ Значение '" + value + "' пока не найдено — ждём...");
@@ -53,8 +65,6 @@ public class GridAssertions {
 
         throw new AssertionError("❌ Значение '" + value + "' в колонке '" + columnName + "' так и не появилось!");
     }
-
-
 
 
     @Step("Ожидаем появление значения '{value}' в колонке '{columnName}'")
@@ -155,7 +165,7 @@ public class GridAssertions {
     }
 
 
-//18.01.2026
+    //18.01.2026
     @Step("Ожидаем решение по кредиту: {expectedValue}")
     public void waitForCreditDecision2(String expectedValue) {
 
@@ -181,6 +191,99 @@ public class GridAssertions {
                 .should(Condition.exist, Duration.ofSeconds(60));
     }
 
+    //30.01.2026
+    @Step("Ожидаем любое решение по кредиту")
+    public void waitForAnyCreditDecision1() {
+
+        SelenideElement scoringContainer =
+                $x("//*[@data-item-marker='BnzScoringDetailDetailContainer']")
+                        .shouldBe(Condition.visible, Duration.ofSeconds(20));
+
+        scoringContainer.$x(
+                ".//span[@grid-data-type='text' and (normalize-space()='Одобрить' or normalize-space()='Отказать')]"
+        ).shouldBe(Condition.visible, Duration.ofSeconds(60));
+    }
+
+    //01.02.2026
+    @Step("Ожидаем любое решение по кредиту (логируем результат)")
+    public void waitForAnyCreditDecision2() {
+
+        log.info("⏳ Ожидание результата скоринга...");
+
+        // 1️⃣ Контейнер скоринга
+        SelenideElement scoringContainer =
+                $x("//*[@data-item-marker='BnzScoringDetailDetailContainer']")
+                        .should(Condition.exist, Duration.ofSeconds(30));
+
+        log.info("✔ Контейнер скоринга найден");
+
+        // 2️⃣ Ждём любое из решений
+        SelenideElement decisionElement =
+                scoringContainer.$x(
+                        ".//span[@grid-data-type='text' and " +
+                                "(normalize-space()='Одобрить' or normalize-space()='Отказать')]"
+                ).should(Condition.exist, Duration.ofSeconds(90));
+
+        // 3️⃣ Логируем результат
+        String decisionText = decisionElement.getText().trim();
+        log.info("📌 Результат скоринга получен: {}", decisionText);
+    }
+
+
+    @Step("Ожидаем любое решение по кредиту (вкладка 'Проверки')")
+    public void waitForAnyCreditDecision() {
+
+        log.info("⏳ Ожидание результата скоринга (Одобрить / Отказать)");
+
+        long endTime = System.currentTimeMillis() + Duration.ofSeconds(90).toMillis();
+
+        while (System.currentTimeMillis() < endTime) {
+
+            try {
+                // 1️⃣ Всегда переходим на вкладку "Проверки"
+                log.info("➡ Переходим на вкладку 'Проверки'");
+                openChecksTab("Проверки");
+
+                // 2️⃣ Контейнер скоринга
+                SelenideElement scoringContainer =
+                        $x("//*[@data-item-marker='BnzScoringDetailDetailContainer']")
+                                .shouldBe(Condition.visible, Duration.ofSeconds(5));
+
+                log.info("✔ Контейнер скоринга найден");
+
+                // 3️⃣ Любой допустимый результат
+                SelenideElement decisionElement =
+                        scoringContainer.$x(
+                                ".//span[@grid-data-type='text' and " +
+                                        "(normalize-space()='Одобрить' or normalize-space()='Отказать')]"
+                        ).shouldBe(Condition.visible, Duration.ofSeconds(5));
+
+                String decisionText = decisionElement.getText().trim();
+                log.info("✅ Результат скоринга получен: {}", decisionText);
+                return;
+
+            } catch (Throwable t) {
+                log.debug("⏳ Результат ещё не готов или вкладка обновилась — повторяем");
+            }
+        }
+
+        throw new AssertionError("❌ Результат скоринга не появился за 90 секунд");
+    }
+
+
+    public GridAssertions openChecksTab(String Value) {
+        SelenideElement element = $x("//span[contains(text(), '" + Value + "')]")
+                .shouldBe(Condition.visible)
+                .shouldBe(Condition.enabled)
+                .shouldHave(Condition.text(Value));
+
+        element.hover();                    // помогает "активировать" элемент
+        element.shouldBe(Condition.interactable); // теперь interactable безопасен
+
+        element.click();
+
+        return this;
+    }
 
 
 

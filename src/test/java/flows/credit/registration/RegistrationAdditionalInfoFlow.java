@@ -12,10 +12,10 @@ import io.qameta.allure.Step;
  */
 public class RegistrationAdditionalInfoFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public RegistrationAdditionalInfoFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public RegistrationAdditionalInfoFlow(UiContext ui) {
+        this.ui = ui;
 
     }
 
@@ -25,13 +25,13 @@ public class RegistrationAdditionalInfoFlow {
 
 
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck(
                         "Семейное положение",
                         "Мучаррад (мард)"
                 );
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setFieldByValueCheck("Количество иждивенцев (строка)","0")
                 .setFieldByValueCheck("Общий стаж","36")
                 .setFieldByValueCheck("Общий стаж, лет","3")
@@ -45,13 +45,13 @@ public class RegistrationAdditionalInfoFlow {
     @Step("Заполнение базовых скоринговых данных заемщика")
     public void fillBaseScoringData(BaseScoringData data) {
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck(
                         "Семейное положение",
                         data.getMaritalStatus()
                 );
 
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setFieldByValueCheck("Количество иждивенцев (строка)", data.getDependentsCount())
                 .setFieldByValueCheck("Общий стаж", data.getTotalExperience())
                 .setFieldByValueCheck("Общий стаж, лет", data.getTotalExperienceYears())
@@ -63,7 +63,7 @@ public class RegistrationAdditionalInfoFlow {
 
     @Step("Подготовка поля 'Причина отсутствия работы'")
     public void prepareReasonOfNoWork() {
-        ctx.additionalInfoPage.clearReasonOfNoWorkIfPresent();
+        ui.additionalInfoPage.clearReasonOfNoWorkIfPresent();
     }
 
 
@@ -71,7 +71,7 @@ public class RegistrationAdditionalInfoFlow {
     @Step("Выбор типа занятости: {employmentType}")
     public void selectEmploymentTypeOtherIncome(EmploymentType employmentType) {
 
-        ctx.educationCareerComponent
+        ui.educationCareerComponent
                 .setLookup(
                         EducationCareerField.EMPLOYMENT_TYPE,
                         employmentType.getUiName()
@@ -83,7 +83,7 @@ public class RegistrationAdditionalInfoFlow {
     @Step("Выбор типа занятости: {employmentType}")
     public void selectEmploymentTypeSelfEmployed(EmploymentType employmentType) {
 
-        ctx.educationCareerComponent
+        ui.educationCareerComponent
                 .setLookup(
                         EducationCareerField.EMPLOYMENT_TYPE,
                         employmentType.getUiName()
@@ -100,9 +100,9 @@ public class RegistrationAdditionalInfoFlow {
 
 
     @Step("Выбор типа занятости: {employmentType}")
-    public void selectEmploymentTypeEmployed(EmploymentType employmentType) {
+    public void selectEmploymentTypeEmployee(EmploymentType employmentType) {
 
-        ctx.educationCareerComponent
+        ui.educationCareerComponent
                 .setLookup(
                         EducationCareerField.EMPLOYMENT_TYPE,
                         employmentType.getUiName()
@@ -130,7 +130,7 @@ public class RegistrationAdditionalInfoFlow {
 
 
     private void setReasonOfNoWork(String reason) {
-        ctx.lookupComponent
+        ui.lookupComponent
                 .setHandBookFieldByValueCheck(
                         "Причина отсутствия работы",
                         reason

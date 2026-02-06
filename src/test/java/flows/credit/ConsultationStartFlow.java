@@ -5,21 +5,22 @@ import io.qameta.allure.Step;
 
 public class ConsultationStartFlow {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public ConsultationStartFlow(UiContext ctx) {
-        this.ctx = ctx;
+    public ConsultationStartFlow(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Старт консультации и регистрация продукта")
     public void startConsultation(String consultationThemeDim) {
 
-        ctx.basePage.clickButtonByDataItemMaker("Начать консультацию");
+        ui.basePage.clickButtonByDataItemMaker("Начать консультацию");
 
-        ctx.detailPage.openDetailByName("Оформить заявку");
+        ui.detailPage.openDetailByName("Оформить заявку");
 
-        ctx.consultationPanel.registerProductByDIM(consultationThemeDim);
+        ui.consultationPanel.registerProductByDIM(consultationThemeDim);
 
-        ctx.basePage.waitForPage();
+        ui.basePage.waitForPage();
+        ui.basePage.closeConsultationPanelIfOpened();
     }
 }
