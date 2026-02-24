@@ -8,10 +8,10 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class ProductSelectionAssertions {
 
-    private final UiContext ctx;
+    private final UiContext ui;
 
-    public ProductSelectionAssertions(UiContext ctx) {
-        this.ctx = ctx;
+    public ProductSelectionAssertions(UiContext ui) {
+        this.ui = ui;
     }
 
     @Step("Проверить, что продукт выбран")

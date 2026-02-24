@@ -2,7 +2,6 @@ package flows.credit;
 
 import core.base.UiContext;
 import core.context.CreditTestContext;
-import core.enums.ClientType;
 import core.enums.RouteType;
 import core.enums.Workspace;
 import flows.common.AuthorizationFlow;

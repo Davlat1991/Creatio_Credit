@@ -10,6 +10,7 @@ import core.data.mappers.LoginDataMapper;
 import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.scoring.CreditDecision;
 import core.data.users.LoginData;
+import core.enums.CollateralType;
 import core.enums.Workspace;
 import flows.common.AuthorizationFlow;
 import flows.common.NavigationFlow;
@@ -24,6 +25,10 @@ import flows.credit.registration.client.OtherIncomeClientFlow;
 import flows.credit.registration.client.SelfEmployedClientFlow;
 import org.testng.annotations.Test;
 import core.data.registration.EmploymentType;
+import flows.credit.collateral.CollateralStageFlow;
+import core.enums.CollateralType;
+
+import static core.enums.CollateralType.GOODS;
 
 public class FastTest extends BaseTest {
 
@@ -78,6 +83,7 @@ public class FastTest extends BaseTest {
         LoanIssuanceFlow loanIssuanceFlow = new LoanIssuanceFlow(ui);
         SigningStageFlow signingStageFlow = new SigningStageFlow(ui);
         ApplicationFinishFlow applicationFinishFlow = new ApplicationFinishFlow(ui);
+        CollateralStageFlow collateralStageFlow = new CollateralStageFlow(ui);
 
 
         // 🔹 ВАЖНО: выбор типа клиента ТОЛЬКО ЗДЕСЬ
@@ -93,11 +99,8 @@ public class FastTest extends BaseTest {
         authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
-        /*navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/fbebdabf-8685-400d-8666-30b219419fee");*/
 
-        clientSearchFlow.searchClient(
+        /*clientSearchFlow.searchClient(
                 contact.getLastName(),
                 contact.getFirstName(),
                 contact.getMiddleName()
@@ -126,8 +129,14 @@ public class FastTest extends BaseTest {
                 incomeExpensesData,
                 clientFlow);
 
-        preliminaryCheckFlow.completePreliminaryCheckStage();
-        documentsStageFlow.uploadDocumentsLegacy();
+        preliminaryCheckFlow.completePreliminaryCheckStage();*/
+
+         navigationFlow.open(
+                Environment.BASE_URL +
+                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/53b2903d-a606-4365-bb57-d8ef90d5bdaa");
+        collateralStageFlow.completeCollateralStage(CollateralType.EQUIPMENT);
+
+        /*documentsStageFlow.uploadDocumentsLegacy();
 
         reviewRetailFlow.completeReview();
 
@@ -189,7 +198,7 @@ public class FastTest extends BaseTest {
         applicationFinishFlow.completeApplicationFinish();
 
 
-        authFlow.logout();
+        authFlow.logout();*/
 
 
     }

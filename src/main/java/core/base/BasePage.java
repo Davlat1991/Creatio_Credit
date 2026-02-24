@@ -4,10 +4,6 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import core.base.common.components.ButtonsComponent;
-import core.base.common.components.Components;
-import core.pages.credit.ContractCreditApplicationPage;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import java.time.Duration;
 import static com.codeborne.selenide.Condition.*;
@@ -677,6 +673,29 @@ public class BasePage {
         return this;
     }
 
+
+    @Step("Клик по hover-иконке поля с id '{inputId}'")
+    public BasePage clickLookupIconByInputId(String valueId) {
+
+        // 1️⃣ Находим input
+        SelenideElement input = $x("//input[@id='" + valueId + "']")
+                .shouldBe(Condition.visible)
+                .scrollIntoView(true);
+
+        // 2️⃣ Наводим мышь на контейнер
+        SelenideElement wrapper = input.closest("div");
+        wrapper.hover();
+
+        // 3️⃣ Ищем правую иконку внутри wrapper
+        SelenideElement icon = wrapper
+                .$x(".//div[contains(@class,'right-icon')]")
+                .shouldBe(Condition.visible);
+
+        // 4️⃣ Кликаем через JS (Creatio любит блокировать обычный click)
+        Selenide.executeJavaScript("arguments[0].click();", icon);
+
+        return this;
+    }
 
 
 

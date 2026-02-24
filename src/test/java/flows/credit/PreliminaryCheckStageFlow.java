@@ -63,7 +63,7 @@ public class PreliminaryCheckStageFlow {
 
         openClientCheckTask();
         approveClientCheck();
-        completeCollateralAndGuaranteeTask();
+        //completeCollateralAndGuaranteeTask();
     }
 
     private void openClientCheckTask() {

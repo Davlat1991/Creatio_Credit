@@ -1,7 +1,6 @@
 package steps.contacts;
 
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import core.base.BasePage;
 

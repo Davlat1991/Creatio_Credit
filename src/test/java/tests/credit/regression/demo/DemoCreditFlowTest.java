@@ -6,7 +6,6 @@ import core.data.TestDataLoader;
 import core.data.mappers.ContactDataMapper;
 import core.data.mappers.LoginDataMapper;
 import core.enums.ClientType;
-import core.enums.RouteType;
 import core.enums.Workspace;
 import flows.credit.CreditApplicationFlow;
 import org.testng.annotations.Test;

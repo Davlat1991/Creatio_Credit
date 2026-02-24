@@ -3,7 +3,6 @@ package flows.credit.registration.client;
 import core.base.UiContext;
 import core.data.registration.EmploymentType;
 import flows.credit.registration.RegistrationAdditionalInfoFlow;
-import flows.credit.registration.RegistrationAddressFlow;
 
 
 public class OtherIncomeClientFlow extends BaseClientFlow {

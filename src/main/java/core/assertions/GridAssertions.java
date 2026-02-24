@@ -1,23 +1,14 @@
 package core.assertions;
 
 import com.codeborne.selenide.*;
-import com.codeborne.selenide.conditions.Value;
-import core.base.common.components.ButtonsComponent;
-import core.base.common.components.GridComponent;
 import io.qameta.allure.Step;
-
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 
-import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 
 
 public class GridAssertions {

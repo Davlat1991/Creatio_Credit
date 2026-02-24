@@ -3,16 +3,10 @@ package core.base.common.utils;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import core.base.common.components.FieldComponent;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 
 import static com.codeborne.selenide.Configuration.timeout;
-import static com.codeborne.selenide.Selenide.$x;
 import static com.google.common.net.HostSpecifier.isValid;
 import static core.base.common.components.FieldComponent.findFieldByLabel;
 

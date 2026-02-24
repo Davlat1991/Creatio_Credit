@@ -3,15 +3,14 @@ package core.base.common.utils;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import core.base.common.components.LookupComponent;
-import core.pages.credit.ContractCreditApplicationPage;
+
 import io.qameta.allure.Step;
 
-import java.time.Duration;
+
 import java.util.concurrent.Callable;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Condition.enabled;
+
 import static com.codeborne.selenide.Selenide.$x;
 
 public class FieldUtils {

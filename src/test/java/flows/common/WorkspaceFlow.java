@@ -1,6 +1,5 @@
 package flows.common;
 
-import com.codeborne.selenide.Selenide;
 import core.base.UiContext;
 import core.enums.Workspace;
 import io.qameta.allure.Step;
