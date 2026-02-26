@@ -1,6 +1,8 @@
 package flows.credit.collateral.types;
 
 import core.base.UiContext;
+import core.data.collateral.CollateralData;
+import core.data.collateral.types.RealEstateData;
 import core.ui.components.collateral.*;
 import flows.credit.collateral.base.BaseCollateralFlow;
 import io.qameta.allure.Step;
@@ -25,33 +27,50 @@ public class RealEstateCollateralFlow extends BaseCollateralFlow {
     }
 
     @Override
-    @Step("Заполнение залога: Недвижимое имущество")
-    public void fill() {
+    public void fill(CollateralData data) {
+
+        RealEstateData realEstateData =
+                (RealEstateData) data.getSpecificData();
 
         tabs.openCollateralTab();
         grid.addCollateral();
+        grid.openPropertyLookup();
 
         form.selectType("Недвижимое имущество");
         form.selectSubType("Гарави амволи гайриманкул");
+        form.setName("Залог недвижимого имущества");
         form.selectCondition("Новое");
+        form.selectOwnership("Собственный");
+        grid.addCollateralValue();
+        form.setName("Залог недвижимого имущества");
+        form.selectPledger("Кудусов Фатхулло Абдуфатоевич");
+
 
         characteristics.fillCharacteristics(
-                "80",
-                "2015",
-                "3",
-                "Квартира в центре города",
-                "Квартира",
-                "100"
+                realEstateData.getLivingArea(),
+                realEstateData.getBuildYear(),
+                realEstateData.getRooms(),
+                realEstateData.getDescription(),
+                realEstateData.getPropertyType(),
+                realEstateData.getTotalArea()
         );
 
         address.fillPropertyAddress();
 
-        valuation.fillValuation(
-                "1000000",
-                "1200000",
-                "Сомони Чумхурии Точикистон"
+        valuation.fillValuationRealEstate(
+                data.getMarketValue(),
+                data.getLiquidationValue(),
+                data.getCurrency()
         );
 
         form.close();
+        form.setName("Залог недвижимого имущества");
+        form.save();
+        form.close();
+
+        ui.basePage
+                .doubleClickByMarker("Обеспечение.Подтип");
     }
+
+
 }

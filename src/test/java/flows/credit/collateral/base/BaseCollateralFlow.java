@@ -1,6 +1,7 @@
 package flows.credit.collateral.base;
 
 import core.base.UiContext;
+import core.data.collateral.CollateralData;
 import io.qameta.allure.Step;
 
 /**
@@ -13,14 +14,9 @@ public abstract class BaseCollateralFlow {
 
     protected final UiContext ui;
 
-    protected BaseCollateralFlow(UiContext ui) {
+    public BaseCollateralFlow(UiContext ui) {
         this.ui = ui;
     }
 
-    /**
-     * Заполнение конкретного типа залога.
-     * Реализация — в наследниках.
-     */
-    @Step("Заполнение данных залога")
-    public abstract void fill();
+    public abstract void fill(CollateralData data);
 }

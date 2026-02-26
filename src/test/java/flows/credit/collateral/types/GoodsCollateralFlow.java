@@ -2,6 +2,7 @@ package flows.credit.collateral.types;
 
 
 import core.base.UiContext;
+import core.data.collateral.CollateralData;
 import core.ui.components.collateral.*;
 import flows.credit.collateral.base.BaseCollateralFlow;
 import io.qameta.allure.Step;
@@ -25,7 +26,7 @@ public class GoodsCollateralFlow extends BaseCollateralFlow {
 
     @Override
     @Step("Заполнение залога: Товары в обороте и переработке")
-    public void fill() {
+    public void fill(CollateralData data) {
         tabs.openCollateralTab();
 
         grid.addCollateral();
@@ -33,14 +34,22 @@ public class GoodsCollateralFlow extends BaseCollateralFlow {
 
         form.selectType("Движимое имущество");
         form.selectSubType("Гарави амволи дар муомилотбуда");
+        form.setName("Товары в обороте и переработке");
         form.selectOwnership("Собственный");
 
-        valuation.fillValuationGoods("Кухонный набор", "600000", "Сомони Чумхурии Точикистон","4");
+        valuation.fillValuationGoods(
+                "Кухонный набор",
+                "400000",
+                "Сомони Чумхурии Точикистон",
+                "4",
+                "Импортный набор");
 
         address.fillPropertyAddress();
 
-
         form.close();
+
+        ui.basePage
+                .doubleClickByMarker("Обеспечение.Подтип");
     }
 
 

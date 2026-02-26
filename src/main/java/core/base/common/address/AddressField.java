@@ -6,6 +6,8 @@ package core.base.common.address;
  */
 public enum AddressField {
 
+    //Тип адреса
+    ADDRESS_TYPE("AddressType"),
     // Страна
     COUNTRY("Country"),
     //Регион

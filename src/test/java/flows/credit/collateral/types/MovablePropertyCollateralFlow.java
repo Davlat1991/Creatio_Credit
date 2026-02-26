@@ -1,50 +1,52 @@
 package flows.credit.collateral.types;
 
-
 import core.base.UiContext;
 import core.data.collateral.CollateralData;
-import core.ui.components.collateral.*;
 import flows.credit.collateral.base.BaseCollateralFlow;
+import core.ui.components.collateral.*;
 import io.qameta.allure.Step;
 
-public class EquipmentCollateralFlow extends BaseCollateralFlow {
+public class MovablePropertyCollateralFlow extends BaseCollateralFlow {
 
     private final CollateralTabsComponent tabs;
     private final CollateralGridComponent grid;
     private final CollateralFormComponent form;
+    private final MovableObjectsDetailComponent objectsDetail;
+    private final PropertyAddressDetailComponent addressDetail;
     private final CollateralAddressComponent address;
     private final CollateralValuationComponent valuation;
 
-    public EquipmentCollateralFlow(UiContext ui) {
+    public MovablePropertyCollateralFlow(UiContext ui) {
         super(ui);
         this.tabs = new CollateralTabsComponent(ui);
         this.grid = new CollateralGridComponent(ui);
         this.form = new CollateralFormComponent(ui);
+        this.objectsDetail = new MovableObjectsDetailComponent(ui);
+        this.addressDetail = new PropertyAddressDetailComponent(ui);
         this.address = new CollateralAddressComponent(ui);
         this.valuation = new CollateralValuationComponent(ui);
     }
 
-    @Override
-    @Step("Заполнение залога: Оборудование")
-    public void fill(CollateralData data) {
 
+    @Override
+    @Step("Заполнение залога: Движимое имущество")
+    public void fill(CollateralData data) {
         tabs.openCollateralTab();
 
         grid.addCollateral();
         grid.openPropertyLookup();
 
         form.selectType("Движимое имущество");
-        form.selectSubType("Гарави тачхизот");
-        form.setName("Залог оборудования");
+        form.selectSubType("Гарави амволи манкул");
+        form.setName("Залог движимого имущества");
         form.selectOwnership("Собственный");
 
-        valuation.fillValuationEquipment(
-                "Прицеп",
-                "80000",
+        valuation.fillValuationMovable(
+                "Производственное оборудование",
+                "70000",
                 "Сомони Чумхурии Точикистон",
-                "БЕЛОРУССИЯ","2025",
-                "Промышленное оборудование",
-                "Германский прицеп");
+                "2",
+                "Новое оборудование");
 
         address.fillPropertyAddress();
 
@@ -56,4 +58,3 @@ public class EquipmentCollateralFlow extends BaseCollateralFlow {
     }
 
 }
-

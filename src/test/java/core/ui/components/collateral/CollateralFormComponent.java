@@ -45,4 +45,9 @@ public class CollateralFormComponent {
     public void close() {
         ui.basePage.clickButtonByName("Закрыть");
     }
+
+    @Step("Сохранить залог")
+    public void save() {
+        ui.basePage.clickButtonByName("Сохранить");
+    }
 }

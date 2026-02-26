@@ -656,8 +656,8 @@ public class BasePage {
 
 
     @Step("Двойной клик по элементу с marker '{marker}'")
-    public BasePage doubleClickByMarker(String marker) {
-        SelenideElement el = $x("//*[@data-item-marker='" + marker + "']")
+    public BasePage doubleClickByMarker(String marker1) {
+        SelenideElement el = $x("//*[@data-item-marker='" + marker1 + "']")
                 .shouldBe(visible, enabled);
 
         el.doubleClick();

@@ -1,6 +1,7 @@
 package flows.credit.collateral.types;
 
 import core.base.UiContext;
+import core.data.collateral.CollateralData;
 import flows.credit.collateral.base.BaseCollateralFlow;
 import core.ui.components.collateral.*;
 import io.qameta.allure.Step;
@@ -26,7 +27,7 @@ public class VehicleCollateralFlow extends BaseCollateralFlow {
 
     @Override
     @Step("Заполнение залога: Транспорт (движимое имущество)")
-    public void fill() {
+    public void fill(CollateralData data) {
 
         tabs.openCollateralTab();
 
@@ -35,6 +36,7 @@ public class VehicleCollateralFlow extends BaseCollateralFlow {
 
         form.selectType("Движимое имущество");
         form.selectSubType("Гарави наклиёт");
+        form.setName("Залог транспорта");
         form.selectCondition("Новое");
         form.selectOwnership("Собственный");
         //form.selectPledger("Рачабов Бахром Назаралиевич");
@@ -42,7 +44,7 @@ public class VehicleCollateralFlow extends BaseCollateralFlow {
         grid.addCollateralValue();
 
         form.setName("Залог транспорта");
-        form.selectPledger("Ёрбоева Ситора Насриддиновна");
+        form.selectPledger("Кудусов Фатхулло Абдуфатоевич");
 
         vehicle.fillTechnicalData();
         address.fillPropertyAddress();
@@ -50,5 +52,8 @@ public class VehicleCollateralFlow extends BaseCollateralFlow {
 
         form.close();
         form.close();
+
+        ui.basePage
+                .doubleClickByMarker("Обеспечение.Подтип");
     }
 }

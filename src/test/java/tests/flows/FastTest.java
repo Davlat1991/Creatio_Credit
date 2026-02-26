@@ -11,6 +11,7 @@ import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.scoring.CreditDecision;
 import core.data.users.LoginData;
 import core.enums.CollateralType;
+import core.enums.CurrencyType;
 import core.enums.Workspace;
 import flows.common.AuthorizationFlow;
 import flows.common.NavigationFlow;
@@ -27,8 +28,11 @@ import org.testng.annotations.Test;
 import core.data.registration.EmploymentType;
 import flows.credit.collateral.CollateralStageFlow;
 import core.enums.CollateralType;
+import java.util.List;
 
+import static core.data.factory.CollateralTestDataFactory.*;
 import static core.enums.CollateralType.GOODS;
+
 
 public class FastTest extends BaseTest {
 
@@ -134,7 +138,20 @@ public class FastTest extends BaseTest {
          navigationFlow.open(
                 Environment.BASE_URL +
                         "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/53b2903d-a606-4365-bb57-d8ef90d5bdaa");
-        collateralStageFlow.completeCollateralStage(CollateralType.EQUIPMENT);
+        collateralStageFlow.completeCollateralStage(
+                List.of(
+                        realEstate(CurrencyType.TJS),
+                        vehicle(CurrencyType.TJS),
+                        equipment(CurrencyType.TJS),
+                        futureHarvest(CurrencyType.TJS),
+                        cotton(CurrencyType.TJS),
+                        acquiredProperty(CurrencyType.TJS),
+                        movableProperty(CurrencyType.TJS),
+                        gold(CurrencyType.TJS),
+                        goods(CurrencyType.TJS)
+
+                )
+        );
 
         /*documentsStageFlow.uploadDocumentsLegacy();
 

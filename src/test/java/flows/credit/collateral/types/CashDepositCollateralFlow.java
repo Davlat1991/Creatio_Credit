@@ -1,6 +1,7 @@
 package flows.credit.collateral.types;
 
 import core.base.UiContext;
+import core.data.collateral.CollateralData;
 import core.ui.components.collateral.CollateralFormComponent;
 import core.ui.components.collateral.CollateralGridComponent;
 import core.ui.components.collateral.CollateralTabsComponent;
@@ -23,7 +24,7 @@ public class CashDepositCollateralFlow extends BaseCollateralFlow {
 
     @Override
     @Step("Заполнение залога: Денежный вклад")
-    public void fill() {
+    public void fill(CollateralData data) {
 
         // ПОКА ПУСТО — ЭТО НОРМАЛЬНО
         // Реальную логику добавим в TASK 2.4 (UI Components)
