@@ -4,13 +4,12 @@ import core.base.BaseTest;
 import core.config.Environment;
 import core.data.TestData;
 import core.data.TestDataLoader;
+import core.data.collateral.CollateralData;
 import core.data.contacts.ContactData;
 import core.data.mappers.ContactDataMapper;
 import core.data.mappers.LoginDataMapper;
 import core.data.registration.RegistrationIncomeExpensesData;
-import core.data.scoring.CreditDecision;
 import core.data.users.LoginData;
-import core.enums.CollateralType;
 import core.enums.CurrencyType;
 import core.enums.Workspace;
 import flows.common.AuthorizationFlow;
@@ -19,19 +18,20 @@ import flows.common.WorkspaceFlow;
 import flows.credit.*;
 import flows.credit.ReviewStageRetailFlow;
 import flows.credit.ReviewStageUnderwriterFlow;
+import flows.credit.participants.ParticipantsStageFlow;
 import flows.credit.registration.*;
 import flows.credit.registration.client.BaseClientFlow;
 import flows.credit.registration.client.EmployeeClientFlow;
 import flows.credit.registration.client.OtherIncomeClientFlow;
 import flows.credit.registration.client.SelfEmployedClientFlow;
+
 import org.testng.annotations.Test;
-import core.data.registration.EmploymentType;
 import flows.credit.collateral.CollateralStageFlow;
-import core.enums.CollateralType;
+
 import java.util.List;
 
 import static core.data.factory.CollateralTestDataFactory.*;
-import static core.enums.CollateralType.GOODS;
+
 
 
 public class FastTest extends BaseTest {
@@ -51,6 +51,8 @@ public class FastTest extends BaseTest {
                 LoginDataMapper.from(data.user("underwriter1"));
         LoginData ikok1 =
                 LoginDataMapper.from(data.user("ikok1"));
+        LoginData ikokgo =
+                LoginDataMapper.from(data.user("ikokgo"));
         LoginData cashier1 =
                 LoginDataMapper.from(data.user("cashier1"));
 
@@ -88,12 +90,15 @@ public class FastTest extends BaseTest {
         SigningStageFlow signingStageFlow = new SigningStageFlow(ui);
         ApplicationFinishFlow applicationFinishFlow = new ApplicationFinishFlow(ui);
         CollateralStageFlow collateralStageFlow = new CollateralStageFlow(ui);
+        ParticipantsStageFlow participantsStageFlow = new ParticipantsStageFlow(ui);
+
+
 
 
         // 🔹 ВАЖНО: выбор типа клиента ТОЛЬКО ЗДЕСЬ
-      // BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
-      //BaseClientFlow clientFlow = new EmployeeClientFlow(ui);     //Тип клиента работает в организации
-       BaseClientFlow clientFlow = new OtherIncomeClientFlow(ui);  //Тип клиента имеет другой источник дохода
+      //BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
+       BaseClientFlow clientFlow = new EmployeeClientFlow(ui);      //Тип клиента работает в организации
+      //BaseClientFlow clientFlow = new OtherIncomeClientFlow(ui);    //Тип клиента имеет другой источник дохода
 
 
         // ============================================================
@@ -104,7 +109,7 @@ public class FastTest extends BaseTest {
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
 
-        /*clientSearchFlow.searchClient(
+        clientSearchFlow.searchClient(
                 contact.getLastName(),
                 contact.getFirstName(),
                 contact.getMiddleName()
@@ -117,7 +122,7 @@ public class FastTest extends BaseTest {
         productFlow.selectProduct(
                 "Карзхои гуногунмаксад",
                 "Барои эхтиёчоти оилави",
-                "50000",
+                "70000",
                 "36",
                 "Сомони Чумхурии Точикистон"
         );
@@ -133,27 +138,34 @@ public class FastTest extends BaseTest {
                 incomeExpensesData,
                 clientFlow);
 
-        preliminaryCheckFlow.completePreliminaryCheckStage();*/
+        preliminaryCheckFlow.completePreliminaryCheckStage();
 
-         navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/53b2903d-a606-4365-bb57-d8ef90d5bdaa");
-        collateralStageFlow.completeCollateralStage(
-                List.of(
-                        realEstate(CurrencyType.TJS),
-                        vehicle(CurrencyType.TJS),
-                        equipment(CurrencyType.TJS),
-                        futureHarvest(CurrencyType.TJS),
-                        cotton(CurrencyType.TJS),
-                        acquiredProperty(CurrencyType.TJS),
-                        movableProperty(CurrencyType.TJS),
-                        gold(CurrencyType.TJS),
-                        goods(CurrencyType.TJS)
 
-                )
+
+        // ============================================================
+        //                      УЧАСТНИКИ
+        // ============================================================
+
+        /*List<ParticipantData> participants = List.of(
+                ParticipantTestDataFactory.pledger()
+        );
+        participantsStageFlow.completeParticipantsStage(participants);*/
+
+
+        List<CollateralData> collaterals = List.of(
+                cashDeposit(CurrencyType.TJS),
+                realEstate(CurrencyType.TJS),
+                vehicle(CurrencyType.TJS),
+                equipment(CurrencyType.TJS),
+                futureHarvest(CurrencyType.TJS),
+                cotton(CurrencyType.TJS),
+                acquiredProperty(CurrencyType.TJS),
+                movableProperty(CurrencyType.TJS),
+                gold(CurrencyType.TJS),
+                goods(CurrencyType.TJS)
         );
 
-        /*documentsStageFlow.uploadDocumentsLegacy();
+        documentsStageFlow.uploadDocumentsLegacy();
 
         reviewRetailFlow.completeReview();
 
@@ -180,7 +192,7 @@ public class FastTest extends BaseTest {
 
 
         clientNotificationFlow.completeClientNotification(
-                "Рустамова Саодатчон Валиевна"
+                "Назарова Азиза Акбаровна"
         );
 
         authFlow.logout();
@@ -189,8 +201,12 @@ public class FastTest extends BaseTest {
         // 7. LOAN ISSUANCE
         // ============================================================
 
-        authFlow.login(ikok1);
-        workspaceFlow.select(Workspace.IKOK);
+        authFlow.login(ikokgo);
+        workspaceFlow.select(Workspace.IKOK_GO);
+
+        navigationFlow.open(
+                Environment.BASE_URL +
+                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/26e3e52b-7686-4741-831f-cfe643d2dffa");
 
         loanIssuanceFlow.issueLoan();
 
@@ -202,20 +218,20 @@ public class FastTest extends BaseTest {
         authFlow.login(cashier1);
         workspaceFlow.select(Workspace.CASHIER);
 
-        signingStageFlow.completeSigningStage();
+        signingStageFlow.completeSigningStage(collaterals);
 
         authFlow.logout();
 
         // ============================================================
         // 🔵 14. ЗАВЕРШЕНИЕ ЗАЯВКИ
         // ============================================================
-        authFlow.login(ikok1);
-        workspaceFlow.select(Workspace.IKOK);
+        authFlow.login(ikokgo);
+        workspaceFlow.select(Workspace.IKOK_GO);
 
         applicationFinishFlow.completeApplicationFinish();
 
 
-        authFlow.logout();*/
+        authFlow.logout();
 
 
     }

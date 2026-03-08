@@ -42,15 +42,18 @@ public class VehicleCollateralFlow extends BaseCollateralFlow {
         //form.selectPledger("Рачабов Бахром Назаралиевич");
 
         grid.addCollateralValue();
+        grid.waitForPageLoaded();
 
         form.setName("Залог транспорта");
-        form.selectPledger("Кудусов Фатхулло Абдуфатоевич");
+        form.selectPledger("Чаборова Дилафруз Кобилчоновна");
 
         vehicle.fillTechnicalData();
         address.fillPropertyAddress();
         valuation.fillValuationVehicle("500000", "600000", "Сомони Чумхурии Точикистон");
 
         form.close();
+        form.setName("Залог транспорта");
+        form.save();
         form.close();
 
         ui.basePage

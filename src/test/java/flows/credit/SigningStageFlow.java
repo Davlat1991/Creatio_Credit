@@ -3,8 +3,13 @@ package flows.credit;
 
 
 import core.base.UiContext;
+import core.data.collateral.CollateralData;
 import flows.common.ApplicationSearchFlow;
+import flows.credit.signing.SigningContractFlow;
+import flows.credit.signing.SigningPrintFlow;
 import io.qameta.allure.Step;
+
+import java.util.List;
 
 /**
  * Stage Flow:
@@ -20,18 +25,28 @@ public class SigningStageFlow {
     private final UiContext ui;
     private final ApplicationSearchFlow applicationSearchFlow;
 
+    private final SigningContractFlow contractFlow;
+    private final SigningPrintFlow printFlow;
+
+
     public SigningStageFlow(UiContext ui) {
         this.ui = ui;
         this.applicationSearchFlow = new ApplicationSearchFlow(ui);
+
+        this.contractFlow = new SigningContractFlow(ui);
+        this.printFlow = new SigningPrintFlow(ui);
     }
 
     @Step("Этап подписания и кассовых операций по договору")
-    public void completeSigningStage() {
+    public void completeSigningStage(List<CollateralData> collaterals) {
 
         ui.basePage.closeConsultationPanelIfOpened();
 
         // 1. Открыть заявку/договор по сохранённому номеру
         applicationSearchFlow.openBySavedСontracts();
+
+        // создание договоров обеспечения
+        createCollateralContracts(collaterals);
 
         // 2. Перейти на вкладку "Операции по договору"
         ui.buttonsComponent
@@ -142,6 +157,22 @@ public class SigningStageFlow {
 
         ui.basePage
                 .clickButtonByNameCheck("Закрыть");
+    }
+
+    @Step("Создание договоров обеспечения")
+    private void createCollateralContracts(List<CollateralData> collaterals) {
+
+        ui.buttonsComponent
+                .clickButtonByContainNameCheck("Параметры по договору");
+
+        for (CollateralData collateral : collaterals) {
+
+            contractFlow.createContract(collateral);
+
+            if (collateral.getType().hasPrintForm()) {
+                printFlow.printContract(collateral);
+            }
+        }
     }
 }
 

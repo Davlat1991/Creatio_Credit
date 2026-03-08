@@ -513,6 +513,17 @@ public class LookupComponent extends Components {
         return this;
     }
 
+    public LookupComponent setModalSearchField(String marker, String value) {
+
+        SelenideElement input = $x(
+                "//div[@data-item-marker='" + marker + "']//input"
+        ).shouldBe(Condition.visible);
+
+        input.clear();
+        input.setValue(value);
+
+        return this;
+    }
 
     //Работает 06.12.2025
     @Step("Ввести и выбрать значение '{value}' в поле по DIM '{name}'")
@@ -762,6 +773,22 @@ public class LookupComponent extends Components {
         Selenide.sleep(300);
 
         return this;
+    }
+
+
+
+    public void selectResponsiblePerson() {
+
+        SelenideElement grid =
+                $("[data-item-marker='LookupGrid']").shouldBe(visible);
+
+        // выбрать первую строку (должностное лицо)
+        SelenideElement personRow = grid
+                .$$x(".//div[contains(@class,'grid-row')]")
+                .first()
+                .shouldBe(visible);
+
+        personRow.click();
     }
 
 

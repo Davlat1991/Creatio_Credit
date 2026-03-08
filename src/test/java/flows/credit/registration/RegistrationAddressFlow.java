@@ -158,10 +158,10 @@ public class RegistrationAddressFlow {
         ui.addressComponent
                 .selectLookup(AddressField.COUNTRY, "Точикистон")    //Страна
                 .selectLookup(AddressField.REGION, "Вилояти Сугд")   //Регион
-                .selectLookup(AddressField.DISTRICT, "Хучанд")       //Район
-                .selectLookup(AddressField.CITY, "ш. Хучанд")        //Населенный пункт
-                .selectLookup(AddressField.STREET_TYPE, "Проспект")  //Тип улицы
-                .setText(AddressField.STREET, "Исмоили Сомони")      //Улица
+                .selectLookup(AddressField.DISTRICT, "нохияи Б.Гафуров")       //Район
+                .selectLookup(AddressField.CITY, "Б.Гафуров")        //Населенный пункт
+                .selectLookup(AddressField.STREET_TYPE, "Улица")  //Тип улицы
+                .setText(AddressField.STREET, "МТМУ №18")      //Улица
                 .setText(AddressField.HOUSE, "19")                   //Дом
                 .setText(AddressField.BUILDING, "2/7")               //Корпус
                 .setText(AddressField.APARTMENT, "48")               //Квартира/Офис

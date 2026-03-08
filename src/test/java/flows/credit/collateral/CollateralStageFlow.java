@@ -74,11 +74,11 @@ public class CollateralStageFlow {
                 "//*[@data-item-marker='MiniPage']"
         );
 
-        /*ui.contractPage
+        ui.contractPage
                 .setfieldScheduleDetailByDIM("ProcessResult", "Выполнена");
         ui.menuComponent
                 .clickButtonByLiName("Выполнена");
         ui.basePage
-               .clickButtonByDataItemMaker("SaveEditButton");*/
+               .clickButtonByDataItemMaker("SaveEditButton");
     }
 }

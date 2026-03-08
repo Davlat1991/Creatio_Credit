@@ -20,9 +20,12 @@
       "password": "M_KURBONOVA123!\"№ффф",
       "role": "CASHIER"
     },
+
+
+
     "retailManager1": {
       "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796S_RUSTMOVA_796S_RUSTMOVA_796S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796",
       "role": "RETAIL_MANAGER"
     },
     "underwriter1": {
@@ -32,9 +35,16 @@
     },
     "ikok1": {
       "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796S_RUSTMOVA_796S_RUSTMOVA_796S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796",
       "role": "IKOK"
     },
+
+    "ikokgo": {
+      "login": "A_NAZAROVA",
+      "password": "A_NAZAROVAA_NAZAROVAA_NAZAROVA",
+      "role": "IKOKGO"
+    },
+
     "cashier1": {
       "login": "M_KURBONOVA",
       "password": "M_KURBONOVAM_KURBONOVAM_KURBONOVAM_KURBONOVA",
@@ -42,11 +52,15 @@
     }
   },
 
+
+
+
+
   "contacts": {
     "default": {
-      "firstname": "Ситора",
-      "lastname": "Ёрбоева",
-      "middlename": "Насриддиновна",
+      "firstname": "Дилафруз",
+      "lastname": "Чаборова",
+      "middlename": "Кобилчоновна",
       "birthday": "1987-09-12",
       "documentType": "Паспорт",
       "documentNumber": "12345678"

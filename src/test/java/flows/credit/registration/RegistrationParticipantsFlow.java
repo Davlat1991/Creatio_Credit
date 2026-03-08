@@ -52,11 +52,13 @@ public class RegistrationParticipantsFlow {
         ui.detailPage.clickAddRecordInDetail("Карьера");
 
         ui.careerComponent
-                .setLookupByMarker(CareerField.EMPLOYMENT_TYPE, "Полная занятость")
-                .setTextByMarker(CareerField.ORGANIZATION_NAME, "Агро-холдинг")
-                .setLookupByMarker(CareerField.POSITION, "Бухгалтер")
-                .setTextByMarker(CareerField.START_DATE, "01.01.2020")
-                .setLookupByMarker(CareerField.EMPLOYER, "ЧДММ \"Раисагрохолдинг\"");
+                .setLookupByMarker(CareerField.EMPLOYMENT_TYPE, "Другой учитель")
+                .setTextByMarker(CareerField.ORGANIZATION_NAME, "МТМУ №18 н.Б.Гафуров")
+                .setLookupByMarker(CareerField.POSITION, "Специалист")
+                .setTextByMarker(CareerField.START_DATE, "15.01.2024")
+                .setLookupByMarker(CareerField.EMPLOYER, "ЧДММ \"Раисагрохолдинг\"")
+                .setTextByMarker(CareerField.POSITION_FULL_NAME, "Омузгори забони англиси")
+                .setTextByMarker(CareerField.DUE_DATE, "15.01.2034");
 
         ui.contractPage
                 .clickButtonByNameCheck("Сохранить");

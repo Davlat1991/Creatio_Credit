@@ -28,15 +28,15 @@ public class RegistrationStageFlow {
 
 
 
-    public RegistrationStageFlow(UiContext ctx) {
-        this.generalInfoFlow = new RegistrationGeneralInfoFlow(ctx);
-        this.participantsFlow = new RegistrationParticipantsFlow(ctx);
-        this.documentsFlow = new RegistrationDocumentsFlow(ctx);
-        this.addressFlow = new RegistrationAddressFlow(ctx);
-        this.incomeExpensesFlow = new RegistrationIncomeExpensesFlow(ctx);
-        this.additionalInfoDataFlow = new RegistrationAdditionalInfoFlow(ctx);
-        this.scoringConfirmationFlow = new RegistrationScoringConfirmationFlow(ctx);
-        this.printFlow = new RegistrationPrintFlow(ctx);
+    public RegistrationStageFlow(UiContext ui) {
+        this.generalInfoFlow = new RegistrationGeneralInfoFlow(ui);
+        this.participantsFlow = new RegistrationParticipantsFlow(ui);
+        this.documentsFlow = new RegistrationDocumentsFlow(ui);
+        this.addressFlow = new RegistrationAddressFlow(ui);
+        this.incomeExpensesFlow = new RegistrationIncomeExpensesFlow(ui);
+        this.additionalInfoDataFlow = new RegistrationAdditionalInfoFlow(ui);
+        this.scoringConfirmationFlow = new RegistrationScoringConfirmationFlow(ui);
+        this.printFlow = new RegistrationPrintFlow(ui);
 
         
         
@@ -70,7 +70,7 @@ public class RegistrationStageFlow {
         // 6. Дополнительная информация
 
        additionalInfoDataFlow.fillBaseScoringData(
-                BaseScoringScenarios.STANDARD_EMPLOYED()
+                BaseScoringScenarios.WITH_DEPENDENTS()
         );
         clientFlow.fill();
 

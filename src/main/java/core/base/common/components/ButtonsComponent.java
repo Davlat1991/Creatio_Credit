@@ -39,9 +39,9 @@ public class ButtonsComponent extends Components {
 
 
     @Step("Клик по кнопке data-item-marker='{marker}'")
-    public ButtonsComponent clickByDataItemMarker(String marker) {
-        SelenideElement button = $x("//span[@data-item-marker='" + marker + "']");
-        retryClick(button, "Кнопка marker='" + marker + "'");
+    public ButtonsComponent clickByDataItemMarker(String marker1) {
+        SelenideElement button = $x("//span[@data-item-marker='" + marker1 + "']");
+        retryClick(button, "Кнопка marker='" + marker1 + "'");
         return this;
     }
 
@@ -64,8 +64,8 @@ public class ButtonsComponent extends Components {
 
         //Миграция методов
 
-    public ButtonsComponent clickButtonByName(String name) {
-        $x("//span[normalize-space()='" + name + "']")
+    public ButtonsComponent clickButtonByName(String name1) {
+        $x("//span[normalize-space()='" + name1 + "']")
                 .shouldBe(visible, enabled)
                 .scrollIntoView(true)
                 .click();

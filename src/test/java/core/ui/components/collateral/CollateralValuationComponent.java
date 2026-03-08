@@ -105,23 +105,18 @@ public class CollateralValuationComponent {
     }
 
     @Step("Оценка залога")
-    public void fillValuationCashDeposit(String assessed, String market, String currency) {
+    public void fillValuationCashDeposit( String sum, String currency) {
 
-        ui.buttonsComponent
-                .clickButtonByContainName("Оценка");
-
-        ui.basePage
-                .clickButtonById("PledgeRatingDetailAddRecordButtonButton-imageEl");
-
-        ui.domActions
-                .clickDivbyId("PledgeRatingDetailRatingSumFloatEdit-wrap", assessed)
-                .clickDivbyId("PledgeRatingDetailMarketSumFloatEdit-wrap", market);
+        ui.lookupComponent
+                .setFieldByValueCheck("Сумма", sum);
         ui.lookupComponent
                 .setfieldScheduleDetailByDIM("EshCurrency", currency);
         ui.menuComponent
                 .clickButtonByLiName(currency);
         ui.basePage
-                .clickButtonByDataItemMaker("save");
+                .clickButtonByName("Поиск");
+        ui.basePage
+                .clickButtonByName("Выбрать");
     }
 
     @Step("Оценка залога")

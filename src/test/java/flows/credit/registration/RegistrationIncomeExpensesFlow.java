@@ -120,8 +120,8 @@ public class RegistrationIncomeExpensesFlow {
 
         ui.activityComponent
                 .select(ActivityField.SECTOR, "Работник организации")
-                .select(ActivityField.SEGMENT, "Экономист")
-                .select(ActivityField.SUB_SEGMENT, "Бухгалтер")
+                .select(ActivityField.SEGMENT, "Работник в сфере образования")
+                .select(ActivityField.SUB_SEGMENT, "Учитель ср. школы")
                 .select(ActivityField.SALES_TYPE, "Не торгует");
                 //.select(ActivityField.MARKET, "Авангард");
         ui.checkboxComponent

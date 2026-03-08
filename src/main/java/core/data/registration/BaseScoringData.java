@@ -4,6 +4,8 @@ public class BaseScoringData {
 
     private final String maritalStatus;
     private final String dependentsCount;
+    private final String getChildrensCount;
+    private final String getFamilyCount;
     private final String totalExperience;
     private final String totalExperienceYears;
     private final String totalExperienceMonths;
@@ -13,11 +15,17 @@ public class BaseScoringData {
     private BaseScoringData(Builder builder) {
         this.maritalStatus = builder.maritalStatus;
         this.dependentsCount = builder.dependentsCount;
+        this.getChildrensCount = builder.getChildrensCount;
+        this.getFamilyCount = builder.getFamilyCount;
         this.totalExperience = builder.totalExperience;
         this.totalExperienceYears = builder.totalExperienceYears;
         this.totalExperienceMonths = builder.totalExperienceMonths;
         this.lastJobExperienceYears = builder.lastJobExperienceYears;
         this.lastJobExperienceMonths = builder.lastJobExperienceMonths;
+
+
+
+
     }
 
     public String getMaritalStatus() {
@@ -26,6 +34,14 @@ public class BaseScoringData {
 
     public String getDependentsCount() {
         return dependentsCount;
+    }
+
+    public String getChildrensCount() {
+        return getChildrensCount;
+    }
+
+    public String getFamilyCount() {
+        return getFamilyCount;
     }
 
     public String getTotalExperience() {
@@ -53,6 +69,8 @@ public class BaseScoringData {
     public static class Builder {
         private String maritalStatus;
         private String dependentsCount;
+        private String getChildrensCount;
+        private String getFamilyCount;
         private String totalExperience;
         private String totalExperienceYears;
         private String totalExperienceMonths;
@@ -66,6 +84,16 @@ public class BaseScoringData {
 
         public Builder dependentsCount(String value) {
             this.dependentsCount = value;
+            return this;
+        }
+
+        public Builder getChildrensCount(String value) {
+            this.getChildrensCount = value;
+            return this;
+        }
+
+        public Builder getFamilyCount(String value) {
+            this.getFamilyCount = value;
             return this;
         }
 

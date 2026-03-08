@@ -1,7 +1,10 @@
 package core.ui.components.collateral;
 
+import com.codeborne.selenide.Condition;
 import core.base.UiContext;
 import io.qameta.allure.Step;
+
+import static com.codeborne.selenide.Selenide.$;
 
 public class CollateralGridComponent {
 
@@ -29,4 +32,13 @@ public class CollateralGridComponent {
         ui.basePage
                 .clickButtonById("EshCollateralValuesDetailAddRecordButtonButton-imageEl");
     }
+
+    //Новый метод 27.02.2026 Статус:
+    @Step("Проверка загрузки страницы")
+    public void waitForPageLoaded() {
+
+        $("[data-item-marker='EntityLoaded']")
+                .shouldBe(Condition.visible);
+    }
+
 }

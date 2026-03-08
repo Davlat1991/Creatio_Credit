@@ -367,11 +367,6 @@ public class BasePage {
 
 
 
-
-
-
-
-
     //Добавлен вручную 18.12.2025
     public BasePage clickButtonByDataItemMaker(String dataItemMarker) {
         $x("//span[@data-item-marker='" + dataItemMarker + "']").click();
@@ -425,6 +420,8 @@ public class BasePage {
 
         throw new RuntimeException("Страница не загрузилась вовремя");
     }
+
+
 
 
 

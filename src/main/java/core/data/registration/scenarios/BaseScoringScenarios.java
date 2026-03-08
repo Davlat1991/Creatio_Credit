@@ -20,6 +20,8 @@ public class BaseScoringScenarios {
         return new BaseScoringData.Builder()
                 .maritalStatus("Оиладор")
                 .dependentsCount("2")
+                .getChildrensCount("1")
+                .getFamilyCount("3")
                 .totalExperience("60")
                 .totalExperienceYears("5")
                 .totalExperienceMonths("60")

@@ -20,7 +20,7 @@ public class RegistrationAdditionalInfoFlow {
     }
 
 
-    /*@Step("Заполнение базовых скоринговых данных заемщика")
+   /*@Step("Заполнение базовых скоринговых данных заемщика")
     public void fillBaseScoringData() {
 
 
@@ -28,11 +28,13 @@ public class RegistrationAdditionalInfoFlow {
         ui.lookupComponent
                 .setHandBookFieldByValueCheck(
                         "Семейное положение",
-                        "Мучаррад (мард)"
+                        "Оиладор (зан)"
                 );
 
         ui.lookupComponent
-                .setFieldByValueCheck("Количество иждивенцев (строка)","0")
+                .setFieldByValueCheck("Количество иждивенцев (строка)","3")
+                .setFieldByValueCheck("Количество детей","3")
+                .setFieldByValueCheck("Количество членов семьи","5")
                 .setFieldByValueCheck("Общий стаж","36")
                 .setFieldByValueCheck("Общий стаж, лет","3")
                 .setFieldByValueCheck("Общий стаж, мес","36")
@@ -42,7 +44,7 @@ public class RegistrationAdditionalInfoFlow {
 
     }*/
 
-    @Step("Заполнение базовых скоринговых данных заемщика")
+     @Step("Заполнение базовых скоринговых данных заемщика")
     public void fillBaseScoringData(BaseScoringData data) {
 
         ui.lookupComponent
@@ -53,13 +55,14 @@ public class RegistrationAdditionalInfoFlow {
 
         ui.lookupComponent
                 .setFieldByValueCheck("Количество иждивенцев (строка)", data.getDependentsCount())
+                .setFieldByValueCheck("Количество детей", data.getChildrensCount())
+                .setFieldByValueCheck("Количество членов семьи", data.getFamilyCount())
                 .setFieldByValueCheck("Общий стаж", data.getTotalExperience())
                 .setFieldByValueCheck("Общий стаж, лет", data.getTotalExperienceYears())
                 .setFieldByValueCheck("Общий стаж, мес", data.getTotalExperienceMonths())
                 .setFieldByValueCheck("Стаж на последнем месте, лет", data.getLastJobExperienceYears())
                 .setFieldByValueCheck("Стаж на последнем месте, мес", data.getLastJobExperienceMonths());
     }
-
 
     @Step("Подготовка поля 'Причина отсутствия работы'")
     public void prepareReasonOfNoWork() {
@@ -108,14 +111,14 @@ public class RegistrationAdditionalInfoFlow {
                         employmentType.getUiName()
                 )
                 .clearFieldIfPresent(EducationCareerField.REASON_FOR_NOT_WORKING)
-                .setLookup(EducationCareerField.POSITION, "Бухгалтер")
-                .setText(EducationCareerField.ORGANIZATION_NAME, "Агро-Холдинг")
+                .setLookup(EducationCareerField.POSITION, "Специалист")
+                .setText(EducationCareerField.ORGANIZATION_NAME, "МТМУ №18 н.Б.Гафуров")
                 .setLookup(EducationCareerField.ROLE, "Исполнитель")
-                .setLookup(EducationCareerField.SOCIAL_STATUS, "Рабочий в частной фирме/организации")
-                .setLookup(EducationCareerField.EDUCATION, "2 и более высших")
-                .setText(EducationCareerField.POSITION_FULL_NAME, "Бухгалтер")
+                .setLookup(EducationCareerField.SOCIAL_STATUS, "Гослужитель с доп.доходом")
+                .setLookup(EducationCareerField.EDUCATION, "Высшее")
+                .setText(EducationCareerField.POSITION_FULL_NAME, "Омузгори забони англиси")
                 //.setLookup(EducationCareerField.EMPLOYER, "ЧДММ \"АГРОПРОМ ХУЧАНД\"")
-                .setLookup(EducationCareerField.LEGAL_FORM, "Дехканские (фермерские) хозяйства")
+                //.setLookup(EducationCareerField.LEGAL_FORM, "Дехканские (фермерские) хозяйства")
                 .setLookup(EducationCareerField.BUSINESS_REPUTATION, "Рабочий");
 
     }

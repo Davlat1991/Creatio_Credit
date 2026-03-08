@@ -48,6 +48,19 @@ public class GridComponent extends Components {
                 .shouldBe(visible);
     }
 
+    public SelenideElement findRowByText(String text) {
+
+        SelenideElement grid = getActiveGrid();
+
+        return findRowByText(grid, text);
+    }
+
+    private SelenideElement getActiveGrid() {
+
+        return $("[data-item-marker='Grid']")
+                .shouldBe(visible);
+    }
+
     /**
      * Находит первую строку грида
      */

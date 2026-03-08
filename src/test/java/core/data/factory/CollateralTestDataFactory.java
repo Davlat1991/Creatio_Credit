@@ -108,6 +108,15 @@ public class CollateralTestDataFactory {
                 .build();
     }
 
+    public static CollateralData cashDeposit(CurrencyType currency) {
+        return CollateralDataBuilder
+                .ofType(CollateralType.CASH_DEPOSIT)
+                .withCurrency(currency.getUiValue())
+
+                .build();
+    }
+
+
 
     /* // Пример для добавления нового метода запуска тестов
 

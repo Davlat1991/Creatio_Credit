@@ -50,4 +50,5 @@ public class CollateralFormComponent {
     public void save() {
         ui.basePage.clickButtonByName("Сохранить");
     }
+
 }

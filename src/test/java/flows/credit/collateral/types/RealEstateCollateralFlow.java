@@ -42,8 +42,9 @@ public class RealEstateCollateralFlow extends BaseCollateralFlow {
         form.selectCondition("Новое");
         form.selectOwnership("Собственный");
         grid.addCollateralValue();
+        grid.waitForPageLoaded();
         form.setName("Залог недвижимого имущества");
-        form.selectPledger("Кудусов Фатхулло Абдуфатоевич");
+        form.selectPledger("Чаборова Дилафруз Кобилчоновна");
 
 
         characteristics.fillCharacteristics(
