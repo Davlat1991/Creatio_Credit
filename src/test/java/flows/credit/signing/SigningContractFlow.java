@@ -16,7 +16,7 @@ public class SigningContractFlow {
     public void createContract(CollateralData collateral) {
 
         ui.buttonsComponent
-                .clickButtonByContainName("Параметры по договору");
+                .clickButtonByContainName("Параметры договора");
 
         ui.gridComponent
                 .findRowByText(collateral.getType().getUiName())

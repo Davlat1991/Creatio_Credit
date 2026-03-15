@@ -54,7 +54,7 @@ public class RegistrationParticipantsFlow {
         ui.careerComponent
                 .setLookupByMarker(CareerField.EMPLOYMENT_TYPE, "Другой учитель")
                 .setTextByMarker(CareerField.ORGANIZATION_NAME, "МТМУ №18 н.Б.Гафуров")
-                .setLookupByMarker(CareerField.POSITION, "Специалист")
+                .setLookupByMarker(CareerField.POSITION, "Ведущий специалист")
                 .setTextByMarker(CareerField.START_DATE, "15.01.2024")
                 .setLookupByMarker(CareerField.EMPLOYER, "ЧДММ \"Раисагрохолдинг\"")
                 .setTextByMarker(CareerField.POSITION_FULL_NAME, "Омузгори забони англиси")

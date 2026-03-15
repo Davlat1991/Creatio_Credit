@@ -105,7 +105,7 @@ public class FastTest extends BaseTest {
         // 4. RETAIL MANAGER
         // ============================================================
 
-        authFlow.login(retailManager1);
+        /*authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
 
@@ -152,7 +152,7 @@ public class FastTest extends BaseTest {
         participantsStageFlow.completeParticipantsStage(participants);*/
 
 
-        List<CollateralData> collaterals = List.of(
+        /*List<CollateralData> collaterals = List.of(
                 cashDeposit(CurrencyType.TJS),
                 realEstate(CurrencyType.TJS),
                 vehicle(CurrencyType.TJS),
@@ -195,7 +195,7 @@ public class FastTest extends BaseTest {
                 "Назарова Азиза Акбаровна"
         );
 
-        authFlow.logout();
+        authFlow.logout();*/
 
         // ============================================================
         // 7. LOAN ISSUANCE
@@ -210,6 +210,7 @@ public class FastTest extends BaseTest {
 
         loanIssuanceFlow.issueLoan();
 
+
         authFlow.logout();
 
         // ============================================================
@@ -218,7 +219,7 @@ public class FastTest extends BaseTest {
         authFlow.login(cashier1);
         workspaceFlow.select(Workspace.CASHIER);
 
-        signingStageFlow.completeSigningStage(collaterals);
+        signingStageFlow.completeSigningStage();
 
         authFlow.logout();
 

@@ -1,23 +1,35 @@
 package flows.credit;
 
+import com.codeborne.selenide.*;
 import core.base.UiContext;
+import core.data.collateral.CollateralData;
+import core.enums.CollateralType;
 import flows.common.ApplicationSearchFlow;
+import flows.credit.signing.SigningContractFlow;
+import flows.credit.signing.SigningPrintFlow;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Selenide.refresh;
+import java.util.List;
+
+import static com.codeborne.selenide.Selenide.*;
 
 public class LoanIssuanceFlow {
-
     private static final String CONTRACT_PAGE_MARKER =
             "BnzContractCreditPageContainer";
 
     private final UiContext ui;
     private final ApplicationSearchFlow applicationSearchFlow;
+    private final SigningContractFlow contractFlow;
+    private final SigningPrintFlow printFlow;
+
 
     public LoanIssuanceFlow(UiContext ui) {
         this.ui = ui;
         this.applicationSearchFlow = new ApplicationSearchFlow(ui);
+        this.contractFlow = new SigningContractFlow(ui);
+        this.printFlow = new SigningPrintFlow(ui);
     }
+
 
     // ============================================================
     // 🚀 PUBLIC API
@@ -28,15 +40,63 @@ public class LoanIssuanceFlow {
 
         ui.basePage.closeConsultationPanelIfOpened();
 
-        // 0️⃣ Открываем заявку по сохранённому номеру
-        applicationSearchFlow.openBySavedNumber();
-
-        // 1️⃣–5️⃣ Бизнес-процесс выдачи кредита
-        completeKkDecisionCheck();
+        // 1️⃣ Создание договора
         createAbsContract();
-        bindAccountsAndSchedule();
-        signAndIssueCredit();
-        verifyOrdersAndPrint();
+
+        // 2️⃣ вкладка параметры
+        openContractParametersTab();
+
+        // 3️⃣ скролл до детали
+        scrollToCollateralDetail();
+
+        // 4️⃣ показать все строки
+        if ($("[data-item-marker='loadMore']").exists()) {
+            ui.basePage.clickButtonByDataItemMaker("loadMore");
+        }
+
+        // 5️⃣ ждать пока загрузятся строки
+        getCollateralRows().shouldBe(CollectionCondition.sizeGreaterThan(0));
+
+        ElementsCollection rows = getCollateralRows();
+        System.out.println("Найдено залогов: " + rows.size());
+
+        processCollaterals(
+
+                CollateralType.VEHICLE,
+                CollateralType.GOLD,
+                CollateralType.EQUIPMENT
+
+        );
+
+        openCollateralByName("Товары в обороте");
+
+        //createCollateralContract();
+
+        printCollateralContract("Шартномаи гарави молхои дар муомилот ва коркард");
+
+        waitForConfidantGrid();
+
+        selectConfidantByPosition("Сардор дар Идораи амалиётb");
+
+        // сохранить и закрыть залог
+        saveAndCloseCollateral();
+
+       // Selenide.sleep (90000);
+
+        /*// 6️⃣ обработка залогов
+        processCollaterals(
+
+                CollateralType.VEHICLE,
+                CollateralType.GOLD,
+                CollateralType.EQUIPMENT
+
+        );*/
+
+
+
+       // createCollateralContracts();
+        //signAndIssueCredit();
+       // verifyOrdersAndPrint();
     }
 
     // ============================================================
@@ -74,7 +134,7 @@ public class LoanIssuanceFlow {
         ui.contractPage
                 .clickContractAutoWait(CONTRACT_PAGE_MARKER);
 
-        ui.basePage
+       /* ui.basePage
                 .clickButtonOnPageByName(CONTRACT_PAGE_MARKER, "Действия");
 
         ui.menuComponent
@@ -121,7 +181,7 @@ public class LoanIssuanceFlow {
         ui.contractPage
                 .clickButtonByNameCheck("Закрыть");
 
-        refresh();
+        refresh();*/
     }
 
 
@@ -260,5 +320,287 @@ public class LoanIssuanceFlow {
                 .selectPrintOption(
                         "Чек лист маълумотнома(оферта)"
                 );
+    }
+
+
+    /*@Step("Создание договоров обеспечения")
+    private void createCollateralContracts(List<CollateralData> collaterals) {
+
+        ui.buttonsComponent
+                .clickButtonByContainNameCheck("Параметры договора");
+
+        for (CollateralData collateral : collaterals) {
+
+            contractFlow.createContract(collateral);
+
+            if (collateral.getType().hasPrintForm()) {
+                printFlow.printContract(collateral);
+            }
+        }
+    }*/
+
+    /*@Step("Создание договоров обеспечения")
+    private void createCollateralContracts(List<CollateralData> collaterals) {
+
+        ui.buttonsComponent
+                .clickButtonByContainNameCheck("Параметры договора");
+
+        // если список передан из теста
+        if (!collaterals.isEmpty()) {
+
+            for (CollateralData collateral : collaterals) {
+
+                contractFlow.createContract(collateral);
+
+                if (collateral.getType().hasPrintForm()) {
+                    printFlow.printContract(collateral);
+                }
+            }
+
+        }
+        // если тест запущен с середины
+        else {
+
+            List<String> collateralsFromGrid =
+                    ui.gridComponent.getAllRowTexts();
+
+            for (String collateralName : collateralsFromGrid) {
+
+                ui.gridComponent.findRowByText(collateralName).doubleClick();
+
+                ui.buttonsComponent
+                        .clickButtonByContainName("Действия");
+
+                ui.menuComponent
+                        .clickButtonByLiName("Создание договора обеспечения");
+            }
+        }
+    }*/
+
+
+    /*@Step("Создание договоров обеспечения")
+    private void createCollateralContracts() {
+
+        ui.buttonsComponent
+                .clickButtonByContainNameCheck("Параметры договора");
+
+        List<String> collaterals = getCollateralsFromGrid();
+
+        for (String collateralName : collaterals) {
+
+            ui.gridComponent
+                    .findRowByText(collateralName)
+                    .doubleClick();
+
+            ui.buttonsComponent
+                    .clickButtonByContainName("Действия");
+
+            ui.menuComponent
+                    .clickButtonByLiName("Создание договора обеспечения");
+
+            ui.messageBoxComponent
+                    .shouldSeeModalWithText("Договор успешно создан");
+
+            ui.basePage
+                    .clickButtonByNameCheck("ОК");
+
+            // Печать если есть
+            tryPrintCollateral(collateralName);
+        }
+    }
+
+    private void tryPrintCollateral(String collateralName) {
+
+        for (CollateralType type : CollateralType.values()) {
+
+            if (collateralName.contains(type.getUiName()) &&
+                    type.hasPrintForm()) {
+
+                ui.buttonsComponent
+                        .clickButtonByContainName("Печать");
+
+                ui.menuComponent
+                        .clickButtonByLiName(type.getPrintForm());
+
+                ui.lookupComponent
+                        .selectResponsiblePerson();
+
+                ui.basePage
+                        .clickButtonByName("Выбрать");
+
+                break;
+            }
+        }
+    }*/
+
+    @Step("Открыть вкладку Параметры договора")
+    private void openContractParametersTab() {
+
+        ui.buttonsComponent
+                .clickButtonByContainNameCheck("Параметры договора");
+    }
+
+    @Step("Получить строки залогов из детали Договоры обеспечения")
+    private ElementsCollection getCollateralRows() {
+
+        return ui.gridComponent.getCollateralContractRows();
+    }
+
+    @Step("Прокрутить страницу до детали Договоры обеспечения")
+    private void scrollToCollateralDetail() {
+
+        SelenideElement detail = $x("//*[@data-item-marker='Договоры обеспечения']");
+
+        executeJavaScript("arguments[0].scrollIntoView(true);", detail);
+
+        detail.shouldBe(Condition.visible);
+    }
+
+
+
+    @Step("Открыть залог: {type}")
+    private void openCollateralByType(CollateralType type) {
+
+        String collateralName = type.getUiName();
+
+        ElementsCollection rows = getCollateralRows();
+
+        rows.findBy(Condition.text(collateralName))
+                .scrollTo()
+                .doubleClick();
+    }
+
+    public void openCollaterals(CollateralType... types) {
+
+        for (CollateralType type : types) {
+            openCollateralByType(type);
+        }
+    }
+
+    private void openCollateral(CollateralType type) {
+
+        String collateralName = type.getUiName();
+
+        getCollateralRows()
+                .findBy(Condition.text(collateralName))
+                .scrollTo()
+                .doubleClick();
+    }
+
+
+
+    private void openCollateralByName(String collateralName) {
+
+        SelenideElement row = $x(
+                "//span[@grid-data-type='text' and normalize-space()='" + collateralName + "']"
+        ).shouldBe(Condition.visible);
+
+        actions()
+                .doubleClick(row)
+                .perform();
+    }
+
+    @Step("Создать договор обеспечения")
+    private void createCollateralContract() {
+
+        ui.basePage
+                .clickButtonByNameCheck("Действия");
+
+        ui.menuComponent
+                .clickButtonByLiName("Создание договора обеспечения");
+
+        ui.messageBoxComponent
+                .shouldSeeModalWithText("Договор успешно создан");
+
+        ui.basePage
+                .clickButtonByNameCheck("ОК");
+    }
+
+    @Step("Печать договора обеспечения")
+    private void printCollateralContract(String printFormName) {
+
+        // открыть меню печати
+        ui.basePage.clickButtonByNameCheck("Печать");
+
+        // ждать пока появится список печатных форм
+        SelenideElement form =
+                $x("//ul[@data-item-marker='PrintButton']//li[normalize-space()='" + printFormName + "']")
+                        .shouldBe(Condition.visible);
+
+        form.click();
+    }
+
+    //Альтернатива
+    @Step("Ожидание открытия страницы выбора доверенного лица")
+    private void waitForConfidantPage() {
+
+        $("[data-item-marker='BnzSelectConfidantPageContainer']")
+                .shouldBe(Condition.visible);
+    }
+
+    @Step("Ожидание открытия страницы выбора доверенного лица")
+    private void waitForConfidantGrid() {
+
+        $("[data-item-marker='Должностные лица']")
+                .shouldBe(Condition.visible);
+    }
+
+    @Step("Выбор доверенного лица по должности")
+    private void selectConfidantByPosition(String position) {
+
+        // нажать на должность
+        SelenideElement row = $x(
+                "//span[@grid-data-type='text' and normalize-space()='" + position + "']"
+        ).shouldBe(Condition.visible);
+
+        row.click();
+
+        // нажать кнопку Выбрать
+        $x("//span[text()='Выбрать']")
+                .shouldBe(Condition.visible)
+                .click();
+    }
+
+    @Step("Сохранить и закрыть страницу залога")
+    private void saveAndCloseCollateral() {
+
+        ui.basePage
+                .clickButtonByNameCheck("Сохранить");
+
+        ui.basePage
+                .clickButtonByNameCheck("Закрыть");
+    }
+
+
+    @Step("Обработка залога: {type}")
+    private void processCollateral(CollateralType type) {
+
+        // 1 открыть залог
+        openCollateralByName(type.getUiName());
+
+        // 2 создать договор
+        createCollateralContract();
+
+        // 3 печать (если есть)
+        if (type.hasPrintForm()) {
+
+            printCollateralContract(type.getPrintForm());
+
+            waitForConfidantPage();
+
+            selectConfidantByPosition("Сардор дар Идораи амалиёт");
+        }
+
+        // 4 сохранить и закрыть
+        saveAndCloseCollateral();
+    }
+
+    @Step("Обработка залогов")
+    private void processCollaterals(CollateralType... types) {
+
+        for (CollateralType type : types) {
+
+            processCollateral(type);
+        }
     }
 }

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -364,8 +365,28 @@ public class GridComponent extends Components {
         return this;
     }
 
+    public List<String> getAllRowTexts() {
+
+        return $$("[class*='grid-row']")
+                .filter(Condition.visible)
+                .texts();
+    }
+
+    public ElementsCollection getCollateralRows() {
+
+        return $$x("//div[contains(@class,'grid-row')]")
+                .filter(Condition.visible);
+    }
 
 
+
+    public ElementsCollection getCollateralContractRows() {
+
+        return $$x(
+                "//*[@id='grid-BnzPledgeAgreementDetailDataGridGrid-wrap']" +
+                        "//div[contains(@class,'grid-row') and contains(@class,'grid-pad')]"
+        );
+    }
 
 
 }

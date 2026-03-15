@@ -111,7 +111,7 @@ public class RegistrationAdditionalInfoFlow {
                         employmentType.getUiName()
                 )
                 .clearFieldIfPresent(EducationCareerField.REASON_FOR_NOT_WORKING)
-                .setLookup(EducationCareerField.POSITION, "Специалист")
+                .setLookup(EducationCareerField.POSITION, "Ведущий специалист")
                 .setText(EducationCareerField.ORGANIZATION_NAME, "МТМУ №18 н.Б.Гафуров")
                 .setLookup(EducationCareerField.ROLE, "Исполнитель")
                 .setLookup(EducationCareerField.SOCIAL_STATUS, "Гослужитель с доп.доходом")
@@ -119,7 +119,7 @@ public class RegistrationAdditionalInfoFlow {
                 .setText(EducationCareerField.POSITION_FULL_NAME, "Омузгори забони англиси")
                 //.setLookup(EducationCareerField.EMPLOYER, "ЧДММ \"АГРОПРОМ ХУЧАНД\"")
                 //.setLookup(EducationCareerField.LEGAL_FORM, "Дехканские (фермерские) хозяйства")
-                .setLookup(EducationCareerField.BUSINESS_REPUTATION, "Рабочий");
+                .setLookup(EducationCareerField.BUSINESS_REPUTATION, "Простой рабочий");
 
     }
 

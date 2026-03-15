@@ -42,7 +42,7 @@ public class RegistrationAddressFlow {
         ui.lookupComponent
                 .setHandBookFieldByValueCheck("Тип клиента", "Такрори");
 
-        /*ui.buttonsComponent
+        ui.buttonsComponent
                 .doubleclickButtonByName("Фактический");
         ui.contactAddressPage
                 .waitForAddressPageLoaded();
@@ -51,7 +51,7 @@ public class RegistrationAddressFlow {
         ui.contractPage
                 .clickButtonByNameCheck("Сохранить");
         ui.basePage
-                .waitForPage();*/
+                .waitForPage();
         //Средства связи
         ui.lookupComponent
                 .selectDropdownValueWithCheckNew("BnzAffiliation", "Мобильный");

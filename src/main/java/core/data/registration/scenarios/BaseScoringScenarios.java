@@ -18,7 +18,7 @@ public class BaseScoringScenarios {
 
     public static BaseScoringData WITH_DEPENDENTS() {
         return new BaseScoringData.Builder()
-                .maritalStatus("Оиладор")
+                .maritalStatus("Оиладор (зан)")
                 .dependentsCount("2")
                 .getChildrensCount("1")
                 .getFamilyCount("3")
