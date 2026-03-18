@@ -108,6 +108,31 @@ public class ButtonsComponent extends Components {
         return this;
     }
 
+    public ButtonsComponent clickButtonByContainName1(String name2) {
+
+        for (int i = 0; i < 3; i++) {
+
+            SelenideElement button = $x("//span[contains(text(), '" + name2 + "')]")
+                    .shouldBe(Condition.visible);
+
+            button.scrollIntoView(true).click();
+
+            try {
+                // проверяем что вкладка стала активной
+                button.closest("li")
+                        .shouldHave(Condition.cssClass("ts-tabpanel-active-item"));
+
+                return this; // успех
+            } catch (Exception e) {
+                // retry
+            }
+        }
+
+        throw new RuntimeException("Не удалось нажать на кнопку: " + name2);
+    }
+
+
+
     public ButtonsComponent doubleclickButtonByName(String nameButton){
         $x("//span[.='" + nameButton + "']").doubleClick();
 

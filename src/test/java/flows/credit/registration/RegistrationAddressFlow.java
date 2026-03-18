@@ -9,6 +9,7 @@ import core.utils.LogStep;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class RegistrationAddressFlow {
 
@@ -154,6 +155,18 @@ public class RegistrationAddressFlow {
 
         // 0️⃣ Открываем detail и нажимаем "+"
         ui.detailPage.clickAddRecordInDetail("Адрес места работы");
+
+        if ($x("//div[contains(@class,'ts-messagebox-caption') and contains(text(),'При изменении типа занятости')]").exists()) {
+
+            $("[data-item-marker='Да']").click();
+        }
+
+        /*ui.messageBoxComponent
+                .shouldSeeModalWithText("При изменении типа занятости будут удалены записи с детали \"Деятельность физ. лица\". Подтвердить изменение?");
+        ui.basePage
+                .clickButtonByNameCheck("ДА");*/
+
+
 
         ui.addressComponent
                 .selectLookup(AddressField.COUNTRY, "Точикистон")    //Страна

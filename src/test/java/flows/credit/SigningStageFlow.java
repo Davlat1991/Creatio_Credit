@@ -27,7 +27,6 @@ public class SigningStageFlow {
 
 
 
-
     public SigningStageFlow(UiContext ui) {
         this.ui = ui;
         this.applicationSearchFlow = new ApplicationSearchFlow(ui);
@@ -39,7 +38,7 @@ public class SigningStageFlow {
 
         ui.basePage.closeConsultationPanelIfOpened();
 
-        // 1. Открыть заявку/договор по сохранённому номеру
+        // 1. Открыть заявку/по сохранённому номеру договора
         applicationSearchFlow.openBySavedСontracts();
 
 

@@ -24,7 +24,7 @@ public class ClientNotificationStageFlow {
         ui.basePage.closeConsultationPanelIfOpened();
 
         // 1️⃣ Открываем заявку по сохранённому номеру
-        applicationSearchFlow.openBySavedNumber();
+       applicationSearchFlow.openBySavedNumber();
 
         // 2️⃣ Открываем mini-page этапа «Информирование клиента»
         openClientNotificationMiniPage();

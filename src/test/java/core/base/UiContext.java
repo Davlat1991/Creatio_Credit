@@ -68,6 +68,8 @@ public class UiContext {
     public final ActivityComponent activityComponent;
     public final CareerComponent careerComponent;
     public final EducationCareerComponent educationCareerComponent;
+    public final FileUploadLegacyComponent fileUploadLegacyComponent;
+
 
 
 
@@ -116,6 +118,7 @@ public class UiContext {
         this.activityComponent = new ActivityComponent();
         this.careerComponent = new CareerComponent();
         this.educationCareerComponent = new EducationCareerComponent();
+        this.fileUploadLegacyComponent = new FileUploadLegacyComponent();
 
 
 

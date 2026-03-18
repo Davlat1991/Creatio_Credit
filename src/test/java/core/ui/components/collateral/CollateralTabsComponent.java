@@ -13,6 +13,7 @@ public class CollateralTabsComponent {
 
     @Step("Открыть вкладку «Обеспечение»")
     public void openCollateralTab() {
-        ui.buttonsComponent.clickButtonByContainName("Обеспечение");
+        ui.buttonsComponent.clickButtonByContainName1("Обеспечение");
+
     }
 }

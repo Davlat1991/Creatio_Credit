@@ -41,7 +41,7 @@
 
     "ikokgo": {
       "login": "A_NAZAROVA",
-      "password": "A_NAZAROVA12!@QQ",
+      "password": "A_NAZAROVAA_NAZAROVAA_NAZAROVAA_NAZAROVA",
       "role": "IKOKGO"
     },
 
@@ -58,9 +58,9 @@
 
   "contacts": {
     "default": {
-      "firstname": "Дилафруз",
-      "lastname": "Чаборова",
-      "middlename": "Кобилчоновна",
+      "firstname": "Фарангис",
+      "lastname": "Ашурова",
+      "middlename": "Шарифовна",
       "birthday": "1987-09-12",
       "documentType": "Паспорт",
       "documentNumber": "12345678"

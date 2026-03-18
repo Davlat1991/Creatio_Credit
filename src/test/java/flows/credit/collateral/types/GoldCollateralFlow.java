@@ -1,5 +1,6 @@
 package flows.credit.collateral.types;
 
+import com.codeborne.selenide.Selenide;
 import core.base.UiContext;
 import core.data.collateral.CollateralData;
 import core.data.collateral.types.GoldData;
@@ -28,7 +29,7 @@ public class GoldCollateralFlow extends BaseCollateralFlow {
     @Step("Заполнение залога: Золотые изделия")
     public void fill(CollateralData data) {
 
-
+        Selenide.sleep (3000);
         tabs.openCollateralTab();
         grid.addCollateral();
         grid.openPropertyLookup();

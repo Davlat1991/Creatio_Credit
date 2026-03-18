@@ -1,4 +1,4 @@
-package tests.flows;
+package tests.credit.regression.collateral;
 
 import core.base.BaseTest;
 import core.config.Environment;
@@ -16,11 +16,11 @@ import flows.common.AuthorizationFlow;
 import flows.common.NavigationFlow;
 import flows.common.WorkspaceFlow;
 import flows.credit.*;
-import flows.credit.ReviewStageRetailFlow;
+        import flows.credit.ReviewStageRetailFlow;
 import flows.credit.ReviewStageUnderwriterFlow;
 import flows.credit.participants.ParticipantsStageFlow;
 import flows.credit.registration.*;
-import flows.credit.registration.client.BaseClientFlow;
+        import flows.credit.registration.client.BaseClientFlow;
 import flows.credit.registration.client.EmployeeClientFlow;
 import flows.credit.registration.client.OtherIncomeClientFlow;
 import flows.credit.registration.client.SelfEmployedClientFlow;
@@ -34,7 +34,7 @@ import static core.data.factory.CollateralTestDataFactory.*;
 
 
 
-public class FastTest extends BaseTest {
+public class collateralGold extends BaseTest {
 
     @Test
     public void creditApplicationHappyPath() {
@@ -91,21 +91,22 @@ public class FastTest extends BaseTest {
         ApplicationFinishFlow applicationFinishFlow = new ApplicationFinishFlow(ui);
         CollateralStageFlow collateralStageFlow = new CollateralStageFlow(ui);
         ParticipantsStageFlow participantsStageFlow = new ParticipantsStageFlow(ui);
+        AttachDocumentsFlow attachDocumentsFlow = new AttachDocumentsFlow (ui);
 
 
 
 
         // 🔹 ВАЖНО: выбор типа клиента ТОЛЬКО ЗДЕСЬ
-      //BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
-       BaseClientFlow clientFlow = new EmployeeClientFlow(ui);      //Тип клиента работает в организации
-      //BaseClientFlow clientFlow = new OtherIncomeClientFlow(ui);    //Тип клиента имеет другой источник дохода
+        //BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
+        //BaseClientFlow clientFlow = new EmployeeClientFlow(ui);      //Тип клиента работает в организации
+        BaseClientFlow clientFlow = new OtherIncomeClientFlow(ui);    //Тип клиента имеет другой источник дохода
 
 
         // ============================================================
         // 4. RETAIL MANAGER
         // ============================================================
 
-        authFlow.login(retailManager1);
+        /*authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
 
@@ -122,8 +123,8 @@ public class FastTest extends BaseTest {
         productFlow.selectProduct(
                 "Карзхои гуногунмаксад",
                 "Барои эхтиёчоти оилави",
-                "70000",
-                "36",
+                "20000",
+                "24",
                 "Сомони Чумхурии Точикистон"
         );
 
@@ -131,61 +132,41 @@ public class FastTest extends BaseTest {
                 "3",
                 "2",
                 "Аннуитетный",
-                "36"
+                "24"
         );
 
         registrationFlow.completeRegistrationStage(
                 incomeExpensesData,
                 clientFlow);
 
-        preliminaryCheckFlow.completePreliminaryCheckStage();
-
+        preliminaryCheckFlow.completePreliminaryCheckStage();*/
 
 
         // ============================================================
         //                      УЧАСТНИКИ
         // ============================================================
 
+        /*authFlow.login(retailManager1);
+        workspaceFlow.select(Workspace.RETAIL_MANAGER);
+
+        navigationFlow.open(
+                Environment.BASE_URL +
+                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/4f61f47d-af88-415a-bf64-7e986ad1328b");
+
         List<CollateralData> collaterals = List.of(
-                cashDeposit(CurrencyType.TJS),
-                realEstate(CurrencyType.TJS),
-                vehicle(CurrencyType.TJS),
-                equipment(CurrencyType.TJS),
-                futureHarvest(CurrencyType.TJS),
-                cotton(CurrencyType.TJS),
-                acquiredProperty(CurrencyType.TJS),
-                movableProperty(CurrencyType.TJS),
-                gold(CurrencyType.TJS),
-                goods(CurrencyType.TJS)
+
+                gold(CurrencyType.TJS)
+
         );
 
         collateralStageFlow.completeCollateralStage(collaterals);
 
         documentsStageFlow.uploadDocumentsLegacy();
 
-        reviewRetailFlow.completeReview();
-
-        authFlow.logout();
-
-        // ============================================================
-        // 5. UNDERWRITER
-        // ============================================================
-
-        authFlow.login(underwriter1);
-        workspaceFlow.select(Workspace.UNDERWRITER);
-
-        reviewUnderwriterFlow.approveReview("КК4 по заявке"
-        );
-
-        authFlow.logout();
 
         // ============================================================
         // 6. CLIENT NOTIFICATION — RETAIL MANAGER
         // ============================================================
-
-        authFlow.login(retailManager1);
-        workspaceFlow.select(Workspace.RETAIL_MANAGER);
-
 
         clientNotificationFlow.completeClientNotification(
                 "Назарова Азиза Акбаровна"
@@ -200,10 +181,6 @@ public class FastTest extends BaseTest {
         authFlow.login(ikokgo);
         workspaceFlow.select(Workspace.IKOK_GO);
 
-        /*navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/26e3e52b-7686-4741-831f-cfe643d2dffa");*/
-
         loanIssuanceFlow.issueLoan();
 
 
@@ -217,13 +194,27 @@ public class FastTest extends BaseTest {
 
         signingStageFlow.completeSigningStage();
 
-        authFlow.logout();
+        authFlow.logout();*/
 
         // ============================================================
-        // 🔵 14. ЗАВЕРШЕНИЕ ЗАЯВКИ
+        // 🔵 15. ПРИКРЕПЛЕНИЕ ДОКУМЕНТА ДЛЯ ЗАВЕРШЕНИЯ ЗАЯВКИ
+        // ============================================================
+       /* authFlow.login(retailManager1);
+        workspaceFlow.select(Workspace.RETAIL_MANAGER);
+
+        attachDocumentsFlow.attachDocument();
+
+        authFlow.logout();*/
+
+        // ============================================================
+        // 🔵 16. ЗАВЕРШЕНИЕ ЗАЯВКИ
         // ============================================================
         authFlow.login(ikokgo);
         workspaceFlow.select(Workspace.IKOK_GO);
+
+        navigationFlow.open(
+                Environment.BASE_URL +
+                        "0/Nui/ViewModule.aspx#CardModuleV2/BnzContractCreditPage/edit/ff69a505-cbba-4c49-91eb-76df14cd1563");
 
         applicationFinishFlow.completeApplicationFinish();
 

@@ -1,9 +1,11 @@
 package core.base.common.components;
 
+import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
 import java.io.File;
 
+import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
@@ -52,5 +54,27 @@ public class FileUploadLegacyComponent {
     public void validateUploadFile(String fileName) {
         $x("//div[@data-item-marker='" + fileName + "']")
                 .shouldBe(visible);
+    }
+
+
+    @Step("Загрузить файл '{fileName}' (index = {index})")
+    public void attachFile(String fileName, int index) {
+
+        // 1️⃣ Кликаем по кнопке "Добавить файл"
+        SelenideElement addButton = $x("(//span[@data-item-marker='AddRecordButton'])[" + index + "]")
+                .shouldBe(visible)
+                .scrollIntoView(true);
+
+        executeJavaScript("arguments[0].click();", addButton);
+
+        // 2️⃣ Находим реальный input[type=file]
+        SelenideElement input = $x("//input[@type='file']")
+                .shouldBe(exist);
+
+        // ⚠️ иногда скрыт
+        executeJavaScript("arguments[0].style.display='block';", input);
+
+        // 3️⃣ Загружаем файл
+        input.uploadFile(new File("src/test/resources/files/" + fileName));
     }
 }

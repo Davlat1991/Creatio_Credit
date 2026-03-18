@@ -112,12 +112,12 @@ public class RegistrationAdditionalInfoFlow {
                 )
                 .clearFieldIfPresent(EducationCareerField.REASON_FOR_NOT_WORKING)
                 .setLookup(EducationCareerField.POSITION, "Ведущий специалист")
-                .setText(EducationCareerField.ORGANIZATION_NAME, "МТМУ №18 н.Б.Гафуров")
+                .setText(EducationCareerField.ORGANIZATION_NAME, "МТГ \"Мактаби П.Пулотов\"")  //"МТМУ №18 н.Б.Гафуров"
                 .setLookup(EducationCareerField.ROLE, "Исполнитель")
                 .setLookup(EducationCareerField.SOCIAL_STATUS, "Гослужитель с доп.доходом")
                 .setLookup(EducationCareerField.EDUCATION, "Высшее")
                 .setText(EducationCareerField.POSITION_FULL_NAME, "Омузгори забони англиси")
-                //.setLookup(EducationCareerField.EMPLOYER, "ЧДММ \"АГРОПРОМ ХУЧАНД\"")
+                //.setLookup(EducationCareerField.EMPLOYER, "МТГ \"Мактаби П.Пулотов\"")
                 //.setLookup(EducationCareerField.LEGAL_FORM, "Дехканские (фермерские) хозяйства")
                 .setLookup(EducationCareerField.BUSINESS_REPUTATION, "Простой рабочий");
 

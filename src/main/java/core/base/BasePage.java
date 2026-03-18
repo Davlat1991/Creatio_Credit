@@ -174,9 +174,36 @@ public class BasePage {
 
 
 
-    protected void waitUntilNotBusy() {
+    public void waitUntilNotBusy() {
         $$(".ts-loader, .ui-loader, .process-indicator, .loading-indicator, .mask")
                 .shouldHave(CollectionCondition.size(0));
+    }
+
+    public void waitUntilNotBusy2() {
+
+        $$(".ts-loader, .ui-loader, .process-indicator, .loading-indicator, .mask")
+                .filter(visible)
+                .shouldHave(CollectionCondition.size(0));
+    }
+
+
+    public void waitUntilNotBusy1() {
+
+        for (int i = 0; i < 40; i++) {
+
+            int loaders = $$x("//*[contains(@class,'loader') or contains(@class,'mask') or contains(@class,'loading')]")
+                    .filter(visible)
+                    .size();
+
+            if (loaders == 0) {
+                sleep(200);
+                return;
+            }
+
+            sleep(250);
+        }
+
+        throw new RuntimeException("Loader не исчез за отведённое время");
     }
 
     /**

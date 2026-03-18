@@ -24,6 +24,8 @@ public class DocumentsStageFlow {
         uploadClientDossier();
         uploadAdditionalClientDossier();
         completeDocumentsActivity();
+        verifyCreditDecisionApproved();
+        saveApplicationNumber();
     }
 
     // =====================================================
@@ -116,5 +118,18 @@ public class DocumentsStageFlow {
         ui.basePage
                 .clickButtonByDataItemMaker("SaveEditButton");
     }
+
+    //Новый метод нужно протестировать
+    private void verifyCreditDecisionApproved() {
+        ui.gridAssertions.waitForAnyCreditDecision(); //Одобрить Отказать
+
+    }
+
+    private void saveApplicationNumber() {
+        ui.contractPage
+                .saveValueByMarker("Number");
+    }
+
+
 
 }

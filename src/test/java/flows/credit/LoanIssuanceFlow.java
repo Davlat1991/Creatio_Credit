@@ -40,8 +40,17 @@ public class LoanIssuanceFlow {
 
         ui.basePage.closeConsultationPanelIfOpened();
 
+        // 1️. Открываем заявку по сохранённому номеру
+        applicationSearchFlow.openBySavedNumber();
+
+        completeKkDecisionCheck();
+
+        openContract();
+
         // 1️⃣ Создание договора
         createAbsContract();
+
+        bindAccountsAndSchedule();
 
         // 2️⃣ вкладка параметры
         openContractParametersTab();
@@ -60,19 +69,13 @@ public class LoanIssuanceFlow {
         ElementsCollection rows = getCollateralRows();
         System.out.println("Найдено залогов: " + rows.size());
 
-        processCollaterals(
+        openCollateralByName("Золотые изделия");
 
-                CollateralType.VEHICLE,
-                CollateralType.GOLD,
-                CollateralType.EQUIPMENT
+        waitForCollateralPage();
 
-        );
+        createCollateralContract();
 
-        openCollateralByName("Товары в обороте");
-
-        //createCollateralContract();
-
-        printCollateralContract("Шартномаи гарави молхои дар муомилот ва коркард");
+        printCollateralContract("Шартномаи гарави дорои");
 
         waitForConfidantGrid();
 
@@ -81,22 +84,30 @@ public class LoanIssuanceFlow {
         // сохранить и закрыть залог
         saveAndCloseCollateral();
 
-       // Selenide.sleep (90000);
+        openContract();
 
-        /*// 6️⃣ обработка залогов
-        processCollaterals(
+        /*openContractParametersTab();
+        scrollToCollateralDetail();
+        if ($("[data-item-marker='loadMore']").exists()) {
+            ui.basePage.clickButtonByDataItemMaker("loadMore");
 
-                CollateralType.VEHICLE,
-                CollateralType.GOLD,
-                CollateralType.EQUIPMENT
+        }
+        getCollateralRows().shouldBe(CollectionCondition.sizeGreaterThan(0));
+        rows = getCollateralRows();
+        System.out.println("Найдено залогов: " + rows.size());
+        openCollateralByName("Будущий урожай");
+        waitForCollateralPage();
+        createCollateralContract();
+        printCollateralContract("Шартномаи гарави пахта");
+        waitForConfidantGrid();
 
-        );*/
+        selectConfidantByPosition("Сардор дар Идораи амалиётb");
+        // сохранить и закрыть залог
+        saveAndCloseCollateral();*/
 
+         signAndIssueCredit();
 
-
-       // createCollateralContracts();
-        //signAndIssueCredit();
-       // verifyOrdersAndPrint();
+         verifyOrdersAndPrint();
     }
 
     // ============================================================
@@ -128,13 +139,7 @@ public class LoanIssuanceFlow {
 
     private void createAbsContract() {
 
-        ui.dashboardComponent
-                .clickElementDashboardName(
-                        "Создание договора в АБС (печать договоров для встречи)");
-        ui.contractPage
-                .clickContractAutoWait(CONTRACT_PAGE_MARKER);
-
-       /* ui.basePage
+        ui.basePage
                 .clickButtonOnPageByName(CONTRACT_PAGE_MARKER, "Действия");
 
         ui.menuComponent
@@ -181,7 +186,7 @@ public class LoanIssuanceFlow {
         ui.contractPage
                 .clickButtonByNameCheck("Закрыть");
 
-        refresh();*/
+        refresh();
     }
 
 
@@ -310,7 +315,7 @@ public class LoanIssuanceFlow {
         ui.fieldAssertions
                 .checkFieldValueNormalized(
                         "Сумма документа",
-                        "50 000,00"
+                        "20 000,00"
                 );
 
         ui.basePage
@@ -439,6 +444,19 @@ public class LoanIssuanceFlow {
         ui.buttonsComponent
                 .clickButtonByContainNameCheck("Параметры договора");
     }
+
+    @Step("Открыть вкладку Параметры договора")
+    private void openContract() {
+
+        ui.dashboardComponent
+                .clickElementDashboardName(
+                        "Создание договора в АБС (печать договоров для встречи)");
+        ui.contractPage
+                .clickContractAutoWait(CONTRACT_PAGE_MARKER);
+    }
+
+
+
 
     @Step("Получить строки залогов из детали Договоры обеспечения")
     private ElementsCollection getCollateralRows() {
@@ -602,5 +620,12 @@ public class LoanIssuanceFlow {
 
             processCollateral(type);
         }
+    }
+
+    @Step("Ожидание открытия страницы залога")
+    private void waitForCollateralPage() {
+
+        $("[data-item-marker='BnzContractEnsuringPageContainer']")
+                .shouldBe(Condition.visible);
     }
 }
