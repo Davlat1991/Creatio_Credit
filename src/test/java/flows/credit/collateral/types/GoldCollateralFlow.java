@@ -29,7 +29,6 @@ public class GoldCollateralFlow extends BaseCollateralFlow {
     @Step("Заполнение залога: Золотые изделия")
     public void fill(CollateralData data) {
 
-        Selenide.sleep (3000);
         tabs.openCollateralTab();
         grid.addCollateral();
         grid.openPropertyLookup();
@@ -43,7 +42,7 @@ public class GoldCollateralFlow extends BaseCollateralFlow {
                 "Золотое украшение",
                 "999",
                 "50",
-                "60",
+                "40",
                 "50000",
                 "Сомони Чумхурии Точикистон");
 

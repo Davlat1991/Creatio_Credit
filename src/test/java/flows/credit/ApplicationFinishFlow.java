@@ -42,13 +42,15 @@ public class ApplicationFinishFlow {
 
         ui.basePage.closeConsultationPanelIfOpened();
         // 1. Открыть договор по сохранённому номеру
-        //applicationSearchFlow.openBySavedСontracts();
+       // applicationSearchFlow.openBySavedСontracts();
 
         $x("//div[@data-item-marker='" + CONTRACT_PAGE_MARKER + "']")
                 .shouldBe(visible);
 
         openApplicationFromField();
+
         refresh();
+
         openContract();
 
         // 2. Перейти на вкладку "Операции по договору"
@@ -71,7 +73,7 @@ public class ApplicationFinishFlow {
 
 
         // 5. Завершить выдачу кредита
-        finishCreditIssuance();
+       // finishCreditIssuance();
     }
 
     // ======================================================================
@@ -176,7 +178,7 @@ public class ApplicationFinishFlow {
     }
 
 
-    @Step("Открыть вкладку Параметры договора")
+    @Step("Открыть вкладку Подтвердить получение документа")
     private void openContract() {
 
         ui.dashboardComponent

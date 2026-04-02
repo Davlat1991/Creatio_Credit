@@ -1,6 +1,7 @@
 package core.base.common.components;
 
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import core.pages.credit.ContractCreditApplicationPage;
@@ -10,8 +11,7 @@ import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 
 /**
  * ButtonsComponent — все универсальные клики вынесены сюда.
@@ -130,6 +130,111 @@ public class ButtonsComponent extends Components {
 
         throw new RuntimeException("Не удалось нажать на кнопку: " + name2);
     }
+
+    public ButtonsComponent clickButtonByContainNameRetry(String name2) {
+
+        for (int i = 0; i < 3; i++) {
+            try {
+
+                // 1️⃣ ищем кнопку
+                SelenideElement button = $x("//li//span[normalize-space(text())='" + name2 + "']")
+                        .shouldBe(Condition.visible);
+
+                // 2️⃣ скролл (обязательно для tabpanel)
+                button.scrollIntoView(true);
+
+                // 3️⃣ JS click (устойчиво к overlay)
+                executeJavaScript("arguments[0].click();", button);
+
+                // 4️⃣ проверяем, что вкладка активна
+                button.closest("li")
+                        .shouldHave(Condition.cssClass("ts-tabpanel-active-item"));
+
+                // 🔥 5️⃣ ЖДЁМ ЯКОРЬ — ДЕТАЛЬ "ЗАЛОГИ"
+                $x("//div[@data-item-marker='Залоги']")
+                        .shouldBe(Condition.visible);
+
+                return this;
+
+            } catch (Exception e) {
+                sleep(300); // retry
+            }
+        }
+
+        throw new RuntimeException("Не удалось нажать на кнопку: " + name2);
+    }
+
+
+    public ButtonsComponent clickButtonByContainName3(String name2) {
+
+        for (int i = 0; i < 3; i++) {
+
+            try {
+                // 🔥 1️⃣ ЖДЁМ АКТИВНОСТЬ (а не Execute)
+                SelenideElement activity = $x("//span[contains(text(),'Заполните данные обеспечения')]")
+                        .shouldBe(Condition.visible);
+
+                // 🔥 2️⃣ ДЕЛАЕМ HOVER (КЛЮЧЕВОЙ МОМЕНТ)
+                activity.hover();
+
+                // 3️⃣ теперь ищем кнопку
+                SelenideElement button = $x("//span[contains(text(), '" + name2 + "')]")
+                        .shouldBe(Condition.visible);
+
+                // 4️⃣ скролл
+                button.scrollIntoView(true);
+
+                // 5️⃣ JS click (защита от overlay)
+                executeJavaScript("arguments[0].click();", button);
+
+                // 6️⃣ проверка
+                button.closest("li")
+                        .shouldHave(Condition.cssClass("ts-tabpanel-active-item"));
+
+                return this;
+
+            } catch (Exception e) {
+                sleep(300);
+            }
+        }
+
+        throw new RuntimeException("Не удалось нажать на кнопку: " + name2);
+    }
+
+
+
+    public ButtonsComponent clickButtonByContainName2(String name) {
+
+        for (int i = 0; i < 4; i++) {
+
+            try {
+                // 1️⃣ ждём пока кнопка станет кликабельной
+                SelenideElement button = $x("//span[contains(text(), '" + name + "')]")
+                        .shouldBe(Condition.visible)
+                        .scrollIntoView(false);
+
+                // 2️⃣ 🔥 ждём исчезновения loader
+                $$(" .ts-loader, .mask, .loading-indicator")
+                        .filter(Condition.visible)
+                        .shouldHave(CollectionCondition.size(0));
+
+                // 3️⃣ 🔥 используем JS click (ключ!)
+                executeJavaScript("arguments[0].click();", button);
+
+                // 4️⃣ ждём активацию вкладки
+                button.closest("li")
+                        .shouldHave(Condition.cssClass("ts-tabpanel-active-item"));
+
+                return this;
+
+            } catch (Exception e) {
+                sleep(300);
+            }
+        }
+
+        throw new RuntimeException("Не удалось кликнуть вкладку: " + name);
+    }
+
 
 
 

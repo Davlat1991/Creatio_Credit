@@ -250,6 +250,44 @@ public class BasePage {
         return this;
     }
 
+    public BasePage clickButtonByNameCheck1(String nameButton) {
+
+        SelenideElement button = $x("//span[.='" + nameButton + "']");
+
+        // 🔥 если кнопка не отображается — пропускаем
+        if (!button.is(visible)) {
+            return this;
+        }
+
+
+        button.shouldBe(enabled)
+                .scrollIntoView(false);
+
+        executeJavaScript("arguments[0].click();", button);
+
+        return this;
+    }
+
+    public BasePage clickButtonByMarkerIfVisible(String marker) {
+
+        // 🔥 ожидание ДО первой проверки (до 5 секунд)
+        SelenideElement button = $x("//*[@data-item-marker='" + marker + "']")
+                .should(Condition.exist, Duration.ofSeconds(5));
+
+        // 🔥 если кнопка не отображается — пропускаем
+        if (!button.is(visible)) {
+            return this;
+        }
+
+        button.shouldBe(enabled)
+                .scrollIntoView(true);
+
+        // 🔥 JS click — обязателен для Creatio
+        executeJavaScript("arguments[0].click();", button);
+
+        return this;
+    }
+
 
     public void openUrl(String url) {
         com.codeborne.selenide.Selenide.open(url);

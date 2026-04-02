@@ -84,9 +84,9 @@ public class LoanIssuanceFlow {
         // сохранить и закрыть залог
         saveAndCloseCollateral();
 
-        openContract();
 
-        /*openContractParametersTab();
+        /*openContract();
+        openContractParametersTab();
         scrollToCollateralDetail();
         if ($("[data-item-marker='loadMore']").exists()) {
             ui.basePage.clickButtonByDataItemMaker("loadMore");
@@ -328,115 +328,8 @@ public class LoanIssuanceFlow {
     }
 
 
-    /*@Step("Создание договоров обеспечения")
-    private void createCollateralContracts(List<CollateralData> collaterals) {
-
-        ui.buttonsComponent
-                .clickButtonByContainNameCheck("Параметры договора");
-
-        for (CollateralData collateral : collaterals) {
-
-            contractFlow.createContract(collateral);
-
-            if (collateral.getType().hasPrintForm()) {
-                printFlow.printContract(collateral);
-            }
-        }
-    }*/
-
-    /*@Step("Создание договоров обеспечения")
-    private void createCollateralContracts(List<CollateralData> collaterals) {
-
-        ui.buttonsComponent
-                .clickButtonByContainNameCheck("Параметры договора");
-
-        // если список передан из теста
-        if (!collaterals.isEmpty()) {
-
-            for (CollateralData collateral : collaterals) {
-
-                contractFlow.createContract(collateral);
-
-                if (collateral.getType().hasPrintForm()) {
-                    printFlow.printContract(collateral);
-                }
-            }
-
-        }
-        // если тест запущен с середины
-        else {
-
-            List<String> collateralsFromGrid =
-                    ui.gridComponent.getAllRowTexts();
-
-            for (String collateralName : collateralsFromGrid) {
-
-                ui.gridComponent.findRowByText(collateralName).doubleClick();
-
-                ui.buttonsComponent
-                        .clickButtonByContainName("Действия");
-
-                ui.menuComponent
-                        .clickButtonByLiName("Создание договора обеспечения");
-            }
-        }
-    }*/
 
 
-    /*@Step("Создание договоров обеспечения")
-    private void createCollateralContracts() {
-
-        ui.buttonsComponent
-                .clickButtonByContainNameCheck("Параметры договора");
-
-        List<String> collaterals = getCollateralsFromGrid();
-
-        for (String collateralName : collaterals) {
-
-            ui.gridComponent
-                    .findRowByText(collateralName)
-                    .doubleClick();
-
-            ui.buttonsComponent
-                    .clickButtonByContainName("Действия");
-
-            ui.menuComponent
-                    .clickButtonByLiName("Создание договора обеспечения");
-
-            ui.messageBoxComponent
-                    .shouldSeeModalWithText("Договор успешно создан");
-
-            ui.basePage
-                    .clickButtonByNameCheck("ОК");
-
-            // Печать если есть
-            tryPrintCollateral(collateralName);
-        }
-    }
-
-    private void tryPrintCollateral(String collateralName) {
-
-        for (CollateralType type : CollateralType.values()) {
-
-            if (collateralName.contains(type.getUiName()) &&
-                    type.hasPrintForm()) {
-
-                ui.buttonsComponent
-                        .clickButtonByContainName("Печать");
-
-                ui.menuComponent
-                        .clickButtonByLiName(type.getPrintForm());
-
-                ui.lookupComponent
-                        .selectResponsiblePerson();
-
-                ui.basePage
-                        .clickButtonByName("Выбрать");
-
-                break;
-            }
-        }
-    }*/
 
     @Step("Открыть вкладку Параметры договора")
     private void openContractParametersTab() {
@@ -454,7 +347,6 @@ public class LoanIssuanceFlow {
         ui.contractPage
                 .clickContractAutoWait(CONTRACT_PAGE_MARKER);
     }
-
 
 
 
@@ -583,11 +475,12 @@ public class LoanIssuanceFlow {
     private void saveAndCloseCollateral() {
 
         ui.basePage
-                .clickButtonByNameCheck("Сохранить");
+                .clickButtonByMarkerIfVisible("SaveButton");
 
         ui.basePage
-                .clickButtonByNameCheck("Закрыть");
+                .clickButtonByMarkerIfVisible("SaveButton");
     }
+
 
 
     @Step("Обработка залога: {type}")

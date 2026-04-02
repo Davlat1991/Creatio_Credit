@@ -139,19 +139,11 @@ public class collateralGold extends BaseTest {
                 incomeExpensesData,
                 clientFlow);
 
-        preliminaryCheckFlow.completePreliminaryCheckStage();*/
-
+        preliminaryCheckFlow.completePreliminaryCheckStage();
 
         // ============================================================
         //                      УЧАСТНИКИ
         // ============================================================
-
-        /*authFlow.login(retailManager1);
-        workspaceFlow.select(Workspace.RETAIL_MANAGER);
-
-        navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/4f61f47d-af88-415a-bf64-7e986ad1328b");
 
         List<CollateralData> collaterals = List.of(
 
@@ -194,12 +186,12 @@ public class collateralGold extends BaseTest {
 
         signingStageFlow.completeSigningStage();
 
-        authFlow.logout();*/
+        authFlow.logout();
 
         // ============================================================
         // 🔵 15. ПРИКРЕПЛЕНИЕ ДОКУМЕНТА ДЛЯ ЗАВЕРШЕНИЯ ЗАЯВКИ
         // ============================================================
-       /* authFlow.login(retailManager1);
+        authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
         attachDocumentsFlow.attachDocument();
@@ -211,10 +203,9 @@ public class collateralGold extends BaseTest {
         // ============================================================
         authFlow.login(ikokgo);
         workspaceFlow.select(Workspace.IKOK_GO);
-
         navigationFlow.open(
                 Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/BnzContractCreditPage/edit/ff69a505-cbba-4c49-91eb-76df14cd1563");
+                        "0/Nui/ViewModule.aspx#CardModuleV2/BnzContractCreditPage/edit/ebede958-3160-4e90-bab7-678fc74d9678");
 
         applicationFinishFlow.completeApplicationFinish();
 

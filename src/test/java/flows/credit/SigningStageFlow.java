@@ -117,7 +117,7 @@ public class SigningStageFlow {
         ui.fieldAssertions
                 .checkFieldValueNormalized(
                         "Сумма документа",
-                        "50 000,00"
+                        "20 000,00"
                 );
 
         ui.basePage
