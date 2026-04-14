@@ -3,7 +3,7 @@ package core.data.scenarios;
 
 import core.data.TestData;
 import core.data.TestDataLoader;
-import core.data.mappers.ContactDataMapper;
+import core.data.contacts.ContactDataFactory;
 
 public class GuarantorScenarios {
 
@@ -17,7 +17,7 @@ public class GuarantorScenarios {
 
     public static GuarantorScenario defaultGuarantor() {
         return new GuarantorScenario(
-                ContactDataMapper.from(data.defaultContact())
+                ContactDataFactory.defaultContact()
         );
     }
 }

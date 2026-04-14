@@ -2,7 +2,8 @@ package core.data.inputs.guarantor;
 
 import core.data.TestData;
 import core.data.TestDataLoader;
-import core.data.mappers.ContactDataMapper;
+import core.data.contacts.ContactDataFactory;
+
 
 public class GuarantorInputs {
 
@@ -12,7 +13,7 @@ public class GuarantorInputs {
         TestData data = TestDataLoader.load();
 
         return new GuarantorInput(
-                ContactDataMapper.from(data.defaultContact()),
+                ContactDataFactory.defaultContact(),
                 "Супруг(а)",
                 "Другое"
         );

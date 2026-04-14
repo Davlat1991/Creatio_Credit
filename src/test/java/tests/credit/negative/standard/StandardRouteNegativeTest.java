@@ -6,7 +6,7 @@ import core.base.BaseTest;
 import core.data.TestData;
 import core.data.TestDataLoader;
 import core.data.contacts.ContactData;
-import core.data.mappers.ContactDataMapper;
+import core.data.contacts.ContactDataFactory;
 import core.data.mappers.LoginDataMapper;
 import core.data.users.LoginData;
 import core.enums.Workspace;
@@ -17,6 +17,7 @@ import flows.common.WorkspaceFlow;
 import flows.credit.*;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
+import core.data.contacts.ContactDataFactory;
 
                                         //НУЖНО ДОРОБОТАТЬ ТЕСТ !!!
 
@@ -39,7 +40,7 @@ public class StandardRouteNegativeTest extends BaseTest {
                 LoginDataMapper.from(data.user("retailManager"));
 
         ContactData contact =
-                ContactDataMapper.from(data.defaultContact());
+                ContactDataFactory.defaultContact();
 
         // ============================================================
         // 2. INFRASTRUCTURE FLOWS

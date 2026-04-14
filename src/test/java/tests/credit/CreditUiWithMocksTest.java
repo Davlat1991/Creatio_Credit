@@ -4,7 +4,7 @@ package tests.credit;
 import core.data.TestData;
 import core.data.TestDataLoader;
 import core.data.contacts.ContactData;
-import core.data.mappers.ContactDataMapper;
+import core.data.contacts.ContactDataFactory;
 import core.data.mappers.LoginDataMapper;
 import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.users.LoginData;
@@ -23,6 +23,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import core.base.BaseTest;
+import core.data.contacts.ContactDataFactory;
 
 public class CreditUiWithMocksTest extends BaseTest {
 
@@ -58,7 +59,7 @@ public class CreditUiWithMocksTest extends BaseTest {
                 LoginDataMapper.from(data.user("cashier1"));
 
         ContactData contact =
-                ContactDataMapper.from(data.defaultContact());
+                ContactDataFactory.defaultContact();
 
         RegistrationIncomeExpensesData incomeExpensesData =
                 data.registrationIncomeExpenses();

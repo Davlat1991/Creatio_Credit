@@ -503,6 +503,53 @@ public class LookupComponent extends Components {
     }
 
 
+    @Step("Выбрать значение '{value}' в поле '{nameField}'")
+    public LookupComponent selectDropdownValue(String nameField, String value) {
+
+        for (int attempt = 1; attempt <= 5; attempt++) {
+            try {
+                log.info("▶ Попытка {}: '{}' в '{}'", attempt, value, nameField);
+
+                // 1️⃣ ввод значения
+                setFieldByValueCheck(nameField, value);
+
+                // 2️⃣ ждём dropdown и берём нужный элемент
+                SelenideElement item = $x("//div[contains(@class,'listview')]//li[normalize-space(.)='" + value + "']")
+                        .shouldBe(Condition.visible, Duration.ofSeconds(2));
+
+                // 3️⃣ кликаем (JS — стабильнее для Creatio)
+                Selenide.executeJavaScript("arguments[0].click();", item);
+
+                // 4️⃣ ждём закрытия dropdown
+                $x("//div[contains(@class,'listview')]")
+                        .shouldBe(Condition.disappear, Duration.ofSeconds(2));
+
+                // 5️⃣ заново ищем input (DOM мог обновиться)
+                SelenideElement input = $x("//label[normalize-space(.)='" + nameField + "']/../..//input")
+                        .shouldBe(Condition.visible);
+
+                // 6️⃣ проверяем, что значение установилось и НЕ сбросилось
+                input.shouldHave(Condition.value(value), Duration.ofSeconds(3));
+
+                log.info("✔ '{}' успешно выбрано", value);
+                return this;
+
+            } catch (Throwable t) {
+                log.warn("⚠ Попытка {} неудачна: {}", attempt, t.getMessage());
+
+                if (attempt == 5) {
+                    throw new AssertionError(
+                            "❌ Не удалось выбрать '" + value + "' в поле '" + nameField + "'", t);
+                }
+            }
+        }
+
+        return this;
+    }
+
+
+
+
     public LookupComponent setFieldByValueCheck(String nameField, String value) {
 
         SelenideElement input = $x("//label[.='" + nameField + "']/../..//input");

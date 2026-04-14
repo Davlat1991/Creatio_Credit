@@ -57,24 +57,4 @@ public class FileUploadLegacyComponent {
     }
 
 
-    @Step("Загрузить файл '{fileName}' (index = {index})")
-    public void attachFile(String fileName, int index) {
-
-        // 1️⃣ Кликаем по кнопке "Добавить файл"
-        SelenideElement addButton = $x("(//span[@data-item-marker='AddRecordButton'])[" + index + "]")
-                .shouldBe(visible)
-                .scrollIntoView(true);
-
-        executeJavaScript("arguments[0].click();", addButton);
-
-        // 2️⃣ Находим реальный input[type=file]
-        SelenideElement input = $x("//input[@type='file']")
-                .shouldBe(exist);
-
-        // ⚠️ иногда скрыт
-        executeJavaScript("arguments[0].style.display='block';", input);
-
-        // 3️⃣ Загружаем файл
-        input.uploadFile(new File("src/test/resources/files/" + fileName));
-    }
 }

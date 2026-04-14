@@ -1,13 +1,9 @@
 package flows.credit.participants;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
 import core.base.UiContext;
-import core.utils.AllureAttachments;
-import core.utils.LogStep;
+import core.data.participants.ParticipantData;
+import core.data.registration.RegistrationIncomeExpensesData;
 import io.qameta.allure.Step;
-
-import static com.codeborne.selenide.Selenide.$;
 
 public class PledgerQuestionnaireFlow {
 
@@ -16,15 +12,13 @@ public class PledgerQuestionnaireFlow {
     public PledgerQuestionnaireFlow(UiContext ui) {
         this.ui = ui;
     }
+    @Step("Заполнение анкеты поручителя")
+    public void fill(ParticipantData participant, RegistrationIncomeExpensesData incomeExpensesData) {
 
-    public void completePledgerQuestionnaire(boolean pzlRelation) {
 
-        fillPledgerQuestionnaire();
-        setPzlRelation(pzlRelation);
     }
-
     @Step("Заполнение анкеты залогодателя")
-    public void fillPledgerQuestionnaire() {
+    public void fill() {
 
         ui.lookupComponent
                 .setHandBookFieldByValueCheck("Вид связи", "Родственник");
@@ -51,44 +45,6 @@ public class PledgerQuestionnaireFlow {
 
         ui.contractPage.clickButtonByNameCheck("Сохранить");
         ui.basePage.waitForPage();
-    }
-
-    // ТВОЙ setPzlRelation — 그대로
-    public void setPzlRelation(boolean expectedValue) {
-
-        String value = expectedValue ? "Да" : "Нет";
-
-        LogStep.info("⏳ Установка значения '" + value + "' в поле 'Связь с ПЗЛ'");
-
-        SelenideElement pzlBlock = $("[data-item-marker='ПЗЛ']")
-                .shouldBe(Condition.visible);
-
-        AllureAttachments.attachHtml(
-                "🧩 ПЗЛ DOM (до)",
-                pzlBlock.getAttribute("outerHTML")
-        );
-
-        SelenideElement yesRadio = pzlBlock
-                .find("[data-item-marker='BnzPZLTrue']")
-                .closest(".radio-button-container")
-                .find(".t-radio-wrap");
-
-        SelenideElement noRadio = pzlBlock
-                .find("[data-item-marker='BnzPZLFalse']")
-                .closest(".radio-button-container")
-                .find(".t-radio-wrap");
-
-        boolean isYesSelectedBefore =
-                yesRadio.has(Condition.cssClass("t-radio-checked"));
-
-        if (expectedValue && !isYesSelectedBefore) yesRadio.click();
-        if (!expectedValue && isYesSelectedBefore) noRadio.click();
-
-        if (expectedValue)
-            yesRadio.shouldHave(Condition.cssClass("t-radio-checked"));
-        else
-            noRadio.shouldHave(Condition.cssClass("t-radio-checked"));
-
 
         ui.lookupComponent
                 .setHandBookFieldByValueCheck("Национальность", "Таджик / таджичка");
@@ -97,7 +53,7 @@ public class PledgerQuestionnaireFlow {
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");
 
         ui.lookupComponent
-                .setHandBookFieldByValueCheck("Семейное положение","Оиладор (зан)");
+                .setHandBookFieldByValueCheck("Семейное положение", "Оиладор (зан)");
 
         ui.contractPage.clickButtonByNameCheck("Сохранить");
         ui.contractPage.clickButtonByNameCheck("Закрыть");

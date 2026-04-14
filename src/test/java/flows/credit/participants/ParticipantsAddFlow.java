@@ -1,4 +1,6 @@
+
 package flows.credit.participants;
+
 import core.base.UiContext;
 import core.data.participants.ParticipantData;
 import io.qameta.allure.Step;
@@ -21,7 +23,53 @@ public class ParticipantsAddFlow {
         ui.menuComponent.clickButtonByLiName(participant.getRole().getUiValue());
 
         ui.lookupComponent
-                .setModalSearchField("Surname","Наврузова")
+                .setModalSearchField("Surname", participant.getLastName())
+                .setModalSearchField("GivenName", participant.getFirstName())
+                .setModalSearchField("MiddleName", participant.getMiddleName());
+
+        ui.basePage.clickButtonByName("Поиск");
+        ui.basePage.clickButtonByName("Выбрать");
+
+        ui.basePage.waitForPage();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*package flows.credit.participants;
+import core.base.UiContext;
+import core.data.participants.ParticipantData;
+import io.qameta.allure.Step;
+
+public class ParticipantsAddFlow {
+
+    private final UiContext ui;
+
+    public ParticipantsAddFlow(UiContext ui) {
+        this.ui = ui;
+    }
+
+    @Step("Добавление участника {participant.role}")
+    public void addParticipant(ParticipantData participant) {
+
+        ui.basePage
+                .clickButtonById("BnzVwFinApplicationAllParticipantDetailAddTypedRecordButtonButton-imageEl");
+
+        ui.menuComponent.clickButtonByLiName("Физ. лицо");
+        ui.menuComponent.clickButtonByLiName(participant.getRole().getUiValue());
+
+        ui.lookupComponent
+                .setModalSearchField("Surname"," ")
                 .setModalSearchField("GivenName","Фарида")
                 .setModalSearchField("MiddleName","Махкамбоевна");
 
@@ -40,7 +88,7 @@ public class ParticipantsAddFlow {
 
 
 
-/*public class ParticipantsAddFlow {
+public class ParticipantsAddFlow {
 
     private final UiContext ui;
 

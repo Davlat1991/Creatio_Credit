@@ -1,0 +1,17 @@
+{
+  "employee": {
+    "firstName": "Азиза",
+    "lastName": "Назарова",
+    "middleName": "Акбаровна"
+  },
+  "entrepreneur": {
+    "firstName": "Бехзод",
+    "lastName": "Каримов",
+    "middleName": "Рустамович"
+  },
+  "otherIncome": {
+    "firstName": "Рустам",
+    "lastName": "Саидов",
+    "middleName": "Алишерович"
+  }
+}

@@ -25,7 +25,7 @@
 
     "retailManager1": {
       "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796S_RUSTMOVA_796123",
       "role": "RETAIL_MANAGER"
     },
     "underwriter1": {
@@ -35,7 +35,7 @@
     },
     "ikok1": {
       "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796S_RUSTMOVA_796123",
       "role": "IKOK"
     },
 
@@ -52,20 +52,6 @@
     }
   },
 
-
-
-
-
-  "contacts": {
-    "default": {
-      "firstname": "Фарангис",
-      "lastname": "Ашурова",
-      "middlename": "Шарифовна",
-      "birthday": "1987-09-12",
-      "documentType": "Паспорт",
-      "documentNumber": "12345678"
-    }
-  },
 
   "documents": {
     "financialDossier": [

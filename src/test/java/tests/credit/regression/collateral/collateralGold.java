@@ -6,7 +6,7 @@ import core.data.TestData;
 import core.data.TestDataLoader;
 import core.data.collateral.CollateralData;
 import core.data.contacts.ContactData;
-import core.data.mappers.ContactDataMapper;
+import core.data.contacts.ContactDataFactory;
 import core.data.mappers.LoginDataMapper;
 import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.users.LoginData;
@@ -27,6 +27,7 @@ import flows.credit.registration.client.SelfEmployedClientFlow;
 
 import org.testng.annotations.Test;
 import flows.credit.collateral.CollateralStageFlow;
+import core.data.contacts.ContactDataFactory;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class collateralGold extends BaseTest {
                 LoginDataMapper.from(data.user("cashier1"));
 
         ContactData contact =
-                ContactDataMapper.from(data.defaultContact());
+                ContactDataFactory.defaultContact();
 
         RegistrationIncomeExpensesData incomeExpensesData =
                 data.registrationIncomeExpenses();

@@ -12,6 +12,7 @@ import flows.common.WorkspaceFlow;
 import flows.credit.LoanIssuanceFlow;
 import flows.credit.ReviewStageRetailFlow;
 import org.testng.annotations.Test;
+import core.data.contacts.ContactDataFactory;
 
 public class ResumeFromDocumentsStageTest extends BaseTest {
 

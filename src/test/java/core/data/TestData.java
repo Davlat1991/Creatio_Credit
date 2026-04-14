@@ -1,6 +1,7 @@
 package core.data;
 
-import core.data.contacts.ContactTestData;
+//delete
+
 import core.data.documents.DocumentsTestData;
 import core.data.products.LoanDefaults;
 import core.data.registration.RegistrationIncomeExpensesData;
@@ -11,7 +12,6 @@ import java.util.Map;
 public class TestData {
 
     private Map<String, UserTestData> users;
-    private Map<String, ContactTestData> contacts;
     private LoanDefaults loanDefaults;
     private DocumentsTestData documents;
 
@@ -25,10 +25,6 @@ public class TestData {
     // =========================
     // CONTACTS
     // =========================
-    public ContactTestData defaultContact() {
-        return contacts.get("default");
-    }
-
     // =========================
     // LOAN DEFAULTS
     // =========================

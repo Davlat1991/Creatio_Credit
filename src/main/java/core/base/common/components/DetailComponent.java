@@ -1,7 +1,6 @@
 package core.base.common.components;
 
-import core.pages.contacts.ContactCardPage;
-import core.pages.credit.ContractCreditApplicationPage;
+
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;

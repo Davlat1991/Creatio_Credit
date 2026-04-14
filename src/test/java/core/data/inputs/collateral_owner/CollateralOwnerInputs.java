@@ -2,7 +2,7 @@ package core.data.inputs.collateral_owner;
 
 import core.data.TestData;
 import core.data.TestDataLoader;
-import core.data.mappers.ContactDataMapper;
+import core.data.contacts.ContactDataFactory;
 
 public class CollateralOwnerInputs {
 
@@ -12,7 +12,7 @@ public class CollateralOwnerInputs {
         TestData data = TestDataLoader.load();
 
         return new CollateralOwnerInput(
-                ContactDataMapper.from(data.defaultContact()),
+                ContactDataFactory.defaultContact(),
                 "Собственник"
         );
     }

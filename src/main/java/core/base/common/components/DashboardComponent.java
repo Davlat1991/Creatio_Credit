@@ -62,17 +62,6 @@ public class DashboardComponent extends Components {
         return this;
     }
 
-    /**
-     * Ожидание текста, который означает, что требуется MiniPage (например "Укажите дату" или "Добавьте и заполните анкеты")
-     */
-    @Step("Ожидать появления текста '{text}' в Dashboard")
-    public DashboardComponent waitText(String text) {
-
-        getDashboard().$x(".//*[contains(text(),'" + text + "')]")
-                .shouldBe(visible);
-
-        return this;
-    }
 
     /**
      * Клик по кнопке в Dashboard, когда ожидается открытие MiniPage
@@ -88,17 +77,6 @@ public class DashboardComponent extends Components {
         return this;
     }
 
-    @Step("Перейти на стадию процесса '{stageName}'")
-    public DashboardComponent selectStage(String stageName) {
-
-        SelenideElement stage = getDashboard().$x(
-                ".//*[contains(@class,'t-title') or contains(@class,'step-title')][contains(text(),'" + stageName + "')]"
-        ).shouldBe(visible, enabled);
-
-        retryClick(stage, "Стадия процесса '" + stageName + "'");
-
-        return this;
-    }
 
     // Imigration
 

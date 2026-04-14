@@ -1,5 +1,7 @@
 package core.data;
 
+//delete
+
 import com.google.gson.Gson;
 
 import java.io.InputStreamReader;

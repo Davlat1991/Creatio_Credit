@@ -4,7 +4,7 @@ import core.base.BaseTest;
 import core.data.TestData;
 import core.data.TestDataLoader;
 import core.data.contacts.ContactData;
-import core.data.mappers.ContactDataMapper;
+import core.data.contacts.ContactDataFactory;
 import core.data.mappers.LoginDataMapper;
 import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.users.LoginData;
@@ -18,6 +18,7 @@ import flows.credit.registration.client.BaseClientFlow;
 import flows.credit.registration.client.EmployeeClientFlow;
 import flows.credit.registration.client.OtherIncomeClientFlow;
 import org.testng.annotations.Test;
+import core.data.contacts.ContactDataFactory;
 
 public class EmployeeSimpleRouteTest extends BaseTest {
 
@@ -38,7 +39,7 @@ public class EmployeeSimpleRouteTest extends BaseTest {
                 LoginDataMapper.from(data.user("cashier"));
 
         ContactData contact =
-                ContactDataMapper.from(data.defaultContact());
+                ContactDataFactory.defaultContact();
 
         RegistrationIncomeExpensesData incomeExpensesData =
                 data.registrationIncomeExpenses();

@@ -6,11 +6,14 @@ import core.data.TestData;
 import core.data.TestDataLoader;
 import core.data.collateral.CollateralData;
 import core.data.contacts.ContactData;
-import core.data.mappers.ContactDataMapper;
+import core.data.contacts.ContactDataFactory;
+import core.data.factory.ParticipantTestDataFactory;
 import core.data.mappers.LoginDataMapper;
+import core.data.participants.ParticipantData;
 import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.users.LoginData;
 import core.enums.CurrencyType;
+import core.enums.ParticipantRole;
 import core.enums.Workspace;
 import flows.common.AuthorizationFlow;
 import flows.common.NavigationFlow;
@@ -24,6 +27,7 @@ import flows.credit.registration.client.BaseClientFlow;
 import flows.credit.registration.client.EmployeeClientFlow;
 import flows.credit.registration.client.OtherIncomeClientFlow;
 import flows.credit.registration.client.SelfEmployedClientFlow;
+import core.data.contacts.ContactDataFactory;
 
 import org.testng.annotations.Test;
 import flows.credit.collateral.CollateralStageFlow;
@@ -57,7 +61,7 @@ public class FastTest extends BaseTest {
                 LoginDataMapper.from(data.user("cashier1"));
 
         ContactData contact =
-                ContactDataMapper.from(data.defaultContact());
+                ContactDataFactory.defaultContact();
 
         RegistrationIncomeExpensesData incomeExpensesData =
                 data.registrationIncomeExpenses();
@@ -105,7 +109,7 @@ public class FastTest extends BaseTest {
         // 4. RETAIL MANAGER
         // ============================================================
 
-        authFlow.login(retailManager1);
+        /*authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
 
@@ -138,15 +142,33 @@ public class FastTest extends BaseTest {
                 incomeExpensesData,
                 clientFlow);
 
-        preliminaryCheckFlow.completePreliminaryCheckStage();
+        preliminaryCheckFlow.completePreliminaryCheckStage();*/
 
 
 
         // ============================================================
         //                      УЧАСТНИКИ
         // ============================================================
+        authFlow.login(retailManager1);
+        workspaceFlow.select(Workspace.RETAIL_MANAGER);
+        navigationFlow.open(
+                Environment.BASE_URL +
+                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/1077c72d-3b65-424f-9ca6-9df8716722ef");
 
-        List<CollateralData> collaterals = List.of(
+        participantsStageFlow.completeParticipantsStage(
+                List.of(
+                        ParticipantTestDataFactory.guarantor(false)
+                ),
+                incomeExpensesData
+        );
+                                //  new ParticipantData(ParticipantRole.GUARANTOR, "Фарангис", "Ашурова", "Шарифовна", false)
+                        //new ParticipantData(ParticipantRole.PLEDGER, "John", "Test", "Testov", true)
+
+
+        // ============================================================
+        //                      ЗАЛОГОВОЕ ОБЕСПЕЧЕНИЕ
+        // ============================================================
+       /* List<CollateralData> collaterals = List.of(
                 cashDeposit(CurrencyType.TJS),
                 realEstate(CurrencyType.TJS),
                 vehicle(CurrencyType.TJS),
@@ -200,9 +222,7 @@ public class FastTest extends BaseTest {
         authFlow.login(ikokgo);
         workspaceFlow.select(Workspace.IKOK_GO);
 
-        /*navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/26e3e52b-7686-4741-831f-cfe643d2dffa");*/
+
 
         loanIssuanceFlow.issueLoan();
 
@@ -228,7 +248,7 @@ public class FastTest extends BaseTest {
         applicationFinishFlow.completeApplicationFinish();
 
 
-        authFlow.logout();
+        authFlow.logout();*/
 
 
     }

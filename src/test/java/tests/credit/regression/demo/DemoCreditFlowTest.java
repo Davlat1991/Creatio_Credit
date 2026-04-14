@@ -3,12 +3,13 @@ package tests.credit.regression.demo;
 import core.base.BaseTest;
 import core.data.TestData;
 import core.data.TestDataLoader;
-import core.data.mappers.ContactDataMapper;
 import core.data.mappers.LoginDataMapper;
 import core.enums.ClientType;
 import core.enums.Workspace;
 import flows.credit.CreditApplicationFlow;
 import org.testng.annotations.Test;
+import core.data.contacts.ContactDataFactory;
+
 
 public class DemoCreditFlowTest extends BaseTest {
 
@@ -27,7 +28,7 @@ public class DemoCreditFlowTest extends BaseTest {
         ctx.clientType = ClientType.OTHER_INCOME;
         ctx.workspace = Workspace.RETAIL_MANAGER;
 
-        ctx.contact = ContactDataMapper.from(data.defaultContact());
+        ctx.contact = ContactDataFactory.defaultContact();
         ctx.consultationThemeId =
                 "consultation-theme-7a0f11cc-756d-474a-885f-1dd64eeca5b3";
 

@@ -5,13 +5,14 @@ import core.base.BaseTest;
 import core.data.TestData;
 import core.data.TestDataLoader;
 import core.data.contacts.ContactData;
-import core.data.mappers.ContactDataMapper;
+import core.data.contacts.ContactDataFactory;
 import core.data.mappers.LoginDataMapper;
 import core.data.users.LoginData;
 import core.enums.Workspace;
 import flows.common.AuthorizationFlow;
 import flows.common.WorkspaceFlow;
 import flows.credit.*;
+import core.data.contacts.ContactDataFactory;
 
 import org.testng.annotations.Test;
 
@@ -31,7 +32,7 @@ public class SimpleRouteSmokeTest extends BaseTest {
                 LoginDataMapper.from(data.user("retailManager"));
 
         ContactData contact =
-                ContactDataMapper.from(data.defaultContact());
+                ContactDataFactory.defaultContact();
 
         // ============================================================
         // 2. INFRASTRUCTURE FLOWS

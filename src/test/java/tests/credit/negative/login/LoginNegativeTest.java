@@ -9,6 +9,7 @@ import core.data.users.LoginData;
 import flows.common.AuthorizationFlow;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
+import core.data.contacts.ContactDataFactory;
 
 
 @Epic("Creatio Authorization")

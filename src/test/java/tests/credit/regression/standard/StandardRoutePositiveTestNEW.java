@@ -3,7 +3,6 @@ package tests.credit.regression.standard;
 import core.base.BaseTest;
 import core.data.TestData;
 import core.data.TestDataLoader;
-import core.data.mappers.ContactDataMapper;
 import core.enums.ClientType;
 import core.enums.Workspace;
 import core.context.CreditTestContext;
@@ -11,6 +10,7 @@ import core.data.scenarios.ProductScenarios;
 import core.data.scenarios.RolesScenarios;
 import flows.credit.CreditApplicationFlow;
 import org.testng.annotations.Test;
+import core.data.contacts.ContactDataFactory;
 
 public class StandardRoutePositiveTestNEW extends BaseTest {
 
@@ -37,8 +37,7 @@ public class StandardRoutePositiveTestNEW extends BaseTest {
         ctx.clientType = ClientType.OTHER_INCOME;
         ctx.workspace = Workspace.RETAIL_MANAGER;
 
-        ctx.contact =
-                ContactDataMapper.from(data.defaultContact());
+        ctx.contact = ContactDataFactory.defaultContact();
 
         ctx.consultationThemeId =
                 "consultation-theme-7a0f11cc-756d-474a-885f-1dd64eeca5b3";

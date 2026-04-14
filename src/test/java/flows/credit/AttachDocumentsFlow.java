@@ -94,7 +94,7 @@ public class AttachDocumentsFlow {
         Allure.step("🔍 Начата проверка файла: " + fileName);
         log.info("Проверка файла: {}", fileName);
 
-        ui.basePage.waitUntilNotBusy2();
+        ui.basePage.waitUntilNotBusy();
 
         $x("//div[@data-item-marker='" + fileName + "']")
                 .shouldBe(visible);

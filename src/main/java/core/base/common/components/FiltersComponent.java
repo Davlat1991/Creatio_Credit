@@ -133,40 +133,6 @@ public class FiltersComponent extends Components {
     }
 
 
-    // Закрыть фильтр по тегу (устойчиво)
-    @Step("Удалить фильтр если он есть")
-    public boolean removeFilterIfExistsNew() {
-
-        // 🔍 Ищем кнопку X (глобально, QuickFilter может рендериться по-разному)
-        ElementsCollection removeButtons = $$x(
-                "//span[contains(@class,'custom-filter-remove-button') or contains(@class,'filter-remove-button')]"
-        );
-
-        if (removeButtons.isEmpty()) {
-            System.out.println("ℹ Фильтр отсутствует — удалять нечего");
-            return false;
-        }
-
-        SelenideElement removeBtn = removeButtons.first();
-
-        // 🕒 Ждём, что элемент станет кликабельным
-        removeBtn.shouldBe(Condition.visible, Condition.enabled);
-
-        // 🖱 Hover — ОБЯЗАТЕЛЬНО для Creatio
-        removeBtn.hover();
-
-        // 🔥 Клик через JS (самый стабильный вариант)
-        Selenide.executeJavaScript("arguments[0].click();", removeBtn);
-
-        // ⏳ Ждём, что кнопка исчезнет (фильтр реально удалён)
-        removeBtn.should(Condition.disappear, Duration.ofSeconds(10));
-
-        // 🛡 Доп. защита: ждём стабилизации грида
-        Selenide.sleep(300);
-
-        System.out.println("✔ Фильтр успешно удалён");
-        return true;
-    }
 
 
 }
