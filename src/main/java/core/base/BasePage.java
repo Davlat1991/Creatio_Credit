@@ -458,6 +458,12 @@ public class BasePage {
         return this;
     }
 
+    public void waitForDocumentsStage() {
+
+        $x("//label[normalize-space()='Вложить документы и отправить на рассмотрение']")
+                .shouldBe(Condition.visible, Duration.ofSeconds(60));
+    }
+
 
     @Step("Ожидание загрузки страницы")
     public void waitForPage() {

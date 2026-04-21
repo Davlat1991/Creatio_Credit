@@ -42,9 +42,9 @@ public class GuarantorQuestionnaireFlow {
         /*ui.lookupComponent
                 .setHandBookFieldByValueCheck("Вид связи", "Партнер");*/
 
+        //Средства связи
         ui.lookupComponent
-                .selectDropdownValue("Вид связи", "Партнер");
-
+                .selectDropdownValueWithCheckNew("BnzAffiliation", "Мобильный");
 
         ui.lookupComponent
                 .setHandBookFieldByValueCheck("Страна рождения", "Точикистон")
@@ -104,9 +104,9 @@ public class GuarantorQuestionnaireFlow {
                 .clickButtonByNameCheck("Сохранить");
         ui.basePage
                 .waitForPage();
-        //Средства связи
+
         ui.lookupComponent
-                .selectDropdownValueWithCheckNew("BnzAffiliation", "Мобильный");
+                .selectDropdownValue("Вид связи", "Партнер");
     }
 
 

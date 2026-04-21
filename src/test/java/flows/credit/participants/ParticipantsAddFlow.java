@@ -1,6 +1,7 @@
 
 package flows.credit.participants;
 
+import com.codeborne.selenide.Selenide;
 import core.base.UiContext;
 import core.data.participants.ParticipantData;
 import io.qameta.allure.Step;
@@ -22,12 +23,16 @@ public class ParticipantsAddFlow {
         ui.menuComponent.clickButtonByLiName("Физ. лицо");
         ui.menuComponent.clickButtonByLiName(participant.getRole().getUiValue());
 
+
+
         ui.lookupComponent
                 .setModalSearchField("Surname", participant.getLastName())
                 .setModalSearchField("GivenName", participant.getFirstName())
                 .setModalSearchField("MiddleName", participant.getMiddleName());
 
         ui.basePage.clickButtonByName("Поиск");
+        //ui.buttonsComponent.clickByDataItemMarker("SearchButton");
+
         ui.basePage.clickButtonByName("Выбрать");
 
         ui.basePage.waitForPage();

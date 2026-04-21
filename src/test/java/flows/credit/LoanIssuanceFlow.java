@@ -69,7 +69,23 @@ public class LoanIssuanceFlow {
         ElementsCollection rows = getCollateralRows();
         System.out.println("Найдено залогов: " + rows.size());
 
-        openCollateralByName("Золотые изделия");
+        openCollateralByName("Денежные средства (депозитные счета)");
+
+        waitForCollateralPage();
+
+        createCollateralContract();
+
+        printCollateralContract("Шартномаи гарави пасандоз");
+
+        waitForConfidantGrid();
+
+        selectConfidantByPosition("Сардор дар Идораи амалиётb");
+
+        // сохранить и закрыть залог
+        saveAndCloseCollateral();
+
+
+        /*openCollateralByName("Золотые изделия");
 
         waitForCollateralPage();
 
@@ -85,7 +101,7 @@ public class LoanIssuanceFlow {
         saveAndCloseCollateral();
 
 
-        /*openContract();
+        openContract();
         openContractParametersTab();
         scrollToCollateralDetail();
         if ($("[data-item-marker='loadMore']").exists()) {
@@ -315,7 +331,7 @@ public class LoanIssuanceFlow {
         ui.fieldAssertions
                 .checkFieldValueNormalized(
                         "Сумма документа",
-                        "20 000,00"
+                        "50 000,00"
                 );
 
         ui.basePage

@@ -12,19 +12,12 @@ public class PledgerQuestionnaireFlow {
     public PledgerQuestionnaireFlow(UiContext ui) {
         this.ui = ui;
     }
-    @Step("Заполнение анкеты поручителя")
-    public void fill(ParticipantData participant, RegistrationIncomeExpensesData incomeExpensesData) {
-
-
-    }
     @Step("Заполнение анкеты залогодателя")
-    public void fill() {
-
-        ui.lookupComponent
-                .setHandBookFieldByValueCheck("Вид связи", "Родственник");
+    public void fill(ParticipantData participant, RegistrationIncomeExpensesData incomeExpensesData) {
 
         ui.lookupComponent
                 .selectDropdownValueWithCheckNew("BnzAffiliation", "Мобильный");
+
 
         // Регистрация
         ui.buttonsComponent.doubleclickButtonByName("Регистрация");
@@ -36,15 +29,18 @@ public class PledgerQuestionnaireFlow {
         ui.contractPage.clickButtonByNameCheck("Сохранить");
         ui.basePage.waitForPage();
 
+        ui.lookupComponent
+                .selectDropdownValue("Вид связи", "Партнер");
+
         // Фактический
-        ui.buttonsComponent.doubleclickButtonByName("Фактический");
+       /* ui.buttonsComponent.doubleclickButtonByName("Фактический");
         ui.contactAddressPage.waitForAddressPageLoaded();
 
         ui.dateFieldComponent
                 .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
 
         ui.contractPage.clickButtonByNameCheck("Сохранить");
-        ui.basePage.waitForPage();
+        ui.basePage.waitForPage();*/
 
         ui.lookupComponent
                 .setHandBookFieldByValueCheck("Национальность", "Таджик / таджичка");
@@ -54,6 +50,9 @@ public class PledgerQuestionnaireFlow {
 
         ui.lookupComponent
                 .setHandBookFieldByValueCheck("Семейное положение", "Оиладор (зан)");
+
+        ui.lookupComponent
+                .setHandBookFieldByValueCheck("Уровень риска", "Низкий");
 
         ui.contractPage.clickButtonByNameCheck("Сохранить");
         ui.contractPage.clickButtonByNameCheck("Закрыть");

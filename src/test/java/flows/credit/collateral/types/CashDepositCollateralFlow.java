@@ -37,7 +37,8 @@ public class CashDepositCollateralFlow extends BaseCollateralFlow {
         form.selectType("Денежные средства (депозитные счета)");
         form.selectSubType("Гарави пасандоз");
         form.setName("Денежный вклад");
-        form.selectOwnership("Собственный");
+        form.selectOwnership("Третьего лица"); // Собственный
+        form.selectPledger("Хамидов Азизходжа Азамходжаевич");
 
 
         valuation.fillValuationCashDeposit(

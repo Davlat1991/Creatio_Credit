@@ -1,5 +1,6 @@
 package flows.credit.collateral;
 
+import com.codeborne.selenide.Selenide;
 import core.base.UiContext;
 import core.data.collateral.CollateralData;
 import core.enums.CollateralType;
@@ -64,7 +65,6 @@ public class CollateralStageFlow {
 
     private void completeCollateralAndGuaranteeTask() {
 
-
         ui.basePage
                 .doubleClickByMarker("Обеспечение.Подтип");
 
@@ -80,5 +80,7 @@ public class CollateralStageFlow {
                 .clickButtonByLiName("Выполнена");
         ui.basePage
                .clickButtonByDataItemMaker("SaveEditButton");
+
+        ui.basePage.waitForDocumentsStage();
     }
 }

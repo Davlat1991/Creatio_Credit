@@ -1,5 +1,6 @@
 package flows.credit.registration;
 
+import com.codeborne.selenide.Selenide;
 import core.base.UiContext;
 import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.registration.scenarios.BaseScoringScenarios;
@@ -79,6 +80,8 @@ public class RegistrationStageFlow {
 
         // 9. Печать
         printFlow.printApplication();
+
+        Selenide.refresh();
     }
 
 }

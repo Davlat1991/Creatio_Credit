@@ -13,7 +13,7 @@ public class ContactDataFactory {
 
     public static ContactData defaultContact() {
         return new ContactDataBuilder()
-                .withFirstName("Шукрона ")
+                .withFirstName("Шукрона")
                 .withLastName("Ашурова")
                 .withMiddleName("Махсудовна")
                 .build();
