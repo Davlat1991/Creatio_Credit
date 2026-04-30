@@ -73,46 +73,6 @@ public class CheckboxComponent extends Components {
         return this;
     }
 
-    /**
-     * Принудительно выставляет нужное состояние (true/false)
-     */
-    @Step("Установить значение чекбокса '{label}' → {value}")
-    public CheckboxComponent setCheckbox(String label, boolean value) {
-        if (value) {
-            check(label);
-        } else {
-            uncheck(label);
-        }
-        return this;
-    }
-
-    /**
-     * Чекбокс по data-item-marker (часто в деталях и mini-pages)
-     */
-    @Step("Клик по чекбоксу data-item-marker='{marker}'")
-    public CheckboxComponent clickByMarker(String marker) {
-        SelenideElement checkbox = $x("//span[@data-item-marker='" + marker + "']");
-        click(checkbox, "Клик по чекбоксу с marker=" + marker);
-        return this;
-    }
-
-    @Step("Установить чекбокс '{marker}' в состояние Выбрано")
-    public CheckboxComponent setCheckedDIM(String marker) {
-
-        SelenideElement checkbox = $x("//*[@data-item-marker='" + marker + "']")
-                .shouldBe(visible);
-
-        // Проверяем состояние
-        boolean checked = checkbox.getAttribute("class").contains("checked");
-
-        if (!checked) {
-            checkbox.click();
-        }
-
-        checkbox.shouldHave(Condition.attributeMatching("class", ".*checked.*"));
-
-        return this;
-    }
 
     @Step("Установить чекбокс '{marker}'")
     public CheckboxComponent setChecked(String marker) {

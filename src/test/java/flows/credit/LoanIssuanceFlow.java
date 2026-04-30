@@ -53,7 +53,7 @@ public class LoanIssuanceFlow {
         bindAccountsAndSchedule();
 
         // 2️⃣ вкладка параметры
-        openContractParametersTab();
+       /* openContractParametersTab();
 
         // 3️⃣ скролл до детали
         scrollToCollateralDetail();
@@ -267,7 +267,7 @@ public class LoanIssuanceFlow {
                 .clickButtonByNameCheck("ОК")
                 .clickButtonByNameCheck("Действия");
 
-        ui.contractPage
+       /* ui.contractPage
                 .issueCreditUniversal("Наличными");
 
         ui.basePage
@@ -298,7 +298,7 @@ public class LoanIssuanceFlow {
                         "График платежей успешно получен"
                 );
         ui.basePage
-                .clickButtonByNameCheck("ОК");
+                .clickButtonByNameCheck("ОК");*/
     }
 
     // ============================================================

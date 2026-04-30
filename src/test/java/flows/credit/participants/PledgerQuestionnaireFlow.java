@@ -1,5 +1,6 @@
 package flows.credit.participants;
 
+import com.codeborne.selenide.Selenide;
 import core.base.UiContext;
 import core.data.participants.ParticipantData;
 import core.data.registration.RegistrationIncomeExpensesData;
@@ -56,5 +57,6 @@ public class PledgerQuestionnaireFlow {
 
         ui.contractPage.clickButtonByNameCheck("Сохранить");
         ui.contractPage.clickButtonByNameCheck("Закрыть");
+
     }
 }

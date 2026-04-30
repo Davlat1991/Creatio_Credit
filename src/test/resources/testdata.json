@@ -32,7 +32,7 @@
 
     "retailManager1": {
       "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796S_RUSTMOVA_796!@#",
       "role": "RETAIL_MANAGER"
     },
     "underwriter1": {
@@ -42,19 +42,19 @@
     },
     "ikok1": {
       "login": "S_RUSTMOVA_796",
-      "password": "S_RUSTMOVA_796",
+      "password": "S_RUSTMOVA_796S_RUSTMOVA_796!@#",
       "role": "IKOK"
     },
 
     "ikokgo1": {
       "login": "A_NAZAROVA",
-      "password": "A_NAZAROVA123",
+      "password": "A_NAZAROVA1",
       "role": "IKOKGO"
     },
 
     "cashier1": {
       "login": "M_KURBONOVA",
-      "password": "M_KURBONOVAM_KURBONOVA123",
+      "password": "M_KURBONOVAaaa123!@#",
       "role": "CASHIER"
     }
   },
@@ -71,8 +71,8 @@
   },
 
   "loanDefaults": {
-    "amount": "50000",
-    "term": "36",
+    "amount": "10000",
+    "term": "24",
     "currency": "Сомони Чумхурии Точикистон"
   },
 

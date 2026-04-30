@@ -548,8 +548,6 @@ public class LookupComponent extends Components {
     }
 
 
-
-
     public LookupComponent setFieldByValueCheck(String nameField, String value) {
 
         SelenideElement input = $x("//label[.='" + nameField + "']/../..//input");

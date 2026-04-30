@@ -1,5 +1,6 @@
-package tests.credit.regression.collateral;
+package tests.routes;
 
+import com.codeborne.selenide.Selenide;
 import core.base.BaseTest;
 import core.config.Environment;
 import core.data.TestData;
@@ -7,10 +8,13 @@ import core.data.TestDataLoader;
 import core.data.collateral.CollateralData;
 import core.data.contacts.ContactData;
 import core.data.contacts.ContactDataFactory;
+import core.data.factory.ParticipantTestDataFactory;
 import core.data.mappers.LoginDataMapper;
+import core.data.participants.ParticipantData;
 import core.data.registration.RegistrationIncomeExpensesData;
 import core.data.users.LoginData;
 import core.enums.CurrencyType;
+import core.enums.ParticipantRole;
 import core.enums.Workspace;
 import flows.common.AuthorizationFlow;
 import flows.common.NavigationFlow;
@@ -18,16 +22,17 @@ import flows.common.WorkspaceFlow;
 import flows.credit.*;
         import flows.credit.ReviewStageRetailFlow;
 import flows.credit.ReviewStageUnderwriterFlow;
+import flows.credit.documents.DocumentsApiFlow;
 import flows.credit.participants.ParticipantsStageFlow;
 import flows.credit.registration.*;
         import flows.credit.registration.client.BaseClientFlow;
 import flows.credit.registration.client.EmployeeClientFlow;
 import flows.credit.registration.client.OtherIncomeClientFlow;
 import flows.credit.registration.client.SelfEmployedClientFlow;
+import core.data.contacts.ContactDataFactory;
 
 import org.testng.annotations.Test;
 import flows.credit.collateral.CollateralStageFlow;
-import core.data.contacts.ContactDataFactory;
 
 import java.util.List;
 
@@ -35,7 +40,7 @@ import static core.data.factory.CollateralTestDataFactory.*;
 
 
 
-public class collateralGold extends BaseTest {
+public class Example extends BaseTest {
 
     @Test
     public void creditApplicationHappyPath() {
@@ -52,8 +57,8 @@ public class collateralGold extends BaseTest {
                 LoginDataMapper.from(data.user("underwriter1"));
         LoginData ikok1 =
                 LoginDataMapper.from(data.user("ikok1"));
-        LoginData ikokgo =
-                LoginDataMapper.from(data.user("ikokgo"));
+        LoginData ikokgo1 =
+                LoginDataMapper.from(data.user("ikokgo1"));
         LoginData cashier1 =
                 LoginDataMapper.from(data.user("cashier1"));
 
@@ -92,7 +97,7 @@ public class collateralGold extends BaseTest {
         ApplicationFinishFlow applicationFinishFlow = new ApplicationFinishFlow(ui);
         CollateralStageFlow collateralStageFlow = new CollateralStageFlow(ui);
         ParticipantsStageFlow participantsStageFlow = new ParticipantsStageFlow(ui);
-        AttachDocumentsFlow attachDocumentsFlow = new AttachDocumentsFlow (ui);
+        DocumentsApiFlow documentsApiFlow = new DocumentsApiFlow(ui);
 
 
 
@@ -124,7 +129,7 @@ public class collateralGold extends BaseTest {
         productFlow.selectProduct(
                 "Карзхои гуногунмаксад",
                 "Барои эхтиёчоти оилави",
-                "20000",
+                "10000",
                 "24",
                 "Сомони Чумхурии Точикистон"
         );
@@ -146,20 +151,63 @@ public class collateralGold extends BaseTest {
         //                      УЧАСТНИКИ
         // ============================================================
 
-        List<CollateralData> collaterals = List.of(
+        authFlow.login(retailManager1);
+        workspaceFlow.select(Workspace.RETAIL_MANAGER);
+        navigationFlow.open(
+                Environment.BASE_URL +
+                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/36b515cc-1d45-454b-b9bf-ffdcc413b026");
 
-                gold(CurrencyType.TJS)
+        participantsStageFlow.completeParticipantsStage(
+                List.of(
+                        ParticipantTestDataFactory.guarantor(false),
+                        ParticipantTestDataFactory.pledger(false)
+                ),
+                incomeExpensesData
+        );
 
+        // ============================================================
+        //                      ЗАЛОГОВОЕ ОБЕСПЕЧЕНИЕ
+        // ============================================================
+         List<CollateralData> collaterals = List.of(
+                cashDeposit(CurrencyType.TJS),
+                realEstate(CurrencyType.TJS),
+                vehicle(CurrencyType.TJS),
+                equipment(CurrencyType.TJS),
+                futureHarvest(CurrencyType.TJS),
+                cotton(CurrencyType.TJS),
+                acquiredProperty(CurrencyType.TJS),
+                movableProperty(CurrencyType.TJS),
+                gold(CurrencyType.TJS),
+                goods(CurrencyType.TJS)
         );
 
         collateralStageFlow.completeCollateralStage(collaterals);
 
-        documentsStageFlow.uploadDocumentsLegacy();
+        documentsApiFlow.uploadAllDocumentsViaApi();
 
+        reviewRetailFlow.completeReview();
+
+        authFlow.logout();
+
+        // ============================================================
+        // 5. UNDERWRITER
+        // ============================================================
+
+        authFlow.login(underwriter1);
+        workspaceFlow.select(Workspace.UNDERWRITER);
+
+        reviewUnderwriterFlow.approveReview("КК4 по заявке"
+        );
+
+        authFlow.logout();
 
         // ============================================================
         // 6. CLIENT NOTIFICATION — RETAIL MANAGER
         // ============================================================
+
+        authFlow.login(retailManager1);
+        workspaceFlow.select(Workspace.RETAIL_MANAGER);
+
 
         clientNotificationFlow.completeClientNotification(
                 "Назарова Азиза Акбаровна"
@@ -171,7 +219,7 @@ public class collateralGold extends BaseTest {
         // 7. LOAN ISSUANCE
         // ============================================================
 
-        authFlow.login(ikokgo);
+        authFlow.login(ikokgo1);
         workspaceFlow.select(Workspace.IKOK_GO);
 
         loanIssuanceFlow.issueLoan();
@@ -190,31 +238,12 @@ public class collateralGold extends BaseTest {
         authFlow.logout();
 
         // ============================================================
-        // 🔵 15. ПРИКРЕПЛЕНИЕ ДОКУМЕНТА ДЛЯ ЗАВЕРШЕНИЯ ЗАЯВКИ
+        // 🔵 14. ЗАВЕРШЕНИЕ ЗАЯВКИ
         // ============================================================
-        authFlow.login(retailManager1);
-        workspaceFlow.select(Workspace.RETAIL_MANAGER);
-
-        attachDocumentsFlow.attachDocument();
-
-        authFlow.logout();
-
-        // ============================================================
-        // 🔵 16. ЗАВЕРШЕНИЕ ЗАЯВКИ
-        // ============================================================
-        authFlow.login(ikokgo);
+        authFlow.login(ikokgo1);
         workspaceFlow.select(Workspace.IKOK_GO);
-        navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/BnzContractCreditPage/edit/ebede958-3160-4e90-bab7-678fc74d9678");
 
         applicationFinishFlow.completeApplicationFinish();
-
-        authFlow.login(retailManager1);
-        workspaceFlow.select(Workspace.RETAIL_MANAGER);
-        navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/dda35a8f-cf24-4b2b-b4d4-b8755bc6e5d5");
 
         authFlow.logout();
 

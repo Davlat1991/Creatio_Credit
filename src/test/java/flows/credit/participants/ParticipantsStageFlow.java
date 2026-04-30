@@ -1,5 +1,6 @@
 package flows.credit.participants;
 
+import com.codeborne.selenide.Selenide;
 import core.base.UiContext;
 import core.data.participants.ParticipantData;
 import core.data.registration.RegistrationIncomeExpensesData;
@@ -30,6 +31,13 @@ public class ParticipantsStageFlow {
         for (ParticipantData participant : participants) {
             processParticipant(participant, incomeData);
         }
+
+        openParticipantsTab();
+
+        ui.basePage
+                .doubleClickByMarker("Роль участника");
+
+        Selenide.sleep(5000);
     }
 
     private void processParticipant(ParticipantData participant,

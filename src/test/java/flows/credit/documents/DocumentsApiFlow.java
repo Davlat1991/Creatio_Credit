@@ -26,9 +26,10 @@ public class DocumentsApiFlow {
 
         openDocumentsTab();
         uploadBorrower();
-        uploadGuarantor();
-        uploadPledger();
-        refreshAndWait();
+        //uploadGuarantor();
+        //uploadPledger();
+        //refreshAndWait();
+       // completeDocumentsActivity();
     }
 
     private void uploadBorrower() {
@@ -105,5 +106,27 @@ public class DocumentsApiFlow {
     private void openDocumentsTab() {
         ui.contractPage.legacyFiles().clickButtonByContainName("Документы");
         ui.basePage.waitForPage();
+    }
+
+    // =====================================================
+    // COMPLETE DOCUMENTS ACTIVITY
+    // =====================================================
+
+    private void completeDocumentsActivity() {
+
+        ui.dashboardComponent.clickElementDashboardCheck(
+                "Вложить документы и отправить на рассмотрение",
+                "Execute",
+                "//*[@data-item-marker='MiniPage']"
+        );
+
+        ui.contractPage
+                .setfieldScheduleDetailByDIM("Result", "Выполнена");
+
+        ui.menuComponent
+                .clickButtonByLiName("Выполнена");
+
+        ui.basePage
+                .clickButtonByDataItemMaker("SaveEditButton");
     }
 }

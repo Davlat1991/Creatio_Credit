@@ -103,8 +103,8 @@ public class FastTest extends BaseTest {
 
 
         // 🔹 ВАЖНО: выбор типа клиента ТОЛЬКО ЗДЕСЬ
-      //BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
-      //BaseClientFlow clientFlow = new EmployeeClientFlow(ui);      //Тип клиента работает в организации
+        BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
+        BaseClientFlow clientFlow = new EmployeeClientFlow(ui);      //Тип клиента работает в организации
         BaseClientFlow clientFlow = new OtherIncomeClientFlow(ui);    //Тип клиента имеет другой источник дохода
 
 
@@ -112,7 +112,7 @@ public class FastTest extends BaseTest {
         // 4. RETAIL MANAGER
         // ============================================================
 
-       /* authFlow.login(retailManager1);
+        authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
 
@@ -129,8 +129,8 @@ public class FastTest extends BaseTest {
         productFlow.selectProduct(
                 "Карзхои гуногунмаксад",
                 "Барои эхтиёчоти оилави",
-                "50000",
-                "36",
+                "10000",
+                "24",
                 "Сомони Чумхурии Точикистон"
         );
 
@@ -138,14 +138,13 @@ public class FastTest extends BaseTest {
                 "3",
                 "2",
                 "Аннуитетный",
-                "36"
+                "24"
         );
-
         registrationFlow.completeRegistrationStage(
                 incomeExpensesData,
                 clientFlow);
 
-        preliminaryCheckFlow.completePreliminaryCheckStage();*/
+        preliminaryCheckFlow.completePreliminaryCheckStage();
 
 
 
@@ -153,16 +152,16 @@ public class FastTest extends BaseTest {
         //                      УЧАСТНИКИ
         // ============================================================
 
-        authFlow.login(retailManager1);
+      authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
         navigationFlow.open(
                 Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/dda35a8f-cf24-4b2b-b4d4-b8755bc6e5d5");
+                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/1ab9ea3a-f54b-41b9-ba27-011291497635");
 
         participantsStageFlow.completeParticipantsStage(
                 List.of(
-                        ParticipantTestDataFactory.guarantor(false)
-                       // ParticipantTestDataFactory.pledger(false)
+                        ParticipantTestDataFactory.guarantor(false),
+                        ParticipantTestDataFactory.pledger(false)
                 ),
                 incomeExpensesData
         );
@@ -170,8 +169,8 @@ public class FastTest extends BaseTest {
         // ============================================================
         //                      ЗАЛОГОВОЕ ОБЕСПЕЧЕНИЕ
         // ============================================================
-         /*List<CollateralData> collaterals = List.of(
-                cashDeposit(CurrencyType.TJS)
+         List<CollateralData> collaterals = List.of(
+                cashDeposit(CurrencyType.TJS),
                 realEstate(CurrencyType.TJS),
                 vehicle(CurrencyType.TJS),
                 equipment(CurrencyType.TJS),
@@ -183,12 +182,11 @@ public class FastTest extends BaseTest {
                 goods(CurrencyType.TJS)
         );
 
-        /*collateralStageFlow.completeCollateralStage(collaterals);
+        collateralStageFlow.completeCollateralStage(collaterals);
 
-        //documentsStageFlow.uploadDocumentsLegacy();
         documentsApiFlow.uploadAllDocumentsViaApi();
 
-       /* reviewRetailFlow.completeReview();
+        reviewRetailFlow.completeReview();
 
         authFlow.logout();
 
@@ -225,8 +223,6 @@ public class FastTest extends BaseTest {
         authFlow.login(ikokgo1);
         workspaceFlow.select(Workspace.IKOK_GO);
 
-
-
         loanIssuanceFlow.issueLoan();
 
 
@@ -250,8 +246,7 @@ public class FastTest extends BaseTest {
 
         applicationFinishFlow.completeApplicationFinish();
 
-
-        authFlow.logout();*/
+        authFlow.logout();
 
 
     }
