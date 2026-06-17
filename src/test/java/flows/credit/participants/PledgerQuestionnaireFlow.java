@@ -30,21 +30,23 @@ public class PledgerQuestionnaireFlow {
         ui.contractPage.clickButtonByNameCheck("Сохранить");
         ui.basePage.waitForPage();
 
-        ui.lookupComponent
-                .selectDropdownValue("Вид связи", "Партнер");
+
 
         // Фактический
-       /* ui.buttonsComponent.doubleclickButtonByName("Фактический");
+        ui.buttonsComponent.doubleclickButtonByName("Фактический");
         ui.contactAddressPage.waitForAddressPageLoaded();
 
         ui.dateFieldComponent
                 .setDateFieldByMarker("BnzRegistrationDate", "01.01.2020");
 
         ui.contractPage.clickButtonByNameCheck("Сохранить");
-        ui.basePage.waitForPage();*/
+        ui.basePage.waitForPage();
 
         ui.lookupComponent
                 .setHandBookFieldByValueCheck("Национальность", "Таджик / таджичка");
+
+        ui.lookupComponent
+                .selectDropdownValue("Вид связи", "Партнер");
 
         ui.buttonsComponent
                 .clickButtonByContainNameCheck("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ");

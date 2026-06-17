@@ -102,7 +102,7 @@ public class MessageBoxComponent extends Components {
     public MessageBoxComponent shouldSeeModalWithText(String expectedText) {
         $x("//div[contains(@class,'modal') or contains(@class,'dialog') or contains(@class,'message')]"
                 + "[contains(., '" + expectedText + "')]")
-                .shouldBe(visible, Duration.ofSeconds(50));
+                .shouldBe(visible, Duration.ofSeconds(70));
 
         return this;
     }

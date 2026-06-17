@@ -139,9 +139,6 @@ public class GridComponent extends Components {
     }
 
 
-
-
-
     /**
      * Ожидание появления нужного количества строк
      */
@@ -285,9 +282,6 @@ public class GridComponent extends Components {
 
         return this;
     }
-
-
-
 
 
 

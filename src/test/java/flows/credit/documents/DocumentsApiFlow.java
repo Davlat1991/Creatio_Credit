@@ -26,10 +26,10 @@ public class DocumentsApiFlow {
 
         openDocumentsTab();
         uploadBorrower();
-        //uploadGuarantor();
-        //uploadPledger();
-        //refreshAndWait();
-       // completeDocumentsActivity();
+        uploadGuarantor();
+        uploadPledger();
+        refreshAndWait();
+        completeDocumentsActivity();
     }
 
     private void uploadBorrower() {

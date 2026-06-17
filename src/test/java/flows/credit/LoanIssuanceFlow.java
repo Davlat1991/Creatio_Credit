@@ -9,7 +9,9 @@ import flows.credit.signing.SigningContractFlow;
 import flows.credit.signing.SigningPrintFlow;
 import io.qameta.allure.Step;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import static com.codeborne.selenide.Selenide.*;
 
@@ -53,7 +55,7 @@ public class LoanIssuanceFlow {
         bindAccountsAndSchedule();
 
         // 2️⃣ вкладка параметры
-       /* openContractParametersTab();
+       openContractParametersTab();
 
         // 3️⃣ скролл до детали
         scrollToCollateralDetail();
@@ -69,7 +71,8 @@ public class LoanIssuanceFlow {
         ElementsCollection rows = getCollateralRows();
         System.out.println("Найдено залогов: " + rows.size());
 
-        openCollateralByName("Денежные средства (депозитные счета)");
+
+        /* openCollateralByName("Денежные средства (депозитные счета)");
 
         waitForCollateralPage();
 
@@ -82,10 +85,10 @@ public class LoanIssuanceFlow {
         selectConfidantByPosition("Сардор дар Идораи амалиётb");
 
         // сохранить и закрыть залог
-        saveAndCloseCollateral();
+        saveAndCloseCollateral();*/
 
 
-        /*openCollateralByName("Золотые изделия");
+        openCollateralByName("Золотые изделия");
 
         waitForCollateralPage();
 
@@ -93,15 +96,40 @@ public class LoanIssuanceFlow {
 
         printCollateralContract("Шартномаи гарави дорои");
 
-        waitForConfidantGrid();
+       // waitForConfidantGrid();
 
-        selectConfidantByPosition("Сардор дар Идораи амалиётb");
+        //selectConfidantByPosition("Сардор дар Идораи амалиётb");
 
         // сохранить и закрыть залог
-        saveAndCloseCollateral();
+        //saveAndCloseCollateral();
+
+        closeCollateral();
 
 
         openContract();
+        openContractParametersTab();
+        scrollToCollateralDetail();
+        if ($("[data-item-marker='loadMore']").exists()) {
+            ui.basePage.clickButtonByDataItemMaker("loadMore");
+
+        }
+        getCollateralRows().shouldBe(CollectionCondition.sizeGreaterThan(0));
+        rows = getCollateralRows();
+        System.out.println("Найдено залогов: " + rows.size());
+        openCollateralByAmount("55 000,00");
+        waitForCollateralPage();
+        createCollateralContract();
+        printCollateralContract("Шартномаи замонат");
+        // waitForConfidantGrid();
+
+        //selectConfidantByPosition("Сардор дар Идораи амалиётb");
+        // сохранить и закрыть залог
+        // saveAndCloseCollateral();
+
+        closeCollateral();
+
+
+        /*openContract();
         openContractParametersTab();
         scrollToCollateralDetail();
         if ($("[data-item-marker='loadMore']").exists()) {
@@ -426,6 +454,16 @@ public class LoanIssuanceFlow {
                 .perform();
     }
 
+    private void openCollateralByAmount(String amount1) {
+        SelenideElement row = $x(
+                "//span[@grid-data-type='number' and normalize-space()='" + amount1 + "']"
+        ).shouldBe(Condition.visible);
+
+        actions()
+                .doubleClick(row)
+                .perform();
+    }
+
     @Step("Создать договор обеспечения")
     private void createCollateralContract() {
 
@@ -495,6 +533,14 @@ public class LoanIssuanceFlow {
 
         ui.basePage
                 .clickButtonByMarkerIfVisible("SaveButton");
+    }
+
+    @Step("Сохранить и закрыть страницу залога")
+    private void closeCollateral() {
+
+        ui.basePage
+                .clickButtonByMarkerIfVisible("CloseButton");
+
     }
 
 

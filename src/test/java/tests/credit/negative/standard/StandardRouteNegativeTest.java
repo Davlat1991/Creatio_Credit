@@ -2,7 +2,6 @@ package tests.credit.negative.standard;
 
 
 import core.base.BaseTest;
-
 import core.data.TestData;
 import core.data.TestDataLoader;
 import core.data.contacts.ContactData;
@@ -14,10 +13,11 @@ import core.pages.routes.ClientDataPage;
 import core.pages.routes.SimpleRoutePage;
 import flows.common.AuthorizationFlow;
 import flows.common.WorkspaceFlow;
-import flows.credit.*;
+import flows.credit.ClientSearchFlow;
+import flows.credit.ConsultationStartFlow;
+import flows.credit.ProductSelectionFlow;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
-import core.data.contacts.ContactDataFactory;
 
                                         //НУЖНО ДОРОБОТАТЬ ТЕСТ !!!
 
@@ -25,6 +25,7 @@ import core.data.contacts.ContactDataFactory;
 @Epic("Creatio Credit")
 @Feature("Стандартный маршрут")
 public class StandardRouteNegativeTest extends BaseTest {
+
 
     @Test(description = "Негатив: отказ клиента")
     @Story("Отказ по стандартному маршруту")

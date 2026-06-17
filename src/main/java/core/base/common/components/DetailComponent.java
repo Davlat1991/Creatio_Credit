@@ -26,12 +26,6 @@ public class DetailComponent {
         return this;
     }
 
-    public DetailComponent openDetailContain(String detailName) {
-        $x("//span[contains(@class,'detail-title')][text()='" + detailName + "']")
-                .scrollIntoView(true)
-                .click();
-        return this;
-    }
 
     public DetailComponent clickAddRecordInDetail(String detailName) {
         $x("//span[text()='" + detailName + "']/ancestor::div[contains(@class,'detail')]//span[@data-item-marker='AddRecordButton']")

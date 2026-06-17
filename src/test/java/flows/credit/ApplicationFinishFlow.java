@@ -42,16 +42,16 @@ public class ApplicationFinishFlow {
 
         ui.basePage.closeConsultationPanelIfOpened();
         // 1. Открыть договор по сохранённому номеру
-       // applicationSearchFlow.openBySavedСontracts();
+       applicationSearchFlow.openBySavedСontracts();
 
         $x("//div[@data-item-marker='" + CONTRACT_PAGE_MARKER + "']")
                 .shouldBe(visible);
 
         openApplicationFromField();
 
-        refresh();
+       // refresh();
 
-        openContract();
+       // openContract();
 
         // 2. Перейти на вкладку "Операции по договору"
         ui.buttonsComponent
@@ -62,18 +62,18 @@ public class ApplicationFinishFlow {
 
         // 4. Проверка расходного ордера
         checkConfirmedOutgoingOrder();
-        refresh();
+      /*  refresh();
         ui.buttonsComponent
                 .clickButtonByContainNameCheck("Файлы и примечания");
         checkFileUploaded("Справка о доходах.pdf");
         downloadFile();
         openApplicationFromField();
-        completeDawnmloadDocument();
+        completeDawnmloadDocument();*/
 
 
 
         // 5. Завершить выдачу кредита
-       // finishCreditIssuance();
+        finishCreditIssuance();
     }
 
     // ======================================================================
@@ -178,7 +178,7 @@ public class ApplicationFinishFlow {
     }
 
 
-    @Step("Открыть вкладку Подтвердить получение документа")
+   /* @Step("Открыть вкладку Подтвердить получение документа")
     private void openContract() {
 
         ui.dashboardComponent
@@ -186,7 +186,7 @@ public class ApplicationFinishFlow {
                         "Подтвердить получение документа");
         ui.contractPage
                 .clickContractAutoWait(CONTRACT_PAGE_MARKER);
-    }
+    } */
 
     @Step("Завершение активности \"Подтвердить получение документа\"")
     private void completeDawnmloadDocument() {

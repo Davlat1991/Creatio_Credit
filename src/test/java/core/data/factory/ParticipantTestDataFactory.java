@@ -28,9 +28,9 @@ public class ParticipantTestDataFactory {
     public static ParticipantData pledger(boolean pzl) {
         return new ParticipantData(
                 ParticipantRole.PLEDGER,
-                "Азизходжа",
-                "Хамидов",
-                "Азамходжаевич",
+                "Сафарали",
+                "Садуллоев",
+                "Нусратович",
                 pzl
         );
     }

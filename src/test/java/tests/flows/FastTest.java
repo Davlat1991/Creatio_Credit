@@ -103,8 +103,8 @@ public class FastTest extends BaseTest {
 
 
         // 🔹 ВАЖНО: выбор типа клиента ТОЛЬКО ЗДЕСЬ
-        BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
-        BaseClientFlow clientFlow = new EmployeeClientFlow(ui);      //Тип клиента работает в организации
+        //BaseClientFlow clientFlow = new SelfEmployedClientFlow(ui); //Тип клиента самозанятый
+        //BaseClientFlow clientFlow = new EmployeeClientFlow(ui);      //Тип клиента работает в организации
         BaseClientFlow clientFlow = new OtherIncomeClientFlow(ui);    //Тип клиента имеет другой источник дохода
 
 
@@ -129,7 +129,7 @@ public class FastTest extends BaseTest {
         productFlow.selectProduct(
                 "Карзхои гуногунмаксад",
                 "Барои эхтиёчоти оилави",
-                "10000",
+                "55000",
                 "24",
                 "Сомони Чумхурии Точикистон"
         );
@@ -147,16 +147,9 @@ public class FastTest extends BaseTest {
         preliminaryCheckFlow.completePreliminaryCheckStage();
 
 
-
         // ============================================================
         //                      УЧАСТНИКИ
         // ============================================================
-
-      authFlow.login(retailManager1);
-        workspaceFlow.select(Workspace.RETAIL_MANAGER);
-        navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/1ab9ea3a-f54b-41b9-ba27-011291497635");
 
         participantsStageFlow.completeParticipantsStage(
                 List.of(
@@ -170,21 +163,23 @@ public class FastTest extends BaseTest {
         //                      ЗАЛОГОВОЕ ОБЕСПЕЧЕНИЕ
         // ============================================================
          List<CollateralData> collaterals = List.of(
-                cashDeposit(CurrencyType.TJS),
+               /* cashDeposit(CurrencyType.TJS),
                 realEstate(CurrencyType.TJS),
                 vehicle(CurrencyType.TJS),
                 equipment(CurrencyType.TJS),
                 futureHarvest(CurrencyType.TJS),
                 cotton(CurrencyType.TJS),
                 acquiredProperty(CurrencyType.TJS),
-                movableProperty(CurrencyType.TJS),
-                gold(CurrencyType.TJS),
-                goods(CurrencyType.TJS)
-        );
+                movableProperty(CurrencyType.TJS),*/
+                gold(CurrencyType.TJS)
+                //goods(CurrencyType.TJS)
+       );
 
         collateralStageFlow.completeCollateralStage(collaterals);
 
         documentsApiFlow.uploadAllDocumentsViaApi();
+
+
 
         reviewRetailFlow.completeReview();
 
@@ -209,9 +204,8 @@ public class FastTest extends BaseTest {
         authFlow.login(retailManager1);
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
-
         clientNotificationFlow.completeClientNotification(
-                "Назарова Азиза Акбаровна"
+                "Рустамова Саодатчон Валиевна"
         );
 
         authFlow.logout();
@@ -220,8 +214,11 @@ public class FastTest extends BaseTest {
         // 7. LOAN ISSUANCE
         // ============================================================
 
-        authFlow.login(ikokgo1);
-        workspaceFlow.select(Workspace.IKOK_GO);
+        authFlow.login(ikok1);
+        workspaceFlow.select(Workspace.IKOK);
+        /*navigationFlow.open(
+                Environment.BASE_URL +
+                        "0/Nui/ViewModule.aspx#CardModuleV2/BnzContractCreditPage/edit/8059c703-c6ed-456f-b9d9-108937072b7b");*/
 
         loanIssuanceFlow.issueLoan();
 
@@ -241,12 +238,12 @@ public class FastTest extends BaseTest {
         // ============================================================
         // 🔵 14. ЗАВЕРШЕНИЕ ЗАЯВКИ
         // ============================================================
-        authFlow.login(ikokgo1);
+        /*authFlow.login(ikokgo1);
         workspaceFlow.select(Workspace.IKOK_GO);
 
         applicationFinishFlow.completeApplicationFinish();
 
-        authFlow.logout();
+        authFlow.logout();*/
 
 
     }

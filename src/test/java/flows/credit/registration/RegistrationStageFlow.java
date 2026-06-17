@@ -81,7 +81,7 @@ public class RegistrationStageFlow {
         // 9. Печать
         printFlow.printApplication();
 
-        Selenide.refresh();
+
     }
 
 }
