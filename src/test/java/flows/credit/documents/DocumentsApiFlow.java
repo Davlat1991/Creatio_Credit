@@ -23,11 +23,11 @@ public class DocumentsApiFlow {
 
     @Step("Загрузка документов через API")
     public void uploadAllDocumentsViaApi() {
-
+        completeCollateralAndGuaranteeTask();
         openDocumentsTab();
         uploadBorrower();
         uploadGuarantor();
-        uploadPledger();
+      //  uploadPledger();
         refreshAndWait();
         completeDocumentsActivity();
     }
@@ -128,5 +128,20 @@ public class DocumentsApiFlow {
 
         ui.basePage
                 .clickButtonByDataItemMaker("SaveEditButton");
+        refresh();
     }
+
+    private void completeCollateralAndGuaranteeTask() {
+
+        ui.dashboardComponent.clickElementDashboardCheck(
+                "Заполните данные обеспечения и поручительства",
+                "Execute",
+                "//*[@data-item-marker='MiniPage']"
+        );
+
+        ui.contractPage.setfieldScheduleDetailByDIM("ProcessResult", "Выполнена");
+        ui.menuComponent.clickButtonByLiName("Выполнена");
+        ui.basePage.clickButtonByDataItemMaker("SaveEditButton"); //SaveEditButton
+    }
+
 }

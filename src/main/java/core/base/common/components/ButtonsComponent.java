@@ -9,9 +9,9 @@ import io.qameta.allure.Step;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static core.base.common.components.LookupComponent.log;
 
 /**
  * ButtonsComponent — все универсальные клики вынесены сюда.
@@ -43,6 +43,103 @@ public class ButtonsComponent extends Components {
         SelenideElement button = $x("//span[@data-item-marker='" + marker1 + "']");
         retryClick(button, "Кнопка marker='" + marker1 + "'");
         return this;
+    }
+
+    @Step("Click button by marker: {marker}")
+    public ButtonsComponent clickByMarker(String marker1) {
+        log.info("Click button marker: '{}'", marker1);
+        SelenideElement btn = $x("//span[@data-item-marker='" + marker1 + "']")
+                .shouldBe(visible, enabled);
+        executeJavaScript("arguments[0].click();", btn);
+        return this;
+    }
+
+
+    @Step("Поиск участника по ФИО: {fullName}")
+    public void searchParticipantByName1(String fullName) {
+        log.info("Search participant: '{}'", fullName);
+
+        // Ждём что поле Отчества не пустое (любое значение)
+        $x("//div[@id='BnzSearchContactModalPageMiddleNameContainer_Control']//input")
+                .shouldNotBe(empty, Duration.ofSeconds(20));
+
+        // Ждём появления кнопки Поиск
+        SelenideElement searchBtn = $x("//span[@data-item-marker='SearchButton']")
+                .shouldBe(visible, Duration.ofSeconds(15))
+                .shouldBe(enabled, Duration.ofSeconds(5));
+
+        executeJavaScript("arguments[0].click();", searchBtn);
+
+        try {
+            $x("//span[contains(@class,'grid-label') and normalize-space(.)='ФИО']")
+                    .shouldBe(visible, Duration.ofSeconds(10));
+        } catch (Throwable e) {
+            log.warn("Search result not appeared, retrying click...");
+            executeJavaScript("arguments[0].click();", searchBtn);
+            $x("//span[contains(@class,'grid-label') and normalize-space(.)='ФИО']")
+                    .shouldBe(visible, Duration.ofSeconds(15));
+        }
+
+        log.info("Search results appeared");
+    }
+
+
+    @Step("Поиск участника по ФИО: {fullName}")
+    public void searchParticipantByName2(String fullName) {
+        log.info("Search participant: '{}'", fullName);
+
+        // Ждём появления кнопки Поиск в модале
+        SelenideElement searchBtn = $x("//span[@data-item-marker='SearchButton']")
+                .shouldBe(visible, Duration.ofSeconds(15))
+                .shouldBe(enabled, Duration.ofSeconds(5));
+
+        // Кликаем
+        executeJavaScript("arguments[0].click();", searchBtn);
+
+        // Ждём результат: колонка ФИО в гриде результатов
+        // Если через 10 сек результата нет — кликаем ещё раз (один retry)
+        try {
+            $x("//span[contains(@class,'grid-label') and normalize-space(.)='ФИО']")
+                    .shouldBe(visible, Duration.ofSeconds(15));
+        } catch (Throwable e) {
+            log.warn("Search result not appeared, retrying click...");
+            executeJavaScript("arguments[0].click();", searchBtn);
+            $x("//span[contains(@class,'grid-label') and normalize-space(.)='ФИО']")
+                    .shouldBe(visible, Duration.ofSeconds(15));
+        }
+
+        log.info("Search results appeared");
+    }
+
+
+    @Step("Поиск участника по ФИО: {fullName}")
+    public void searchParticipantByName(String fullName) {
+        log.info("Search participant: '{}'", fullName);
+
+        // Ждём модал
+        $x("//div[contains(@class,'bnz-search-questionnaire-container')]")
+                .shouldBe(visible, Duration.ofSeconds(15));
+
+        // Берём SearchButton ТОЛЬКО внутри модала участника
+        SelenideElement searchBtn = $x(
+                "//div[@id='BnzSearchContactModalPageCardContentContainerContainer']" +
+                        "//span[@data-item-marker='SearchButton']"
+        ).shouldBe(visible, Duration.ofSeconds(15))
+                .shouldBe(enabled, Duration.ofSeconds(5));
+
+        executeJavaScript("arguments[0].click();", searchBtn);
+
+        try {
+            $x("//span[contains(@class,'grid-label') and normalize-space(.)='ФИО']")
+                    .shouldBe(visible, Duration.ofSeconds(15));
+        } catch (Throwable e) {
+            log.warn("Search result not appeared, retrying click...");
+            executeJavaScript("arguments[0].click();", searchBtn);
+            $x("//span[contains(@class,'grid-label') and normalize-space(.)='ФИО']")
+                    .shouldBe(visible, Duration.ofSeconds(15));
+        }
+
+        log.info("Search results appeared");
     }
 
 

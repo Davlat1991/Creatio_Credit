@@ -30,8 +30,8 @@ public class ParticipantsAddFlow {
                 .setModalSearchField("GivenName", participant.getFirstName())
                 .setModalSearchField("MiddleName", participant.getMiddleName());
 
-        ui.basePage.clickButtonByName("Поиск");
-        //ui.buttonsComponent.clickByDataItemMarker("SearchButton");
+        //ui.basePage.clickButtonByName("Поиск");
+        ui.buttonsComponent.searchParticipantByName("SearchButton");   //Новый метод, добавить в новом проекте
 
         ui.basePage.clickButtonByName("Выбрать");
 

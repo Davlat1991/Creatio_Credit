@@ -526,10 +526,10 @@ public class BasePage {
     }
 
 
-    public BasePage clickButtonByName(String nameButton){
-        $x("//span[.='" + nameButton + "']").click();
-        return this;
-    }
+        public BasePage clickButtonByName(String nameButton){
+            $x("//span[.='" + nameButton + "']").click();
+            return this;
+        }
 
 
     //Migration

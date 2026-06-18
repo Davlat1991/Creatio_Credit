@@ -85,7 +85,7 @@ public class LoanIssuanceFlow {
         selectConfidantByPosition("Сардор дар Идораи амалиётb");
 
         // сохранить и закрыть залог
-        saveAndCloseCollateral();*/
+        saveAndCloseCollateral();
 
 
         openCollateralByName("Золотые изделия");
@@ -103,7 +103,7 @@ public class LoanIssuanceFlow {
         // сохранить и закрыть залог
         //saveAndCloseCollateral();
 
-        closeCollateral();
+        closeCollateral();*/
 
 
         openContract();

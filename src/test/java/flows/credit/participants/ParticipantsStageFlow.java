@@ -38,6 +38,7 @@ public class ParticipantsStageFlow {
                 .doubleClickByMarker("Роль участника");
 
         Selenide.sleep(5000);
+
     }
 
     private void processParticipant(ParticipantData participant,
@@ -63,4 +64,5 @@ public class ParticipantsStageFlow {
         ui.buttonsComponent
                 .clickButtonByContainName("Участники заявки");
     }
+
 }

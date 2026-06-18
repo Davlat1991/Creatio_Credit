@@ -558,14 +558,28 @@ public class LookupComponent extends Components {
         return this;
     }
 
+    //Новый метод перенести на новый проект 17.06.2026
+
+    @Step("Set modal search field: {marker} = {value}")
     public LookupComponent setModalSearchField(String marker, String value) {
+        log.info("setModalSearchField: marker='{}' value='{}'", marker, value);
 
-        SelenideElement input = $x(
-                "//div[@data-item-marker='" + marker + "']//input"
-        ).shouldBe(Condition.visible);
+        SelenideElement input = $x("//div[@data-item-marker='" + marker + "']//input")
+                .shouldBe(visible, enabled);
 
-        input.clear();
-        input.setValue(value);
+        // Устанавливаем значение через JS + триггерим события которые Creatio слушает
+        executeJavaScript(
+                "var el = arguments[0];" +
+                        "var val = arguments[1];" +
+                        "var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;" +
+                        "nativeInputValueSetter.call(el, val);" +
+                        "el.dispatchEvent(new Event('input', { bubbles: true }));" +
+                        "el.dispatchEvent(new Event('change', { bubbles: true }));" +
+                        "el.dispatchEvent(new Event('blur', { bubbles: true }));",
+                input, value
+        );
+
+        input.shouldHave(value(value), Duration.ofSeconds(10));
 
         return this;
     }

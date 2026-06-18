@@ -32,13 +32,13 @@ public class CollateralStageFlow {
     public void completeCollateralStage(List<CollateralData> collaterals) {
 
 
-        for (CollateralData data : collaterals) {
+     /*   for (CollateralData data : collaterals) {
 
             BaseCollateralFlow flow =
                     resolveCollateralFlow(data.getType());
 
             flow.fill(data);
-        }
+        }*/
 
         completeCollateralAndGuaranteeTask();
     }

@@ -146,15 +146,15 @@ public class FastTest extends BaseTest {
 
         preliminaryCheckFlow.completePreliminaryCheckStage();
 
-
         // ============================================================
         //                      УЧАСТНИКИ
         // ============================================================
 
+
         participantsStageFlow.completeParticipantsStage(
                 List.of(
-                        ParticipantTestDataFactory.guarantor(false),
-                        ParticipantTestDataFactory.pledger(false)
+                        ParticipantTestDataFactory.guarantor(false)
+                        //ParticipantTestDataFactory.pledger(false)
                 ),
                 incomeExpensesData
         );
@@ -162,24 +162,28 @@ public class FastTest extends BaseTest {
         // ============================================================
         //                      ЗАЛОГОВОЕ ОБЕСПЕЧЕНИЕ
         // ============================================================
-         List<CollateralData> collaterals = List.of(
-               /* cashDeposit(CurrencyType.TJS),
+       /* List<CollateralData> collaterals = List.of(
+                cashDeposit(CurrencyType.TJS),
                 realEstate(CurrencyType.TJS),
                 vehicle(CurrencyType.TJS),
                 equipment(CurrencyType.TJS),
                 futureHarvest(CurrencyType.TJS),
                 cotton(CurrencyType.TJS),
                 acquiredProperty(CurrencyType.TJS),
-                movableProperty(CurrencyType.TJS),*/
-                gold(CurrencyType.TJS)
-                //goods(CurrencyType.TJS)
+                movableProperty(CurrencyType.TJS),
+                gold(CurrencyType.TJS),
+                goods(CurrencyType.TJS)
        );
 
         collateralStageFlow.completeCollateralStage(collaterals);
+        authFlow.login(retailManager1);
+        workspaceFlow.select(Workspace.RETAIL_MANAGER);
+
+        navigationFlow.open(
+                Environment.BASE_URL +
+                        "0/Nui/ViewModule.aspx#CardModuleV2/FinApplicationPage/edit/d6c30b30-6e5b-4a3b-a876-aac686a3b854");*/
 
         documentsApiFlow.uploadAllDocumentsViaApi();
-
-
 
         reviewRetailFlow.completeReview();
 
@@ -192,8 +196,7 @@ public class FastTest extends BaseTest {
         authFlow.login(underwriter1);
         workspaceFlow.select(Workspace.UNDERWRITER);
 
-        reviewUnderwriterFlow.approveReview("КК4 по заявке"
-        );
+        reviewUnderwriterFlow.approveReview("КК4 по заявке");
 
         authFlow.logout();
 
@@ -205,8 +208,7 @@ public class FastTest extends BaseTest {
         workspaceFlow.select(Workspace.RETAIL_MANAGER);
 
         clientNotificationFlow.completeClientNotification(
-                "Рустамова Саодатчон Валиевна"
-        );
+                "Рустамова Саодатчон Валиевна");
 
         authFlow.logout();
 
@@ -216,9 +218,6 @@ public class FastTest extends BaseTest {
 
         authFlow.login(ikok1);
         workspaceFlow.select(Workspace.IKOK);
-        /*navigationFlow.open(
-                Environment.BASE_URL +
-                        "0/Nui/ViewModule.aspx#CardModuleV2/BnzContractCreditPage/edit/8059c703-c6ed-456f-b9d9-108937072b7b");*/
 
         loanIssuanceFlow.issueLoan();
 
